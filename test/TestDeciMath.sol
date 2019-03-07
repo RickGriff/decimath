@@ -118,6 +118,32 @@ contract TestDeciMath {
     bool r = rawCaller.execute.gas(200000)();
     Assert.isTrue(r, "Should be true - func should execute successfully");
   }
+
+  //Test exp18 function
+  // Integer tests
+  function test_exp18_basics() public {
+    // x^0 --> 0
+    Assert.equal(decimath.exp18(0, 0), 1 ether, "failed");
+    Assert.equal(decimath.exp18(1 ether, 0), 1 ether, "failed");
+    Assert.equal(decimath.exp18(3  ether, 0), 1 ether, "failed");
+    Assert.equal(decimath.exp18(123456789123456789, 0), 1 ether, "failed");
+    // 1^n --> 1
+    Assert.equal(decimath.exp18(1 ether ,2), 1 ether, "failed");
+    Assert.equal(decimath.exp18(1 ether , 456), 1 ether, "failed");
+    // x^1 --> x
+    Assert.equal(decimath.exp18(1 ether, 1), 1 ether, "failed");
+    Assert.equal(decimath.exp18(3 ether, 1), 3 ether, "failed");
+    Assert.equal(decimath.exp18(123456789123456789, 1), 123456789123456789, "failed");
+  }
+
+  // exp18 func with an integer base
+  function test_exp18_intBase() public {
+    Assert.equal(decimath.exp18(2000000000000000000, 2), 4000000000000000000, "failed");
+    Assert.equal(decimath.exp18(2000000000000000000, 5), 32000000000000000000, "failed");
+    Assert.equal(decimath.exp18(3000000000000000000, 3), 27000000000000000000, "failed");
+    Assert.equal(decimath.exp18(13000000000000000000, 11), 1792160394037000000000000000000, "failed");
+    Assert.equal(decimath.exp18(34000000000000000000, 26), 1, "failed");
+  }
 }
 
 /* RawCaller is a proxy contract, used to test for reversion.
@@ -126,7 +152,7 @@ Raw calls in Solidity return a boolean -- true if successful execution, false if
 Usage in tests:
 
 -A RawCaller instance R points to a target contract T.
--Calling T's function 'someFunc' on R triggers the fallback function, which stores the someFunc call data in R's storage.
+-Calling T's function 'someFunc' on R triggers R's fallback function, which stores the someFunc call data in R's storage.
 -R.execute() executes the raw call T.someFunc, which returns a boolean.
 */
 contract RawCaller {
@@ -166,6 +192,13 @@ contract WrappedDeciMath is DeciMath {
     decDiv2(x, y);
   }
 
+  function callExp2 (uint x, uint n) public {
+    exp2(x, n);
+  }
+  function callExp18 (uint x, uint n) public {
+    exp18(x, n);
+  }
+
   function calldecMul18 (uint x, uint y) public {
     decMul18(x, y);
   }
@@ -173,4 +206,5 @@ contract WrappedDeciMath is DeciMath {
   function calldecDiv18 (uint x, uint y) public {
     decDiv18(x, y);
   }
+
 }

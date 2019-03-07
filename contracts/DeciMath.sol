@@ -27,4 +27,58 @@ contract DeciMath {
     uint prod_xQuint = x.mul(QUINT);
     decQuotient = prod_xQuint.add(y / 2) / y;
   }
+
+  function expNoDec(uint x, uint n) public pure returns (uint) {
+    if (n == 0)
+      return 1;
+
+    uint y = 1;
+
+    while (n > 1)
+      if (n % 2 == 0) {
+        x = x.mul(x);
+        n = n / 2;
+      } else if (n % 2 != 0) {
+        y = x.mul(y);
+        x = x.mul(x);
+        n = (n - 1)/2;
+      }
+    return x.mul(y);
+  }
+
+  function exp2(uint x, uint n) public pure returns (uint) {
+    if (n == 0)
+      return 100;
+
+    uint y = 100;
+
+    while (n > 1)
+      if (n % 2 == 0) {
+        x = decMul2(x, x);
+        n = n / 2;
+      } else if (n % 2 != 0) {
+        y = decMul2(x, y);
+        x = decMul2(x, x);
+        n = (n - 1)/2;
+      }
+    return decMul2(x, y);
+  }
+
+  function exp18(uint x, uint n) public pure returns (uint) {
+    if (n == 0)
+      return QUINT;
+
+    uint y = QUINT;
+
+    while (n > 1)
+      if (n % 2 == 0) {
+        x = decMul18(x, x);
+        n = n / 2;
+      } else if (n % 2 != 0) {
+        y = decMul18(x, y);
+        x = decMul18(x, x);
+        n = (n - 1)/2;
+      }
+    return decMul18(x, y);
+  }
 }

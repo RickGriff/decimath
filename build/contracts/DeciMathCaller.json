@@ -1,0 +1,824 @@
+{
+  "contractName": "DeciMathCaller",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_decimathAddr",
+          "type": "address"
+        }
+      ],
+      "name": "setDeciMath",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "n",
+          "type": "uint256"
+        }
+      ],
+      "name": "callExp",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610231806100206000396000f3fe60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633a47bea914610051578063e0bae6c1146100a0575b600080fd5b34801561005d57600080fd5b5061008a6004803603602081101561007457600080fd5b81019080803590602001909291905050506100f1565b6040518082815260200191505060405180910390f35b3480156100ac57600080fd5b506100ef600480360360208110156100c357600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506101c2565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b15801561018157600080fd5b505afa158015610195573d6000803e3d6000fd5b505050506040513d60208110156101ab57600080fd5b810190808051906020019092919050505050919050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a723058207636423f17f7b81c3ea3447475cb378410795ff1e512071f1ecc0d529f8de14c0029",
+  "deployedBytecode": "0x60806040526004361061004c576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633a47bea914610051578063e0bae6c1146100a0575b600080fd5b34801561005d57600080fd5b5061008a6004803603602081101561007457600080fd5b81019080803590602001909291905050506100f1565b6040518082815260200191505060405180910390f35b3480156100ac57600080fd5b506100ef600480360360208110156100c357600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff1690602001909291905050506101c2565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b15801561018157600080fd5b505afa158015610195573d6000803e3d6000fd5b505050506040513d60208110156101ab57600080fd5b810190808051906020019092919050505050919050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a723058207636423f17f7b81c3ea3447475cb378410795ff1e512071f1ecc0d529f8de14c0029",
+  "sourceMap": "496:237:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;496:237:1;;;;;;;",
+  "deployedSourceMap": "496:237:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;655:75;;8:9:-1;5:2;;;30:1;27;20:12;5:2;655:75:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;655:75:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;551:98;;8:9:-1;5:2;;;30:1;27;20:12;5:2;551:98:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;551:98:1;;;;;;;;;;;;;;;;;;;;;;655:75;696:4;709:8;;;;;;;;;;;:12;;;722:1;709:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;709:15:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;709:15:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;709:15:1;;;;;;;;;;;;;;;;;655:75;;;:::o;551:98::-;629:13;609:8;;:34;;;;;;;;;;;;;;;;;;551:98;:::o",
+  "source": "pragma solidity ^0.5.0;\r\nimport './DeciMath.sol';\r\n\r\n// Proxy contract, used in tests to call DeciMath funcs.\r\n// Allows us to calculate actual gas used in DeciMath 'view' functions.\r\n// Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via a proxy contract.\r\n\r\n// Example usage:\r\n// An EOA sends tx to DeciMathCaller.callExp(n), which in turn calls exp(n) on deployed DeciMath instance.\r\n// As the latter func is called within a tx, it uses gas.\r\n\r\ncontract DeciMathCaller {\r\n\r\n  DeciMath decimath;\r\n\r\n  function setDeciMath(address _decimathAddr) public {\r\n    decimath = DeciMath(_decimathAddr);\r\n  }\r\n\r\n  function callExp(uint n) public returns (uint) {\r\n    decimath.exp(n);\r\n  }\r\n}\r\n",
+  "sourcePath": "C:/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
+  "ast": {
+    "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
+    "exportedSymbols": {
+      "DeciMathCaller": [
+        441
+      ]
+    },
+    "id": 442,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 411,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMath.sol",
+        "file": "./DeciMath.sol",
+        "id": 412,
+        "nodeType": "ImportDirective",
+        "scope": 442,
+        "sourceUnit": 410,
+        "src": "25:24:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 441,
+        "linearizedBaseContracts": [
+          441
+        ],
+        "name": "DeciMathCaller",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 414,
+            "name": "decimath",
+            "nodeType": "VariableDeclaration",
+            "scope": 441,
+            "src": "527:17:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DeciMath_$409",
+              "typeString": "contract DeciMath"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 413,
+              "name": "DeciMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 409,
+              "src": "527:8:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DeciMath_$409",
+                "typeString": "contract DeciMath"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 425,
+              "nodeType": "Block",
+              "src": "602:47:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 423,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 419,
+                      "name": "decimath",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 414,
+                      "src": "609:8:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeString": "contract DeciMath"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 421,
+                          "name": "_decimathAddr",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 416,
+                          "src": "629:13:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 420,
+                        "name": "DeciMath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 409,
+                        "src": "620:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$409_$",
+                          "typeString": "type(contract DeciMath)"
+                        }
+                      },
+                      "id": 422,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "620:23:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeString": "contract DeciMath"
+                      }
+                    },
+                    "src": "609:34:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DeciMath_$409",
+                      "typeString": "contract DeciMath"
+                    }
+                  },
+                  "id": 424,
+                  "nodeType": "ExpressionStatement",
+                  "src": "609:34:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 426,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setDeciMath",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 417,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 416,
+                  "name": "_decimathAddr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 426,
+                  "src": "572:21:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 415,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "572:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "571:23:1"
+            },
+            "returnParameters": {
+              "id": 418,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "602:0:1"
+            },
+            "scope": 441,
+            "src": "551:98:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 439,
+              "nodeType": "Block",
+              "src": "702:28:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 436,
+                        "name": "n",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 428,
+                        "src": "722:1:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 433,
+                        "name": "decimath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 414,
+                        "src": "709:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeString": "contract DeciMath"
+                        }
+                      },
+                      "id": 435,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "exp",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 408,
+                      "src": "709:12:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_pure$_t_uint256_$returns$_t_uint256_$",
+                        "typeString": "function (uint256) pure external returns (uint256)"
+                      }
+                    },
+                    "id": 437,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "709:15:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 438,
+                  "nodeType": "ExpressionStatement",
+                  "src": "709:15:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 440,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callExp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 429,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 428,
+                  "name": "n",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 440,
+                  "src": "672:6:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 427,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "672:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "671:8:1"
+            },
+            "returnParameters": {
+              "id": 432,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 431,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 440,
+                  "src": "696:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 430,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "696:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "695:6:1"
+            },
+            "scope": 441,
+            "src": "655:75:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 442,
+        "src": "496:237:1"
+      }
+    ],
+    "src": "0:735:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
+    "exportedSymbols": {
+      "DeciMathCaller": [
+        441
+      ]
+    },
+    "id": 442,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 411,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMath.sol",
+        "file": "./DeciMath.sol",
+        "id": 412,
+        "nodeType": "ImportDirective",
+        "scope": 442,
+        "sourceUnit": 410,
+        "src": "25:24:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 441,
+        "linearizedBaseContracts": [
+          441
+        ],
+        "name": "DeciMathCaller",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 414,
+            "name": "decimath",
+            "nodeType": "VariableDeclaration",
+            "scope": 441,
+            "src": "527:17:1",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_DeciMath_$409",
+              "typeString": "contract DeciMath"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 413,
+              "name": "DeciMath",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 409,
+              "src": "527:8:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_DeciMath_$409",
+                "typeString": "contract DeciMath"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 425,
+              "nodeType": "Block",
+              "src": "602:47:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 423,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 419,
+                      "name": "decimath",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 414,
+                      "src": "609:8:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeString": "contract DeciMath"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "id": 421,
+                          "name": "_decimathAddr",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 416,
+                          "src": "629:13:1",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_address",
+                            "typeString": "address"
+                          }
+                        ],
+                        "id": 420,
+                        "name": "DeciMath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 409,
+                        "src": "620:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$409_$",
+                          "typeString": "type(contract DeciMath)"
+                        }
+                      },
+                      "id": 422,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "typeConversion",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "620:23:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeString": "contract DeciMath"
+                      }
+                    },
+                    "src": "609:34:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_DeciMath_$409",
+                      "typeString": "contract DeciMath"
+                    }
+                  },
+                  "id": 424,
+                  "nodeType": "ExpressionStatement",
+                  "src": "609:34:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 426,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setDeciMath",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 417,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 416,
+                  "name": "_decimathAddr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 426,
+                  "src": "572:21:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 415,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "572:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "571:23:1"
+            },
+            "returnParameters": {
+              "id": 418,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "602:0:1"
+            },
+            "scope": 441,
+            "src": "551:98:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 439,
+              "nodeType": "Block",
+              "src": "702:28:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 436,
+                        "name": "n",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 428,
+                        "src": "722:1:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 433,
+                        "name": "decimath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 414,
+                        "src": "709:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeString": "contract DeciMath"
+                        }
+                      },
+                      "id": 435,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "exp",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 408,
+                      "src": "709:12:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_pure$_t_uint256_$returns$_t_uint256_$",
+                        "typeString": "function (uint256) pure external returns (uint256)"
+                      }
+                    },
+                    "id": 437,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "709:15:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 438,
+                  "nodeType": "ExpressionStatement",
+                  "src": "709:15:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 440,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callExp",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 429,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 428,
+                  "name": "n",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 440,
+                  "src": "672:6:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 427,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "672:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "671:8:1"
+            },
+            "returnParameters": {
+              "id": 432,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 431,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 440,
+                  "src": "696:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 430,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "696:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "695:6:1"
+            },
+            "scope": 441,
+            "src": "655:75:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 442,
+        "src": "496:237:1"
+      }
+    ],
+    "src": "0:735:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0xd41Ae741584d885fC8b3cb2DaBd83681451dEa24",
+      "transactionHash": "0x8425f1c7ce68d5d46888b88f7489302419284fb36def5a595da706e504e5c704"
+    }
+  },
+  "schemaVersion": "3.0.2",
+  "updatedAt": "2019-03-09T17:30:07.804Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

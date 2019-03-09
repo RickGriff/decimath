@@ -1,7 +1,6 @@
 pragma solidity ^0.5.0;
 
 import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-
 contract DeciMath {
   using SafeMath for uint;
 
@@ -80,5 +79,21 @@ contract DeciMath {
         n = (n - 1)/2;
       }
     return decMul18(x, y);
+  }
+
+  // e^n for real exponent.
+  // Exponent 'n' is  fixed point 18DP, represented by a uint.
+  function exp(uint n) public pure returns (uint) {
+    uint tolerance = 1;
+    uint term = QUINT;
+    uint sum = QUINT;
+    uint i = 0;
+
+    while (term > tolerance) { // stop computing terms when smallest term reaches 10^-18 in size
+       i += QUINT;
+      term = decDiv18( decMul18(term, n), i );
+      sum += term;
+    }
+    return sum;
   }
 }

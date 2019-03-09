@@ -142,8 +142,32 @@ contract TestDeciMath {
     Assert.equal(decimath.exp18(2000000000000000000, 5), 32000000000000000000, "failed");
     Assert.equal(decimath.exp18(3000000000000000000, 3), 27000000000000000000, "failed");
     Assert.equal(decimath.exp18(13000000000000000000, 11), 1792160394037000000000000000000, "failed");
-    Assert.equal(decimath.exp18(34000000000000000000, 26), 1, "failed");
+    Assert.equal(decimath.exp18(34000000000000000000, 26), 6583424253569334549714045134721532297216000000000000000000, "failed");
   }
+
+  //e^n function
+  function test_exp_basics() public {
+    Assert.equal(decimath.exp(0), 1 ether, "failed");
+    Assert.equal(decimath.exp(1 ether), 2.718281828459045234 ether, "failed");
+    Assert.equal(decimath.exp(2.9 ether), 18.174145369443060944 ether, "failed");
+    Assert.equal(decimath.exp(10 ether), 22026.465794806716517028 ether, "failed");
+  }
+
+  function test_exp_fractions() public {
+    Assert.equal(decimath.exp(0.1 ether), 1.105170918075647626 ether, "failed");
+    Assert.equal(decimath.exp(0.5 ether), 1.648721270700128148 ether, "failed");
+    Assert.equal(decimath.exp(0.9 ether), 2.459603111156949665 ether, "failed");
+  }
+
+/*
+  function test_exp_overflow() public {
+    RawCaller rawCaller = new RawCaller(address(wrappedDeciMath));
+    WrappedDeciMath(address(rawCaller)).callExp(50 ether);
+    bool r = rawCaller.execute.gas(200000)();
+    Assert.isFalse(r, "Should be false - func should overflow and revert");
+  } */
+
+
 }
 
 /* RawCaller is a proxy contract, used to test for reversion.
@@ -194,6 +218,10 @@ contract WrappedDeciMath is DeciMath {
 
   function callExp2 (uint x, uint n) public {
     exp2(x, n);
+  }
+
+  function callExp (uint n) public {
+      exp(n);
   }
   function callExp18 (uint x, uint n) public {
     exp18(x, n);

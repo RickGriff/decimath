@@ -1,5 +1,6 @@
 
 const BN = require('bn.js');
+const makeBN = require('./makeBN.js');
 
 module.exports = async () => {
   try {
@@ -20,14 +21,17 @@ module.exports = async () => {
     caller.setDeciMath(decimathAddr)
 
     const tx = await caller.callExp(FIFTY_QUINT)
-    console.log("tx receipt is: " + tx)
+    console.log(tx)
+
+    //gas used in e^50:
+    console.log("Gas used in exp(50): " +  tx.receipt.gasUsed)
 
     // Estimate gas  for decMul2(x,y)
     const decMul2GasEstimate = await decimath.decMul2.estimateGas(200,345)
     console.log("Gas Estimate for decMul2(x,y) is: " + decMul2GasEstimate)
 
-    // call exp(n) with n=10
-    const ten_ether = new BN((QUINT * 50).toString(), 10)
+    // call exp(n) with n=50
+    const ten_ether = makeBN.makeBN18('50').toString()
     console.log("Ten ether is: " + ten_ether.toString())
 
     const res_exp = await decimath.exp(ten_ether, {from: accounts[0]})
@@ -37,10 +41,24 @@ module.exports = async () => {
     const expGasEstimate = await decimath.exp.estimateGas(ten_ether, {from: accounts[0]})
     console.log("Gas Estimate for exp(ten ether) is: " + expGasEstimate)
 
+    // makeBigNum18 Tests
+    // TODO: convert to assertions
+    const logBN18 = (n) => {
+      const bigNum = makeBN.makeBN18(n);
+      console.log("Make bigNum from input " + n.toString() + ": " + bigNum.toString() + " Total digits: " + bigNum.toString().length )
+    }
+    logBN18("4.0")
+    logBN18("12")
+    logBN18("3.456")
+    logBN18("1.123456789123456789")
+    logBN18("999.123456789123456789")
+    logBN18("999.1234567891234567810")
+
   } catch (err) {
     console.log(err)
   }
 }
+
 
 // // Get actual gas used for exp(n) from tx receipt
 // tx2 = await decimath.exp(10**15, {from: accounts[0]})

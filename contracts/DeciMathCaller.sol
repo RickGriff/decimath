@@ -19,4 +19,8 @@ contract DeciMathCaller {
   function callExp(uint n) public returns (uint) {
     decimath.exp(n);
   }
+
+  function callExp18(uint x, uint n) public returns (uint) {
+    decimath.exp18(x, n);
+  }
 }

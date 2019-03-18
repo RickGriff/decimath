@@ -59,26 +59,50 @@
       "stateMutability": "nonpayable",
       "type": "function",
       "signature": "0x5528a22f"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "x",
+          "type": "uint256"
+        },
+        {
+          "name": "accuracy",
+          "type": "uint256"
+        }
+      ],
+      "name": "callLog2",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function",
+      "signature": "0x11f2a675"
     }
   ],
-  "bytecode": "0x608060405234801561001057600080fd5b5061036f806100206000396000f3fe608060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633a47bea91461005c5780635528a22f146100ab578063e0bae6c114610104575b600080fd5b34801561006857600080fd5b506100956004803603602081101561007f57600080fd5b8101908080359060200190929190505050610155565b6040518082815260200191505060405180910390f35b3480156100b757600080fd5b506100ee600480360360408110156100ce57600080fd5b810190808035906020019092919080359060200190929190505050610226565b6040518082815260200191505060405180910390f35b34801561011057600080fd5b506101536004803603602081101561012757600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610300565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b1580156101e557600080fd5b505afa1580156101f9573d6000803e3d6000fd5b505050506040513d602081101561020f57600080fd5b810190808051906020019092919050505050919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166372749dca84846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b1580156102be57600080fd5b505afa1580156102d2573d6000803e3d6000fd5b505050506040513d60208110156102e857600080fd5b81019080805190602001909291905050505092915050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a72305820d97ee73560fd28521a90747d1bb996b405225637aa975a593cec9a1d8d5edb6d0029",
-  "deployedBytecode": "0x608060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680633a47bea91461005c5780635528a22f146100ab578063e0bae6c114610104575b600080fd5b34801561006857600080fd5b506100956004803603602081101561007f57600080fd5b8101908080359060200190929190505050610155565b6040518082815260200191505060405180910390f35b3480156100b757600080fd5b506100ee600480360360408110156100ce57600080fd5b810190808035906020019092919080359060200190929190505050610226565b6040518082815260200191505060405180910390f35b34801561011057600080fd5b506101536004803603602081101561012757600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610300565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b1580156101e557600080fd5b505afa1580156101f9573d6000803e3d6000fd5b505050506040513d602081101561020f57600080fd5b810190808051906020019092919050505050919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166372749dca84846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b1580156102be57600080fd5b505afa1580156102d2573d6000803e3d6000fd5b505050506040513d60208110156102e857600080fd5b81019080805190602001909291905050505092915050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a72305820d97ee73560fd28521a90747d1bb996b405225637aa975a593cec9a1d8d5edb6d0029",
-  "sourceMap": "496:331:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;496:331:1;;;;;;;",
-  "deployedSourceMap": "496:331:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;653:75;;8:9:-1;5:2;;;30:1;27;20:12;5:2;653:75:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;653:75:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;734:90;;8:9:-1;5:2;;;30:1;27;20:12;5:2;734:90:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;734:90:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;549:98;;8:9:-1;5:2;;;30:1;27;20:12;5:2;549:98:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;549:98:1;;;;;;;;;;;;;;;;;;;;;;653:75;694:4;707:8;;;;;;;;;;;:12;;;720:1;707:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;707:15:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;707:15:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;707:15:1;;;;;;;;;;;;;;;;;653:75;;;:::o;734:90::-;785:4;798:8;;;;;;;;;;;:14;;;813:1;816;798:20;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;798:20:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;798:20:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;798:20:1;;;;;;;;;;;;;;;;;734:90;;;;:::o;549:98::-;627:13;607:8;;:34;;;;;;;;;;;;;;;;;;549:98;:::o",
-  "source": "pragma solidity ^0.5.0;\r\nimport './DeciMath.sol';\r\n\r\n// Proxy contract, used in tests to call DeciMath funcs.\r\n// Allows us to calculate actual gas used in DeciMath 'view' functions.\r\n// Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via a proxy contract.\r\n\r\n// Example usage:\r\n// An EOA sends tx to DeciMathCaller.callExp(n), which in turn calls exp(n) on deployed DeciMath instance.\r\n// As the latter func is called within a tx, it uses gas.\r\n\r\ncontract DeciMathCaller {\r\n  DeciMath decimath;\r\n\r\n  function setDeciMath(address _decimathAddr) public {\r\n    decimath = DeciMath(_decimathAddr);\r\n  }\r\n\r\n  function callExp(uint n) public returns (uint) {\r\n    decimath.exp(n);\r\n  }\r\n\r\n  function callExp18(uint x, uint n) public returns (uint) {\r\n    decimath.exp18(x, n);\r\n  }\r\n}\r\n",
+  "bytecode": "0x608060405234801561001057600080fd5b506104ad806100206000396000f3fe608060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806311f2a675146100675780633a47bea9146100c05780635528a22f1461010f578063e0bae6c114610168575b600080fd5b34801561007357600080fd5b506100aa6004803603604081101561008a57600080fd5b8101908080359060200190929190803590602001909291905050506101b9565b6040518082815260200191505060405180910390f35b3480156100cc57600080fd5b506100f9600480360360208110156100e357600080fd5b8101908080359060200190929190505050610293565b6040518082815260200191505060405180910390f35b34801561011b57600080fd5b506101526004803603604081101561013257600080fd5b810190808035906020019092919080359060200190929190505050610364565b6040518082815260200191505060405180910390f35b34801561017457600080fd5b506101b76004803603602081101561018b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061043e565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166378b9a1f384846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b15801561025157600080fd5b505afa158015610265573d6000803e3d6000fd5b505050506040513d602081101561027b57600080fd5b81019080805190602001909291905050505092915050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b15801561032357600080fd5b505afa158015610337573d6000803e3d6000fd5b505050506040513d602081101561034d57600080fd5b810190808051906020019092919050505050919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166372749dca84846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b1580156103fc57600080fd5b505afa158015610410573d6000803e3d6000fd5b505050506040513d602081101561042657600080fd5b81019080805190602001909291905050505092915050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a72305820549bf2127fcbda770bd8d5aa40fa4918ce17b7d185f7e98f3626800c2799c2930029",
+  "deployedBytecode": "0x608060405260043610610062576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806311f2a675146100675780633a47bea9146100c05780635528a22f1461010f578063e0bae6c114610168575b600080fd5b34801561007357600080fd5b506100aa6004803603604081101561008a57600080fd5b8101908080359060200190929190803590602001909291905050506101b9565b6040518082815260200191505060405180910390f35b3480156100cc57600080fd5b506100f9600480360360208110156100e357600080fd5b8101908080359060200190929190505050610293565b6040518082815260200191505060405180910390f35b34801561011b57600080fd5b506101526004803603604081101561013257600080fd5b810190808035906020019092919080359060200190929190505050610364565b6040518082815260200191505060405180910390f35b34801561017457600080fd5b506101b76004803603602081101561018b57600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061043e565b005b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166378b9a1f384846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b15801561025157600080fd5b505afa158015610265573d6000803e3d6000fd5b505050506040513d602081101561027b57600080fd5b81019080805190602001909291905050505092915050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663b581fbe3836040518263ffffffff167c01000000000000000000000000000000000000000000000000000000000281526004018082815260200191505060206040518083038186803b15801561032357600080fd5b505afa158015610337573d6000803e3d6000fd5b505050506040513d602081101561034d57600080fd5b810190808051906020019092919050505050919050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166372749dca84846040518363ffffffff167c0100000000000000000000000000000000000000000000000000000000028152600401808381526020018281526020019250505060206040518083038186803b1580156103fc57600080fd5b505afa158015610410573d6000803e3d6000fd5b505050506040513d602081101561042657600080fd5b81019080805190602001909291905050505092915050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505056fea165627a7a72305820549bf2127fcbda770bd8d5aa40fa4918ce17b7d185f7e98f3626800c2799c2930029",
+  "sourceMap": "496:439:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;496:439:1;;;;;;;",
+  "deployedSourceMap": "496:439:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;830:102;;8:9:-1;5:2;;;30:1;27;20:12;5:2;830:102:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;830:102:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;653:75;;8:9:-1;5:2;;;30:1;27;20:12;5:2;653:75:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;653:75:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;734:90;;8:9:-1;5:2;;;30:1;27;20:12;5:2;734:90:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;734:90:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;549:98;;8:9:-1;5:2;;;30:1;27;20:12;5:2;549:98:1;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;549:98:1;;;;;;;;;;;;;;;;;;;;;;830:102;887:4;900:8;;;;;;;;;;;:13;;;914:1;917:8;900:26;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;900:26:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;900:26:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;900:26:1;;;;;;;;;;;;;;;;;830:102;;;;:::o;653:75::-;694:4;707:8;;;;;;;;;;;:12;;;720:1;707:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;707:15:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;707:15:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;707:15:1;;;;;;;;;;;;;;;;;653:75;;;:::o;734:90::-;785:4;798:8;;;;;;;;;;;:14;;;813:1;816;798:20;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;798:20:1;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;798:20:1;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;798:20:1;;;;;;;;;;;;;;;;;734:90;;;;:::o;549:98::-;627:13;607:8;;:34;;;;;;;;;;;;;;;;;;549:98;:::o",
+  "source": "pragma solidity ^0.5.0;\r\nimport './DeciMath.sol';\r\n\r\n// Proxy contract, used in tests to call DeciMath funcs.\r\n// Allows us to calculate actual gas used in DeciMath 'view' functions.\r\n// Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via a proxy contract.\r\n\r\n// Example usage:\r\n// An EOA sends tx to DeciMathCaller.callExp(n), which in turn calls exp(n) on deployed DeciMath instance.\r\n// As the latter func is called within a tx, it uses gas.\r\n\r\ncontract DeciMathCaller {\r\n  DeciMath decimath;\r\n\r\n  function setDeciMath(address _decimathAddr) public {\r\n    decimath = DeciMath(_decimathAddr);\r\n  }\r\n\r\n  function callExp(uint n) public returns (uint) {\r\n    decimath.exp(n);\r\n  }\r\n\r\n  function callExp18(uint x, uint n) public returns (uint) {\r\n    decimath.exp18(x, n);\r\n  }\r\n\r\n  function callLog2(uint x, uint accuracy) public returns (uint) {\r\n    decimath.log2(x, accuracy);\r\n  }\r\n}\r\n",
   "sourcePath": "C:/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
   "ast": {
     "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
     "exportedSymbols": {
       "DeciMathCaller": [
-        458
+        1784
       ]
     },
-    "id": 459,
+    "id": 1785,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 411,
+        "id": 1720,
         "literals": [
           "solidity",
           "^",
@@ -91,10 +115,10 @@
       {
         "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMath.sol",
         "file": "./DeciMath.sol",
-        "id": 412,
+        "id": 1721,
         "nodeType": "ImportDirective",
-        "scope": 459,
-        "sourceUnit": 410,
+        "scope": 1785,
+        "sourceUnit": 1719,
         "src": "25:24:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -105,35 +129,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 458,
+        "id": 1784,
         "linearizedBaseContracts": [
-          458
+          1784
         ],
         "name": "DeciMathCaller",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 414,
+            "id": 1723,
             "name": "decimath",
             "nodeType": "VariableDeclaration",
-            "scope": 458,
+            "scope": 1784,
             "src": "525:17:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DeciMath_$409",
+              "typeIdentifier": "t_contract$_DeciMath_$1718",
               "typeString": "contract DeciMath"
             },
             "typeName": {
               "contractScope": null,
-              "id": 413,
+              "id": 1722,
               "name": "DeciMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 409,
+              "referencedDeclaration": 1718,
               "src": "525:8:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DeciMath_$409",
+                "typeIdentifier": "t_contract$_DeciMath_$1718",
                 "typeString": "contract DeciMath"
               }
             },
@@ -142,28 +166,28 @@
           },
           {
             "body": {
-              "id": 425,
+              "id": 1734,
               "nodeType": "Block",
               "src": "600:47:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 423,
+                    "id": 1732,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 419,
+                      "id": 1728,
                       "name": "decimath",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 414,
+                      "referencedDeclaration": 1723,
                       "src": "607:8:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeIdentifier": "t_contract$_DeciMath_$1718",
                         "typeString": "contract DeciMath"
                       }
                     },
@@ -174,11 +198,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 421,
+                          "id": 1730,
                           "name": "_decimathAddr",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 416,
+                          "referencedDeclaration": 1725,
                           "src": "627:13:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -193,18 +217,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 420,
+                        "id": 1729,
                         "name": "DeciMath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 409,
+                        "referencedDeclaration": 1718,
                         "src": "618:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$409_$",
+                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$1718_$",
                           "typeString": "type(contract DeciMath)"
                         }
                       },
-                      "id": 422,
+                      "id": 1731,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -214,39 +238,39 @@
                       "nodeType": "FunctionCall",
                       "src": "618:23:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeIdentifier": "t_contract$_DeciMath_$1718",
                         "typeString": "contract DeciMath"
                       }
                     },
                     "src": "607:34:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DeciMath_$409",
+                      "typeIdentifier": "t_contract$_DeciMath_$1718",
                       "typeString": "contract DeciMath"
                     }
                   },
-                  "id": 424,
+                  "id": 1733,
                   "nodeType": "ExpressionStatement",
                   "src": "607:34:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 426,
+            "id": 1735,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setDeciMath",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 417,
+              "id": 1726,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 416,
+                  "id": 1725,
                   "name": "_decimathAddr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 426,
+                  "scope": 1735,
                   "src": "570:21:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -255,7 +279,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 415,
+                    "id": 1724,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "570:7:1",
@@ -272,12 +296,12 @@
               "src": "569:23:1"
             },
             "returnParameters": {
-              "id": 418,
+              "id": 1727,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "600:0:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "549:98:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -285,7 +309,7 @@
           },
           {
             "body": {
-              "id": 439,
+              "id": 1748,
               "nodeType": "Block",
               "src": "700:28:1",
               "statements": [
@@ -295,11 +319,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 436,
+                        "id": 1745,
                         "name": "n",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 428,
+                        "referencedDeclaration": 1737,
                         "src": "720:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -316,32 +340,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 433,
+                        "id": 1742,
                         "name": "decimath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 414,
+                        "referencedDeclaration": 1723,
                         "src": "707:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
                           "typeString": "contract DeciMath"
                         }
                       },
-                      "id": 435,
+                      "id": 1744,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "exp",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 408,
+                      "referencedDeclaration": 449,
                       "src": "707:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_pure$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256) pure external returns (uint256)"
                       }
                     },
-                    "id": 437,
+                    "id": 1746,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -355,29 +379,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 438,
+                  "id": 1747,
                   "nodeType": "ExpressionStatement",
                   "src": "707:15:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 440,
+            "id": 1749,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "callExp",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 429,
+              "id": 1738,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 428,
+                  "id": 1737,
                   "name": "n",
                   "nodeType": "VariableDeclaration",
-                  "scope": 440,
+                  "scope": 1749,
                   "src": "670:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -386,7 +410,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 427,
+                    "id": 1736,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "670:4:1",
@@ -402,15 +426,15 @@
               "src": "669:8:1"
             },
             "returnParameters": {
-              "id": 432,
+              "id": 1741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 431,
+                  "id": 1740,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 440,
+                  "scope": 1749,
                   "src": "694:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -419,7 +443,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 430,
+                    "id": 1739,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "694:4:1",
@@ -434,7 +458,7 @@
               ],
               "src": "693:6:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "653:75:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -442,7 +466,7 @@
           },
           {
             "body": {
-              "id": 456,
+              "id": 1765,
               "nodeType": "Block",
               "src": "791:33:1",
               "statements": [
@@ -452,11 +476,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 452,
+                        "id": 1761,
                         "name": "x",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 442,
+                        "referencedDeclaration": 1751,
                         "src": "813:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -465,11 +489,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 453,
+                        "id": 1762,
                         "name": "n",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 444,
+                        "referencedDeclaration": 1753,
                         "src": "816:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -490,32 +514,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 449,
+                        "id": 1758,
                         "name": "decimath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 414,
+                        "referencedDeclaration": 1723,
                         "src": "798:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
                           "typeString": "contract DeciMath"
                         }
                       },
-                      "id": 451,
+                      "id": 1760,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "exp18",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 359,
+                      "referencedDeclaration": 400,
                       "src": "798:14:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure external returns (uint256)"
                       }
                     },
-                    "id": 454,
+                    "id": 1763,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -529,29 +553,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 455,
+                  "id": 1764,
                   "nodeType": "ExpressionStatement",
                   "src": "798:20:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 457,
+            "id": 1766,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "callExp18",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 445,
+              "id": 1754,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 442,
+                  "id": 1751,
                   "name": "x",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "753:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -560,7 +584,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 441,
+                    "id": 1750,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "753:4:1",
@@ -574,10 +598,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 444,
+                  "id": 1753,
                   "name": "n",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "761:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -586,7 +610,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 443,
+                    "id": 1752,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "761:4:1",
@@ -602,15 +626,15 @@
               "src": "752:16:1"
             },
             "returnParameters": {
-              "id": 448,
+              "id": 1757,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 447,
+                  "id": 1756,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "785:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -619,7 +643,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 446,
+                    "id": 1755,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "785:4:1",
@@ -634,31 +658,231 @@
               ],
               "src": "784:6:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "734:90:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1782,
+              "nodeType": "Block",
+              "src": "893:39:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1778,
+                        "name": "x",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1768,
+                        "src": "914:1:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1779,
+                        "name": "accuracy",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1770,
+                        "src": "917:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1775,
+                        "name": "decimath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1723,
+                        "src": "900:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
+                          "typeString": "contract DeciMath"
+                        }
+                      },
+                      "id": 1777,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "log2",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 1717,
+                      "src": "900:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_uint256_$_t_uint256_$returns$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) view external returns (uint256)"
+                      }
+                    },
+                    "id": 1780,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "900:26:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1781,
+                  "nodeType": "ExpressionStatement",
+                  "src": "900:26:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1783,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callLog2",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1771,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1768,
+                  "name": "x",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "848:6:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1767,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "848:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1770,
+                  "name": "accuracy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "856:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1769,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "856:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "847:23:1"
+            },
+            "returnParameters": {
+              "id": 1774,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1773,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "887:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1772,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "887:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "886:6:1"
+            },
+            "scope": 1784,
+            "src": "830:102:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 459,
-        "src": "496:331:1"
+        "scope": 1785,
+        "src": "496:439:1"
       }
     ],
-    "src": "0:829:1"
+    "src": "0:937:1"
   },
   "legacyAST": {
     "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMathCaller.sol",
     "exportedSymbols": {
       "DeciMathCaller": [
-        458
+        1784
       ]
     },
-    "id": 459,
+    "id": 1785,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 411,
+        "id": 1720,
         "literals": [
           "solidity",
           "^",
@@ -671,10 +895,10 @@
       {
         "absolutePath": "/C/Users/Administrator/Desktop/Solidity/DeciMath/contracts/DeciMath.sol",
         "file": "./DeciMath.sol",
-        "id": 412,
+        "id": 1721,
         "nodeType": "ImportDirective",
-        "scope": 459,
-        "sourceUnit": 410,
+        "scope": 1785,
+        "sourceUnit": 1719,
         "src": "25:24:1",
         "symbolAliases": [],
         "unitAlias": ""
@@ -685,35 +909,35 @@
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 458,
+        "id": 1784,
         "linearizedBaseContracts": [
-          458
+          1784
         ],
         "name": "DeciMathCaller",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 414,
+            "id": 1723,
             "name": "decimath",
             "nodeType": "VariableDeclaration",
-            "scope": 458,
+            "scope": 1784,
             "src": "525:17:1",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_DeciMath_$409",
+              "typeIdentifier": "t_contract$_DeciMath_$1718",
               "typeString": "contract DeciMath"
             },
             "typeName": {
               "contractScope": null,
-              "id": 413,
+              "id": 1722,
               "name": "DeciMath",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 409,
+              "referencedDeclaration": 1718,
               "src": "525:8:1",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_DeciMath_$409",
+                "typeIdentifier": "t_contract$_DeciMath_$1718",
                 "typeString": "contract DeciMath"
               }
             },
@@ -722,28 +946,28 @@
           },
           {
             "body": {
-              "id": 425,
+              "id": 1734,
               "nodeType": "Block",
               "src": "600:47:1",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 423,
+                    "id": 1732,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 419,
+                      "id": 1728,
                       "name": "decimath",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 414,
+                      "referencedDeclaration": 1723,
                       "src": "607:8:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeIdentifier": "t_contract$_DeciMath_$1718",
                         "typeString": "contract DeciMath"
                       }
                     },
@@ -754,11 +978,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 421,
+                          "id": 1730,
                           "name": "_decimathAddr",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 416,
+                          "referencedDeclaration": 1725,
                           "src": "627:13:1",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -773,18 +997,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 420,
+                        "id": 1729,
                         "name": "DeciMath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 409,
+                        "referencedDeclaration": 1718,
                         "src": "618:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$409_$",
+                          "typeIdentifier": "t_type$_t_contract$_DeciMath_$1718_$",
                           "typeString": "type(contract DeciMath)"
                         }
                       },
-                      "id": 422,
+                      "id": 1731,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -794,39 +1018,39 @@
                       "nodeType": "FunctionCall",
                       "src": "618:23:1",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_DeciMath_$409",
+                        "typeIdentifier": "t_contract$_DeciMath_$1718",
                         "typeString": "contract DeciMath"
                       }
                     },
                     "src": "607:34:1",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_DeciMath_$409",
+                      "typeIdentifier": "t_contract$_DeciMath_$1718",
                       "typeString": "contract DeciMath"
                     }
                   },
-                  "id": 424,
+                  "id": 1733,
                   "nodeType": "ExpressionStatement",
                   "src": "607:34:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 426,
+            "id": 1735,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "setDeciMath",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 417,
+              "id": 1726,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 416,
+                  "id": 1725,
                   "name": "_decimathAddr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 426,
+                  "scope": 1735,
                   "src": "570:21:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -835,7 +1059,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 415,
+                    "id": 1724,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "570:7:1",
@@ -852,12 +1076,12 @@
               "src": "569:23:1"
             },
             "returnParameters": {
-              "id": 418,
+              "id": 1727,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "600:0:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "549:98:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -865,7 +1089,7 @@
           },
           {
             "body": {
-              "id": 439,
+              "id": 1748,
               "nodeType": "Block",
               "src": "700:28:1",
               "statements": [
@@ -875,11 +1099,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 436,
+                        "id": 1745,
                         "name": "n",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 428,
+                        "referencedDeclaration": 1737,
                         "src": "720:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -896,32 +1120,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 433,
+                        "id": 1742,
                         "name": "decimath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 414,
+                        "referencedDeclaration": 1723,
                         "src": "707:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
                           "typeString": "contract DeciMath"
                         }
                       },
-                      "id": 435,
+                      "id": 1744,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "exp",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 408,
+                      "referencedDeclaration": 449,
                       "src": "707:12:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_pure$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256) pure external returns (uint256)"
                       }
                     },
-                    "id": 437,
+                    "id": 1746,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -935,29 +1159,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 438,
+                  "id": 1747,
                   "nodeType": "ExpressionStatement",
                   "src": "707:15:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 440,
+            "id": 1749,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "callExp",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 429,
+              "id": 1738,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 428,
+                  "id": 1737,
                   "name": "n",
                   "nodeType": "VariableDeclaration",
-                  "scope": 440,
+                  "scope": 1749,
                   "src": "670:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -966,7 +1190,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 427,
+                    "id": 1736,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "670:4:1",
@@ -982,15 +1206,15 @@
               "src": "669:8:1"
             },
             "returnParameters": {
-              "id": 432,
+              "id": 1741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 431,
+                  "id": 1740,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 440,
+                  "scope": 1749,
                   "src": "694:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -999,7 +1223,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 430,
+                    "id": 1739,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "694:4:1",
@@ -1014,7 +1238,7 @@
               ],
               "src": "693:6:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "653:75:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1022,7 +1246,7 @@
           },
           {
             "body": {
-              "id": 456,
+              "id": 1765,
               "nodeType": "Block",
               "src": "791:33:1",
               "statements": [
@@ -1032,11 +1256,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 452,
+                        "id": 1761,
                         "name": "x",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 442,
+                        "referencedDeclaration": 1751,
                         "src": "813:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1045,11 +1269,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 453,
+                        "id": 1762,
                         "name": "n",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 444,
+                        "referencedDeclaration": 1753,
                         "src": "816:1:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1070,32 +1294,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 449,
+                        "id": 1758,
                         "name": "decimath",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 414,
+                        "referencedDeclaration": 1723,
                         "src": "798:8:1",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_DeciMath_$409",
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
                           "typeString": "contract DeciMath"
                         }
                       },
-                      "id": 451,
+                      "id": 1760,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "exp18",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 359,
+                      "referencedDeclaration": 400,
                       "src": "798:14:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_pure$_t_uint256_$_t_uint256_$returns$_t_uint256_$",
                         "typeString": "function (uint256,uint256) pure external returns (uint256)"
                       }
                     },
-                    "id": 454,
+                    "id": 1763,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1109,29 +1333,29 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 455,
+                  "id": 1764,
                   "nodeType": "ExpressionStatement",
                   "src": "798:20:1"
                 }
               ]
             },
             "documentation": null,
-            "id": 457,
+            "id": 1766,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "callExp18",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 445,
+              "id": 1754,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 442,
+                  "id": 1751,
                   "name": "x",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "753:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1140,7 +1364,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 441,
+                    "id": 1750,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "753:4:1",
@@ -1154,10 +1378,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 444,
+                  "id": 1753,
                   "name": "n",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "761:6:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1166,7 +1390,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 443,
+                    "id": 1752,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "761:4:1",
@@ -1182,15 +1406,15 @@
               "src": "752:16:1"
             },
             "returnParameters": {
-              "id": 448,
+              "id": 1757,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 447,
+                  "id": 1756,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 457,
+                  "scope": 1766,
                   "src": "785:4:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1199,7 +1423,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 446,
+                    "id": 1755,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "785:4:1",
@@ -1214,18 +1438,218 @@
               ],
               "src": "784:6:1"
             },
-            "scope": 458,
+            "scope": 1784,
             "src": "734:90:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 1782,
+              "nodeType": "Block",
+              "src": "893:39:1",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 1778,
+                        "name": "x",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1768,
+                        "src": "914:1:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 1779,
+                        "name": "accuracy",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1770,
+                        "src": "917:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 1775,
+                        "name": "decimath",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1723,
+                        "src": "900:8:1",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_DeciMath_$1718",
+                          "typeString": "contract DeciMath"
+                        }
+                      },
+                      "id": 1777,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "log2",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 1717,
+                      "src": "900:13:1",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_external_view$_t_uint256_$_t_uint256_$returns$_t_uint256_$",
+                        "typeString": "function (uint256,uint256) view external returns (uint256)"
+                      }
+                    },
+                    "id": 1780,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "900:26:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 1781,
+                  "nodeType": "ExpressionStatement",
+                  "src": "900:26:1"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 1783,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callLog2",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1771,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1768,
+                  "name": "x",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "848:6:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1767,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "848:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1770,
+                  "name": "accuracy",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "856:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1769,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "856:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "847:23:1"
+            },
+            "returnParameters": {
+              "id": 1774,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1773,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1783,
+                  "src": "887:4:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1772,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "887:4:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "886:6:1"
+            },
+            "scope": 1784,
+            "src": "830:102:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 459,
-        "src": "496:331:1"
+        "scope": 1785,
+        "src": "496:439:1"
       }
     ],
-    "src": "0:829:1"
+    "src": "0:937:1"
   },
   "compiler": {
     "name": "solc",
@@ -1235,12 +1659,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xcf29D71E011513e138e5D9A58520a42551C8341a",
-      "transactionHash": "0xe94b4a7f7d1157a5a5e24e82b199b06112e9de68dbc57005e03749a2bb9b053c"
+      "address": "0x668248dC43d5081A3C9d29e88fE9c88a631bAe13",
+      "transactionHash": "0xe74e2e68abb8907ac407a2e813f8d3bf754572f2608edff1eecfb7df505be2e9"
     }
   },
   "schemaVersion": "3.0.2",
-  "updatedAt": "2019-03-11T17:18:05.000Z",
+  "updatedAt": "2019-03-18T14:46:02.666Z",
   "devdoc": {
     "methods": {}
   },

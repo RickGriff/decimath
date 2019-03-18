@@ -4,7 +4,7 @@ import "../contracts/DeciMath.sol";
 import "truffle/DeployedAddresses.sol";
 import "truffle/Assert.sol";
 
-contract TestDeciMath {
+contract TestDeciMathxyz {
 
   // initialize contract representations
   DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
@@ -158,7 +158,24 @@ contract TestDeciMath {
     Assert.equal(decimath.exp(0.5 ether), 1.648721270700128148 ether, "failed");
     Assert.equal(decimath.exp(0.9 ether), 2.459603111156949665 ether, "failed");
   }
+}
+  //log2(x) function
 
+contract TestDeciMath {
+  DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
+  WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
+
+  function test_log2_basics() public {
+    decimath.setLUT1();
+    decimath.setLUT2();
+    /* Assert(decimath.ith_term(1), 707106781186547524, "failed"); */
+     Assert.equal(decimath.log2(1.25 ether, 10), 0 ether, "failed");
+    /*Assert.equal(decimath.log2(1.01 ether, 50), 0.0143 ether, "failed");
+    Assert.equal(decimath.log2(1.5 ether, 50), 0.58496 ether, "failed");
+    Assert.equal(decimath.log2(1.99 ether, 50), 0.9927 ether, "failed");
+    Assert.equal(decimath.log2(2 ether, 50), 1 ether, "failed"); */
+  }
+}
 /*
   function test_exp_overflow() public {
     RawCaller rawCaller = new RawCaller(address(wrappedDeciMath));
@@ -168,7 +185,7 @@ contract TestDeciMath {
   } */
 
 
-}
+
 
 /* RawCaller is a proxy contract, used to test for reversion.
 Raw calls in Solidity return a boolean -- true if successful execution, false if the call reverts.

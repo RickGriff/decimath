@@ -164,38 +164,93 @@ contract TestDeciMathxyz {
 contract TestDeciMath {
   DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
   WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
+  uint TEN20 = 10**20;
 
-  function test_log2_basics() public {
+  function setLookupTables() internal {
     decimath.setLUT1();
     decimath.setLUT2();
-    /* Assert(decimath.ith_term(1), 707106781186547524, "failed"); */
-     Assert.equal(decimath.log2(1.25 ether, 10), 0 ether, "failed");
-    /*Assert.equal(decimath.log2(1.01 ether, 50), 0.0143 ether, "failed");
-    Assert.equal(decimath.log2(1.5 ether, 50), 0.58496 ether, "failed");
-    Assert.equal(decimath.log2(1.99 ether, 50), 0.9927 ether, "failed");
-    Assert.equal(decimath.log2(2 ether, 50), 1 ether, "failed"); */
   }
-}
-/*
-  function test_exp_overflow() public {
-    RawCaller rawCaller = new RawCaller(address(wrappedDeciMath));
-    WrappedDeciMath(address(rawCaller)).callExp(50 ether);
-    bool r = rawCaller.execute.gas(200000)();
-    Assert.isFalse(r, "Should be false - func should overflow and revert");
+  /* function convertTo38DP(uint x) public returns (uint y){
+    uint y  = (x ether) * (10**20);
+    return y;
   } */
 
+  function test_convertTo18DP_basic() public {
+  //converts 38DP Num to 18DP num
+  Assert.equal(decimath.convertTo18DP(1 ether * TEN20),  1 ether, "failed");
+  Assert.equal(decimath.convertTo18DP(0),  0, "failed");
+
+  }
+
+  function test_convertTo18DP_roundDown() public {
+    // Round down when 20th digit from the right  < 5
+  Assert.equal(decimath.convertTo18DP(100000000000000000040000000000000000000),  1 ether, "failed");
+  Assert.equal(decimath.convertTo18DP(90000000012345000000000000000000939648390485092893288),  900000000123450000000000000000009, "failed");
+  }
+
+  function test_convertTo18DP_roundUp() public {
+    //Round up when 20th digit from right >= 5
+  Assert.equal(decimath.convertTo18DP(5000000000000000000000000009999974974545353448935455),  50000000000000000000000000100000, "failed");
+  Assert.equal(decimath.convertTo18DP(100000000000000000050000000000000000000), 1000000000000000001, "failed" );
+  }
 
 
+
+  function test_LookupTable1() public {
+    setLookupTables();
+    Assert.equal(decimath.ith_term(0), 0, "failed");
+    Assert.equal(decimath.ith_term(1), 70710678118654752440084436210484903927, "failed");
+    Assert.equal(decimath.ith_term(99), 99999999999999999999999999999890640660, "failed");
+  }
+
+  function test_LookupTable2() public {
+    setLookupTables();
+    Assert.equal(decimath.powersOfTwo(0), 200000000000000000000000000000000000000, "failed");
+    Assert.equal(decimath.powersOfTwo(1), 50000000000000000000000000000000000000, "failed");
+    Assert.equal(decimath.powersOfTwo(99), 157772181, "failed");
+  }
+
+
+function test_log2_upperEdge() public {
+  setLookupTables();
+    Assert.equal(decimath.log2(1999999999999999999, 99), 999999999999999999, "failed");
+}
+
+function test_log2_lowerEdge() public {
+  setLookupTables();
+    Assert.equal(decimath.log2(1 ether, 99), 0, "failed");
+}
+
+ // Log2 out-of-bounds tests
+  function test_log2_lessThan1() public {
+    RawCaller rawCaller = new RawCaller(address(wrappedDeciMath));
+    WrappedDeciMath(address(rawCaller)).callLog2(0.9 ether, 99);
+    bool r = rawCaller.execute.gas(200000)();
+    Assert.isFalse(r, "Should be false - func should revert");
+  }
+
+  function test_log2_2orGreater() public {
+    RawCaller rawCaller = new RawCaller(address(wrappedDeciMath));
+    WrappedDeciMath(address(rawCaller)).callLog2(2 ether, 99);
+    bool r = rawCaller.execute.gas(200000)();
+    Assert.isFalse(r, "Should be false - func should revert");
+  }
+
+ function test_log2() public {
+    Assert.equal(decimath.log2(1100000000000000000, 99), 137503523749934908, "failed");
+    Assert.equal(decimath.log2(1234512345123451234, 99), 303941263503238937, "failed");
+    Assert.equal(decimath.log2(1987654321987654321, 99), 991066875955820194, "failed");
+    Assert.equal(decimath.log2(1995000000000000000, 99), 996388746447621087, "failed");
+ }
+}
 
 /* RawCaller is a proxy contract, used to test for reversion.
 Raw calls in Solidity return a boolean -- true if successful execution, false if the call reverts.
 
 Usage in tests:
-
 -A RawCaller instance R points to a target contract T.
 -Calling T's function 'someFunc' on R triggers R's fallback function, which stores the someFunc call data in R's storage.
--R.execute() executes the raw call T.someFunc, which returns a boolean.
-*/
+-R.execute() executes the raw call T.someFunc, which returns a boolean. */
 contract RawCaller {
   address public target;
   bytes data;
@@ -217,10 +272,9 @@ contract RawCaller {
     return success;
   }
 }
+
 /* A wrapper contract is also needed for the reversion tests.
-
 The Wrapper contract inherits from the target contract.
-
 The RawCaller must point to an instance of the Wrapper contract, with funcs that call the target's funcs.
 
 Reason: https://github.com/trufflesuite/truffle/issues/1001 */
@@ -252,4 +306,7 @@ contract WrappedDeciMath is DeciMath {
     decDiv18(x, y);
   }
 
+  function callLog2 (uint x, uint precision) public {
+    log2(x, precision);
+  }
 }

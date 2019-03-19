@@ -35,10 +35,11 @@ module.exports = async () => {
     //print gas used in successive exp(i) calls, up to i = n
     const printGas_exp = async (n) => {
       for (let i = 1; i <= n; i++) {
-        let exponent = makeBN.makeBN18(i)
+        let exponent = makeBN.makeBN18(i.toString())
         console.log("exponent is: " + i)
 
-        const tx = await caller.callExp(i)
+        const tx = await caller.callExp(exponent)
+
         const res = await decimath.exp(exponent)
 
         console.log("exp("+ i.toString() + ") is: " + res.toString())
@@ -49,8 +50,8 @@ module.exports = async () => {
     }
 
     const printGas_exp18 = async (x, n) => {
-      const base = makeBN.makeBN18(x)
-      console.log("base is: " + base)
+      const base = makeBN.makeBN18(x.toString())
+      console.log("base is: " + x)
 
       for (let i = 1; i <= n; i++) {
         // const exponent = makeBN.makeBN18(i.toString())
@@ -61,12 +62,15 @@ module.exports = async () => {
     }
 
     const printGas_log2 = async(x, accuracy) => {
-      const arg = makeBN.makeBN38(x.toString())
+      const arg = makeBN.makeBN18(x)
 
       //set lookup tables in contract
       await decimath.setLUT1()
       await decimath.setLUT2()
-
+      console.log("x is " + x)
+      console.log("arg is:")
+      console.log( arg)
+      console.log(arg.toString())
       for (let i = 1; i <= accuracy; i++) {
         console.log("\n")
         console.log("accuracy is " + i)
@@ -77,7 +81,7 @@ module.exports = async () => {
 
         // convert returned 38DP BN back to 18DP string / Decimal, for comparison with 'actual'
         const strBN = res.toString()
-        const fractPartZeros = "0".repeat(38 - strBN.length)
+        const fractPartZeros = "0".repeat(18 - strBN.length)
         const resNum = new Decimal ("0." + fractPartZeros  + strBN)
 
         // const resNumDec = new Decimal(resNum)
@@ -89,7 +93,6 @@ module.exports = async () => {
 
         console.log("Gas used in log2(" + x.toString() + ", " + i.toString() + "): " +  tx.receipt.gasUsed)
 
-
         calcError (resNum, actual)
       }
     }
@@ -99,15 +102,15 @@ module.exports = async () => {
       console.log("error is " + errorPercent.toString() + "%")
     }
 
-
-
     // calcError(70, 60)
     // printGas_exp(100)
-    // printGas_exp18(2,30)
+    // printGas_exp(100)
 
-    printGas_log2(1.56, 100)
-
-
+    printGas_log2('1.995000000000000000', 40)
+    // console.log(makeBN.makeBN38('1.000000000000000001').toString())
+    // printGas_log2(printGas_log2(1999999999999999999, 99), 99)
+ // 100000000000000000100000000000000000000
+//
 
     //estimate gas for e^n
     // const expGasEstimate = await decimath.exp.estimateGas(ten_ether, {from: accounts[0]})

@@ -4,12 +4,12 @@ import "../contracts/DeciMath.sol";
 import "truffle/DeployedAddresses.sol";
 import "truffle/Assert.sol";
 
-contract TestDeciMathxyz {
+contract TestDeciMath {
 
-  // initialize contract representations
+ // initialize contract representations
   DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
   WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
-
+  /*
   // Test 18DP funcs
   function test_decMul18_basic() public {
     Assert.equal(decimath.decMul18(0,0), 0, "failed");
@@ -117,7 +117,7 @@ contract TestDeciMathxyz {
     WrappedDeciMath(address(rawCaller)).calldecDiv18(2**196, 1);
     bool r = rawCaller.execute.gas(200000)();
     Assert.isTrue(r, "Should be true - func should execute successfully");
-  }
+  } */
 
   //Test exp18 function
   // Integer tests
@@ -149,19 +149,31 @@ contract TestDeciMathxyz {
   function test_exp_basics() public {
     Assert.equal(decimath.exp(0), 1 ether, "failed");
     Assert.equal(decimath.exp(1 ether), 2.718281828459045234 ether, "failed");
-    Assert.equal(decimath.exp(2.9 ether), 18.174145369443060944 ether, "failed");
-    Assert.equal(decimath.exp(10 ether), 22026.465794806716517028 ether, "failed");
   }
 
-  function test_exp_fractions() public {
+  function test_exp_smallestPositive() public {
+    Assert.equal(decimath.exp(0.000000000000000001 ether), 1.000000000000000001 ether, "failed");
+
+  }
+
+  function test_exp_lessThanOne() public {
     Assert.equal(decimath.exp(0.1 ether), 1.105170918075647626 ether, "failed");
     Assert.equal(decimath.exp(0.5 ether), 1.648721270700128148 ether, "failed");
     Assert.equal(decimath.exp(0.9 ether), 2.459603111156949665 ether, "failed");
   }
+
+  function test_exp_greaterThanOne() public {
+    Assert.equal(decimath.exp(2.9 ether), 18.174145369443060944 ether, "failed");
+    Assert.equal(decimath.exp(10 ether), 22026.465794806716517028 ether, "failed");
+    Assert.equal(decimath.exp(1.5 ether), 1.105170918075647626 ether, "failed");
+    Assert.equal(decimath.exp(55.34 ether), 1.648721270700128148 ether, "failed");
+    Assert.equal(decimath.exp(80.987 ether), 2.459603111156949665 ether, "failed");
+  }
+
 }
   //log2(x) function
 
-contract TestDeciMath {
+contract TestDeciMathxyz {
   DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
   WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
   uint TEN20 = 10**20;
@@ -193,8 +205,6 @@ contract TestDeciMath {
   Assert.equal(decimath.convertTo18DP(5000000000000000000000000009999974974545353448935455),  50000000000000000000000000100000, "failed");
   Assert.equal(decimath.convertTo18DP(100000000000000000050000000000000000000), 1000000000000000001, "failed" );
   }
-
-
 
   function test_LookupTable1() public {
     setLookupTables();

@@ -16,6 +16,8 @@ import decimal as dec
 dec.getcontext().prec = 38
 
 QUINT = 10**18  # One quintillion
+TEN20 = 10**20
+TEN38 = 10**38
 
 # Decimal multiplication funcs. 2DP and 18DP
 def decMul2(a, b):
@@ -79,7 +81,31 @@ def exp18(n):
     print("number of iterations to compute e^" +"(" + str(n) + "): " + str(i))
     return sum
 
-### Log func and LUT Table outputters
+# 2^x func and lookup-table term outputter
+
+#n'th term in the 2^x lookup table
+def term_2_x(n):
+    n = dec.Decimal(n)
+    term  = 2 ** (1 / (10 ** (n + 1)))
+    return term
+
+# Valid for x = 1.m i.e. x in range [1,2[
+
+def two_x(x):
+    prod = 2
+    fractPart = x[2:] # grab the digits after the point
+    digits = [int(i) for i in fractPart]
+
+    # // loop and multiply each digit of mantissa by Lookup-table value
+    for i in range (0, len(fractPart)):
+        term = term_2_x(i) ** digits[i]
+        prod = prod * term
+
+    return prod
+
+
+
+### Log func and Lookup-table term outputter
 
 # helper function - calculate terms in log2(x)
 # // Replace this computation by lookup table
@@ -122,6 +148,14 @@ def powerOfTwo(i):
   num = dec.Decimal(2)**(-i)
   return num
 
+def print_twox_terms(n):
+    for i in range(n):
+        term = term_2_x(i)
+
+        print("term_2_x[" + str(i) + "] = (1.) " + str(term)[2:40] + ";")
+
+
+
 def print_powersOfTwo(n):
     print("printing 1/(2^((1/2)^i)) up to i = " + str(n))
     for i in range(0,n):
@@ -159,7 +193,11 @@ def check_terms(n):
 
 ### func calls ####
 
-print_powersOfTwo_fractPart(100)
+# print_powersOfTwo(100)
+
+
+print(two_x('1.32'))
+# print_twox_terms(10)
 
 # check_terms_fractPart(100)
 

@@ -32,20 +32,43 @@ module.exports = async () => {
     const caller = await DeciMathCaller.deployed()
     caller.setDeciMath(decimathAddr)
 
+    const printGas_exp = async (x) => {
+      let exponent = makeBN.makeBN18(x)
+      console.log("exponent is: " + x)
+
+      const tx = await caller.callExp(exponent)
+      const res = await decimath.exp(exponent)
+
+      const res18DP = makeDecimal18(res)
+      const actual = Decimal.exp(x)
+
+      console.log("exp(" + x + ") is: " + res18DP)
+      console.log("JS Decimal exp("+ x + ") is: " + actual)
+
+      console.log("Gas used in exp(" + x + "): " +  tx.receipt.gasUsed)
+
+      calcErrorPercent(res18DP, actual)
+    }
+
     //print gas used in successive exp(i) calls, up to i = n
-    const printGas_exp = async (n) => {
+    const printGas_expUpTo = async (n) => {
       for (let i = 1; i <= n; i++) {
-        let exponent = makeBN.makeBN18(i.toString())
+        const exponent = makeBN.makeBN18(i.toString())
         console.log("exponent is: " + i)
 
         const tx = await caller.callExp(exponent)
-
         const res = await decimath.exp(exponent)
 
-        console.log("exp("+ i.toString() + ") is: " + res.toString())
-        console.log("JS Decimal exp("+ i.toString() + ") is: " + Decimal.exp(i))
+        const res18DP = makeDecimal18(res)
+
+        console.log("exp("+ i.toString() + ") is: " + res18DP)
+
+        const actual = Decimal.exp(i)
+        console.log("JS Decimal exp("+ i.toString() + ") is: " + actual)
 
         console.log("Gas used in exp(" + i.toString() + "): " +  tx.receipt.gasUsed)
+
+        calcErrorPercent(res18DP, actual)
       }
     }
 
@@ -93,24 +116,44 @@ module.exports = async () => {
 
         console.log("Gas used in log2(" + x.toString() + ", " + i.toString() + "): " +  tx.receipt.gasUsed)
 
-        calcError (resNum, actual)
+        calcErrorPercent (resNum, actual)
       }
     }
 
-    const calcError = (tested, actual) => {
+    const makeDecimal18 = (num) => {
+      // convert returned 38DP BN to 18DP string / Decimal
+      let strBN = num.toString();
+      let fractPart;
+      let intPart;
+      let resNum;
+
+      if (strBN.length <= 18) {
+        const fractPartZeros = "0".repeat(18 - strBN.length)
+        fractPart = fractPartZeros  + strBN
+        resNum = new Decimal ("0." + fractPart)
+      } else if (strBN.length > 18) {
+        fractPart = strBN.slice(-18) // grab last 18 digits, after decimal point
+        intPart = strBN.slice(0, strBN.length - 18) // grab digits preceding decimal point
+        resNum = new Decimal (intPart + "." + fractPart)
+      }
+      return resNum
+    }
+
+    const calcErrorPercent = (tested, actual) => {
       errorPercent = Decimal((tested - actual) * 100  / actual)
       console.log("error is " + errorPercent.toString() + "%")
     }
 
     // calcError(70, 60)
-    // printGas_exp(100)
-    // printGas_exp(100)
+    // printGas_expUpTo(100)
+    printGas_exp('30.5')
+    // printGas_expUpTo(100)
 
-    printGas_log2('1.995000000000000000', 40)
+    // printGas_log2('1.995000000000000000', 40)
     // console.log(makeBN.makeBN38('1.000000000000000001').toString())
     // printGas_log2(printGas_log2(1999999999999999999, 99), 99)
- // 100000000000000000100000000000000000000
-//
+    // 100000000000000000100000000000000000000
+    //
 
     //estimate gas for e^n
     // const expGasEstimate = await decimath.exp.estimateGas(ten_ether, {from: accounts[0]})

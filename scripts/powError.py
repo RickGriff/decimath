@@ -1,4 +1,4 @@
-# Python script for testing  round-off error produced by the algorithm implentations  in DeciMath contract.
+# Python script for testing  round-off error produced by the algorithm implentations in DeciMath contract.
 
 # Why? Round-off error accumulates with successive multiplication. This script gives us insight into how error varies with base and exponent.
 
@@ -13,7 +13,7 @@
 import math
 import numpy as np
 import decimal as dec
-dec.getcontext().prec = 38
+dec.getcontext().prec = 39
 
 QUINT = 10**18  # One quintillion
 TEN20 = 10**20
@@ -97,7 +97,7 @@ def two_x(x):
     digits = [int(i) for i in fractPart]
 
     # // loop and multiply each digit of mantissa by Lookup-table value
-    for i in range (0, len(fractPart)):
+    for i in range (len(fractPart)):
         term = term_2_x(i) ** digits[i]
         prod = prod * term
 
@@ -152,7 +152,7 @@ def print_twox_terms(n):
     for i in range(n):
         term = term_2_x(i)
 
-        print("term_2_x[" + str(i) + "] = (1.) " + str(term)[2:40] + ";")
+        print("term_2_x[" + str(i) + "] = 1." + str(term)[2:40] + ";")
 
 
 
@@ -195,9 +195,10 @@ def check_terms(n):
 
 # print_powersOfTwo(100)
 
-
-print(two_x('1.32'))
-# print_twox_terms(10)
+# print(two_x('1.000000000000000001'))
+# print(two_x('1.500000000000000000'))
+# print(two_x('1.999999999999999999'))
+print_twox_terms(40)
 
 # check_terms_fractPart(100)
 

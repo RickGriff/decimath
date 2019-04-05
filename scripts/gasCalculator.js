@@ -120,6 +120,25 @@ module.exports = async () => {
       }
     }
 
+    const printGas_two_x = async(x) => {
+
+      const exponent = makeBN.makeBN18(x)
+      console.log("DeciMath 2^x function")
+      console.log("exponent is: " + exponent.toString())
+
+      await decimath.setLUT3()
+      const tx = await caller.callTwoX(exponent)
+      const res = await decimath.two_x(exponent)
+
+      const res18DP = makeDecimal18(res)
+      const actual = Decimal(2).pow(x) //
+
+      console.log("exp(" + x + ") is: " + res)
+      console.log("Decimal.js 2^("+ x + ") is: " + actual)
+
+      console.log("Gas used in two_x(" + x + "): " +  tx.receipt.gasUsed)
+    }
+
     const makeDecimal18 = (num) => {
       // convert returned 38DP BN to 18DP string / Decimal
       let strBN = num.toString();
@@ -146,7 +165,8 @@ module.exports = async () => {
 
     // calcError(70, 60)
     // printGas_expUpTo(100)
-    printGas_exp('30.5')
+    // printGas_exp('30.5')
+    printGas_two_x('1.787812387897778211')
     // printGas_expUpTo(100)
 
     // printGas_log2('1.995000000000000000', 40)

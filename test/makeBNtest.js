@@ -1,5 +1,6 @@
-const makeBN = require('../scripts/makeBN.js');
+const makeBN = require ('../scripts/makeBN.js');
 const BN = require('bn.js');
+const Decimal = require('decimal.js');
 
 // Tests for the MakeBN module
 describe('MakeBN18', function() {
@@ -22,9 +23,9 @@ describe('MakeBN18', function() {
     })
   });
 
-  describe('input has > 38 decimal places', function() {
+  describe('input has > 18 decimal places', function() {
     it('should throw', function() {
-      expect(() => makeBN.makeBN18('0.0000000000000000009')).to.throw("makeBigNum18 argument must have <= 18 decimal places")
+      expect(() => makeBN.makeBN18('0.0000000000000000009')).to.throw("argument must have <= 18 decimal places")
     });
   });
 });
@@ -33,7 +34,6 @@ describe('MakeBN38', function() {
   let a = makeBN.makeBN38('2')
   let b = makeBN.makeBN38('0.00000000000000000000000000000000000001')
   let c = makeBN.makeBN38('100000000000000000000000.9')
-
 
   describe('input has <= 38 decimal places', function() {
     it('should create a BN object', function(){
@@ -51,7 +51,95 @@ describe('MakeBN38', function() {
 
   describe('input has > 38 decimal places', function() {
     it('should throw', function() {
-      expect(() => makeBN.makeBN38('0.000000000000000000000000000000000000009')).to.throw("makeBigNum38 argument must have <= 38 decimal places")
+      expect(() => makeBN.makeBN38('0.000000000000000000000000000000000000009')).to.throw("argument must have <= 38 decimal places")
     });
   });
 });
+
+
+describe('makeDecimal38', function() {
+  let a;
+  let b;
+  let c;
+  let dec;
+
+  it ('Returns a Decimal', function () {
+    a = makeBN.makeBN38('1');
+    dec = makeBN.makeDecimal38(a);
+    assert.instanceOf(dec, Decimal);
+  });
+
+  it ('Makes Decimals from basic BNs', function () {
+    a = makeBN.makeBN38('0')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 0)
+
+    a = makeBN.makeBN38('1')
+    dec = makeBN.makeDecimal38(a)
+    console.log("a is: "+ a.toString())
+    console.log("dec is: "+ dec.toString())
+    assert.equal(dec.valueOf(), 1)
+  });
+
+  it ('Makes Decimals from BNs in range [0,1]', function () {
+    a = makeBN.makeBN38('0.1')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 0.1)
+
+    // BN (0.00054321)
+    a = makeBN.makeBN38('5.4321')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 5.4321)
+
+    // BN(500000000000000000000)
+    a = makeBN.makeBN38('0.00000000000000000000000000000000000005')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 0.00000000000000000000000000000000000005)
+  });
+
+  it ('Makes Decimals from BNs in range [1,10]', function () {
+    a = makeBN.makeBN38('1.5')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 1.5)
+
+    a = makeBN.makeBN38('5.098093869086')
+    dec = makeBN.makeDecimal38(a)
+
+    assert.equal(dec.valueOf(), 5.098093869086)
+
+    a = makeBN.makeBN38('9.876543219876543219')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 9.876543219876543219)
+  });
+
+  it ('Makes Decimals from BNs > 10', function () {
+    a = makeBN.makeBN38('1000')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 1000)
+
+    a = makeBN.makeBN38('123456789.987654321')
+    dec = makeBN.makeDecimal38(a)
+    assert.equal(dec.valueOf(), 123456789.987654321)
+  });
+});
+//
+// describe('chopAndRound', function() {
+//   it ('Chops 20 digits off', function () {
+//     assert.equal(makeBN.chopAndRound('100000000000000000000000000000000000000', 20), '1000000000000000000');
+//     assert.equal(makeBN.chopAndRound('100000000000000000000', 20), 1);
+//   });
+//
+//   it  ('rounds up correctly', function () {
+//     // assert.equal(makeBN.chopAndRound('100000000000000000050000000000000000000', 20), '1000000000000000001');
+//     assert.equal(makeBN.chopAndRound('5000000000000000000000000009999974974545353448935455', 20), '50000000000000000000000000100000');
+//   });
+//
+//   it ('rounds down correctly', function () {
+//     assert.equal(makeBN.chopAndRound('100000000000000000040000000000000000000', 20), '1000000000000000000');
+//   });
+//
+//   it ('returns 0 when number of digits are below the cutoff',  function () {
+//     assert.equal(makeBN.chopAndRound('12345', 20), '0');
+//     assert.equal(makeBN.chopAndRound('9999999999999999999' ,20) , '0');
+//   });
+// });

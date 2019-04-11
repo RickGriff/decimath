@@ -9,10 +9,12 @@ contract DeciMath {
   uint constant TEN30 = 10**30;
   uint constant TEN20 = 10**20;
   uint constant TEN19 = 10**19;
+  uint constant TEN18 = 10**18;
   uint constant TEN17 = 10**17;
   uint constant TEN12 = 10**12;
   uint constant TEN10 = 10**10;
   uint constant TEN9 = 10**9;
+
 
   // Fixed-point 30DP representation of 1/ln(2) - used in exp(x)
   uint constant ONE_OVER_LN2 = 1442695040888963407359924681002;
@@ -23,6 +25,8 @@ contract DeciMath {
 
   // Lookup table for two_x(x)
   uint[39] public term_2_x;
+
+  bool tablesAreSet = false;
 
   // 18 DP Functions
   function decMul18(uint x, uint y) public pure returns (uint decProd) {
@@ -151,21 +155,30 @@ contract DeciMath {
           /* EXP(x) - EFFICIENT GAS IMPLEMENTATION. Use identities:
           A) e^x = 2^(x / ln(2))
           and
-          B) 2^x = (2^r) * 2^(x - r); where r is floor(x) - 1. */
+          B) 2^x = (2^r) * 2^(x - r); where r = floor(x) - 1
+          Returns a 38DP fixed point.
+          */
           function exp(uint x) public view returns (uint num) {
-            require(x >= 1);
+            uint intExponent;  // 20 DP
+            uint decExponent;  // 20 DP  - passed as arg to two_x()
+            uint coefficient;  // 38P
 
-            x = x.mul(TEN12); //make x 30DP
+            x = x.mul(TEN12); // make x 30DP
             x = decMul30( ONE_OVER_LN2, x);
-
             x = convert30To20DP(x);
 
-            uint r = floor(x) - TEN20;
-            uint exponent = x - r; // yield an exponent in range [1,2[
+            // if x < 1, do (2^-1) * 2^(1 + x)
+            if (x < TEN20 && x >= 0) {
+              decExponent = TEN20.add(x);
+              coefficient = TEN38 / 2; // 0.5, as 38DP
+              return decMul38(coefficient, two_x(decExponent));  // return 2^r * 2^(x - r)
 
-            uint coefficient =  expBySquare(2, r.div(TEN20)) ;
-            // coefficient is always an integer - we use normal multiplication
-            return coefficient.mul(two_x(exponent));
+            } else {
+              intExponent = floor(x) - TEN20;
+              decExponent = x - intExponent; // decimal exponent in range [1,2[
+              coefficient =  expBySquare(2, intExponent.div(TEN20)) ;
+              return coefficient.mul(two_x(decExponent)); // coefficient is an integer - use normal mul to avoid overflow
+            }
           }
 
 
@@ -186,6 +199,7 @@ contract DeciMath {
 
             // Base-2 logarithm function. Valid for x in range [1,2[
             function log2(uint x, uint accuracy) public view returns (uint) {
+              require(tablesAreSet, 'Lookup tables must be set');
               require(x >= QUINT && x < 2 * QUINT, 'input x must be within range [1,2[');
               uint prod = x * TEN20;
               uint newProd = TEN38;
@@ -204,6 +218,7 @@ contract DeciMath {
 
             // 2^x function, for x in range [1,2[. Takes 20DP argument, reutrns 38DP.
             function two_x(uint x) public view returns (uint) {
+              require (tablesAreSet, 'Lookup tables must be set');
               require(x >= TEN20 && x < 2 * TEN20, 'input x must be within range [1,2[');
               uint x_38dp = x * QUINT;
               uint prod = 2 * TEN38;
@@ -472,5 +487,14 @@ contract DeciMath {
               term_2_x[35] = 100000000000000000000000000000000000069;
               term_2_x[36] = 100000000000000000000000000000000000007;
               term_2_x[37] = 100000000000000000000000000000000000001;
+            }
+
+            function setAllLUTs() public {
+              if (tablesAreSet == false) {
+                setLUT1();
+                setLUT2();
+                setLUT3();
+                tablesAreSet = true;
+              }
             }
           }

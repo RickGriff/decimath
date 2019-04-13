@@ -76,8 +76,6 @@ describe('makeDecimal38', function() {
 
     a = makeBN.makeBN38('1')
     dec = makeBN.makeDecimal38(a)
-    console.log("a is: "+ a.toString())
-    console.log("dec is: "+ dec.toString())
     assert.equal(dec.valueOf(), 1)
   });
 
@@ -107,9 +105,9 @@ describe('makeDecimal38', function() {
 
     assert.equal(dec.valueOf(), 5.098093869086)
 
-    a = makeBN.makeBN38('9.876543219876543219')
+    a = makeBN.makeBN38('9.876543219876543219876543219876543219')
     dec = makeBN.makeDecimal38(a)
-    assert.equal(dec.valueOf(), 9.876543219876543219)
+    assert.equal(dec.valueOf(), 9.876543219876543219876543219876543219)
   });
 
   it ('Makes Decimals from BNs > 10', function () {
@@ -122,24 +120,67 @@ describe('makeDecimal38', function() {
     assert.equal(dec.valueOf(), 123456789.987654321)
   });
 });
-//
-// describe('chopAndRound', function() {
-//   it ('Chops 20 digits off', function () {
-//     assert.equal(makeBN.chopAndRound('100000000000000000000000000000000000000', 20), '1000000000000000000');
-//     assert.equal(makeBN.chopAndRound('100000000000000000000', 20), 1);
-//   });
-//
-//   it  ('rounds up correctly', function () {
-//     // assert.equal(makeBN.chopAndRound('100000000000000000050000000000000000000', 20), '1000000000000000001');
-//     assert.equal(makeBN.chopAndRound('5000000000000000000000000009999974974545353448935455', 20), '50000000000000000000000000100000');
-//   });
-//
-//   it ('rounds down correctly', function () {
-//     assert.equal(makeBN.chopAndRound('100000000000000000040000000000000000000', 20), '1000000000000000000');
-//   });
-//
-//   it ('returns 0 when number of digits are below the cutoff',  function () {
-//     assert.equal(makeBN.chopAndRound('12345', 20), '0');
-//     assert.equal(makeBN.chopAndRound('9999999999999999999' ,20) , '0');
-//   });
-// });
+
+describe('makeDecimal18', function() {
+  let a;
+  let b;
+  let c;
+  let dec;
+
+  it ('Returns a Decimal', function () {
+    a = makeBN.makeBN18('1');
+    dec = makeBN.makeDecimal18(a);
+    assert.instanceOf(dec, Decimal);
+  });
+
+  it ('Makes Decimals from basic BNs', function () {
+    a = makeBN.makeBN18('0')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 0)
+
+    a = makeBN.makeBN18('1')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 1)
+  });
+
+  it ('Makes Decimals from BNs in range [0,1]', function () {
+    a = makeBN.makeBN18('0.1')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 0.1)
+
+    // BN (0.00054321)
+    a = makeBN.makeBN18('5.4321')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 5.4321)
+
+    // BN(500000000000000000000)
+    a = makeBN.makeBN18('0.000000000000000005')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 0.000000000000000005)
+  });
+
+  it ('Makes Decimals from BNs in range [1,10]', function () {
+    a = makeBN.makeBN18('1.5')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 1.5)
+
+    a = makeBN.makeBN18('5.098093869086')
+    dec = makeBN.makeDecimal18(a)
+
+    assert.equal(dec.valueOf(), 5.098093869086)
+
+    a = makeBN.makeBN18('9.876543219876543219')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 9.876543219876543219)
+  });
+
+  it ('Makes Decimals from BNs > 10', function () {
+    a = makeBN.makeBN18('1000')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 1000)
+
+    a = makeBN.makeBN18('123456789.987654321')
+    dec = makeBN.makeDecimal18(a)
+    assert.equal(dec.valueOf(), 123456789.987654321)
+  });
+});

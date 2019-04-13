@@ -36,30 +36,40 @@ const makeBN38 = (strNum) => {
 return makeBN(strNum, 38)
 }
 
-// convert a 38DP BN uint representation to a 38DP Decimal object
-const makeDecimal38 = (num) => {
+// convert a BN uint representation to a  Decimal object  with the same number of significant figures
+const makeDecimal = (num, digits) => {
   let strBN = num.toString();
   let fractPart;
   let intPart;
   let resNum;
 
-  if (strBN.length <= 38) {
-    const fractPartZeros = "0".repeat(38 - strBN.length)
+  if (strBN.length <= digits) {
+    const fractPartZeros = "0".repeat(digits - strBN.length)
     fractPart = fractPartZeros  + strBN
     resNum = new Decimal ("0." + fractPart)
 
-  } else if (strBN.length > 38) {
-    fractPart = strBN.slice(-38) // grab last 38 digits, after decimal point
-    intPart = strBN.slice(0, strBN.length - 38) // grab digits preceding decimal point
+  } else if (strBN.length > digits) {
+    fractPart = strBN.slice(-digits) // grab last 38 digits, after decimal point
+    intPart = strBN.slice(0, strBN.length - digits) // grab digits preceding decimal point
     resNum = new Decimal (intPart + "." + fractPart)
   }
   return resNum
 }
 
+const makeDecimal38 = (num) => {
+  return makeDecimal(num, 38)
+}
+
+const makeDecimal18 = (num) => {
+  return makeDecimal(num, 18)
+}
+
 module.exports = {
+  makeBN: makeBN,
   makeBN18: makeBN18,
   makeBN20: makeBN20,
   makeBN38: makeBN38,
-  makeBN: makeBN,
+  makeDecimal: makeDecimal,
+  makeDecimal18: makeDecimal18,
   makeDecimal38: makeDecimal38
 }

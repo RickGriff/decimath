@@ -60,6 +60,9 @@ const makeDecimal38 = (num) => {
   return makeDecimal(num, 38)
 }
 
+const makeDecimal30 = (num) => {
+  return makeDecimal(num, 30)
+}
 const makeDecimal18 = (num) => {
   return makeDecimal(num, 18)
 }
@@ -71,5 +74,6 @@ module.exports = {
   makeBN38: makeBN38,
   makeDecimal: makeDecimal,
   makeDecimal18: makeDecimal18,
+  makeDecimal30: makeDecimal30,
   makeDecimal38: makeDecimal38
 }

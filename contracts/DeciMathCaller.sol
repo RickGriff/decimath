@@ -16,8 +16,20 @@ contract DeciMathCaller {
     decimath = DeciMath(_decimathAddr);
   }
 
+  function callDecMul18(uint x, uint y) public returns (uint) {
+    decimath.decMul18(x, y);
+  }
+  
   function callExp(uint n) public returns (uint) {
     decimath.exp(n);
+  }
+
+  function callExpBySquare18(uint b, uint x) public returns (uint) {
+    decimath.expBySquare18(b, x);
+  }
+
+  function callExpTaylor(uint n) public returns (uint) {
+    decimath.exp_taylor(n);
   }
 
   function callExp18(uint x, uint n) public returns (uint) {
@@ -28,7 +40,15 @@ contract DeciMathCaller {
     decimath.log2(x, accuracy);
   }
 
+  function callLn(uint x, uint accuracy) public returns (uint) {
+    decimath.ln(x, accuracy);
+  }
+
   function callTwoX(uint x) public returns (uint) {
     decimath.two_x(x);
+  }
+
+  function callPow(uint base, uint x) public returns (uint) {
+    decimath.pow(base, x);
   }
 }

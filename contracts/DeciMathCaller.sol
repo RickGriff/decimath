@@ -19,13 +19,17 @@ contract DeciMathCaller {
   function callDecMul18(uint x, uint y) public returns (uint) {
     decimath.decMul18(x, y);
   }
-  
+
   function callExp(uint n) public returns (uint) {
     decimath.exp(n);
   }
 
   function callExpBySquare18(uint b, uint x) public returns (uint) {
     decimath.expBySquare18(b, x);
+  }
+
+  function callExpBySquare38(uint b, uint x) public returns (uint) {
+    decimath.expBySquare38(b, x);
   }
 
   function callExpTaylor(uint n) public returns (uint) {

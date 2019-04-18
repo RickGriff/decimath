@@ -49,7 +49,7 @@ const makeDecimal = (num, digits) => {
     resNum = new Decimal ("0." + fractPart)
 
   } else if (strBN.length > digits) {
-    fractPart = strBN.slice(-digits) // grab last 38 digits, after decimal point
+    fractPart = strBN.slice(-digits) // grab last digits, after decimal point
     intPart = strBN.slice(0, strBN.length - digits) // grab digits preceding decimal point
     resNum = new Decimal (intPart + "." + fractPart)
   }

@@ -46,25 +46,49 @@ module.exports = async () => {
         }
       }
 
+      const printGas_expTaylorUpTo = async (n, increment) => {
+        for (let i = 1; i <= n; i+= increment) {
+          printGas_exp_taylor(i.toFixed(2))
+        }
+      }
+
+      const printGas_expBySquare18UpTo = async (base, n, increment) => {
+        for (let i = 1; i <= n; i+= increment) {
+          printGas_expBySquare18(base.toString(), i)
+        }
+      }
+
+      const printGas_expBySquare38UpTo = async (base, n, increment) => {
+        for (let i = 1; i <= n; i+= increment) {
+          printGas_expBySquare38(base.toString(), i)
+        }
+      }
+
       const printGas_two_x_UpTo = async (n, increment) => {
         for (let i = 1; i <= n; i+= increment) {
           printGas_two_x(i.toFixed(2))
         }
       }
 
-      // print log2(i)
       const printGas_log2UpTo = async (n, acc, increment) => {
         for (let i = 1; i <= n; i+= increment) {
           printGas_log2(i.toFixed(2), acc)
         }
       }
 
-      // print ln(i)
       const printGas_lnUpTo = async (n, acc, increment) => {
         for (let i = 1; i <= n; i+= increment) {
           printGas_ln(i.toFixed(2), acc)
         }
       }
+
+      const printGas_powUpTo = async (base, n, increment) => {
+        for (let i = 1; i <= n; i+= increment) {
+          printGas_pow(base.toString(), i.toFixed(2))
+        }
+      }
+
+      /***** INDIVIDUAL GAS AND ERROR CALCULATORS *****/
 
       const printGas_decMul18 = async (x, y) => {
         const a = makeBN.makeBN18(x)
@@ -76,7 +100,7 @@ module.exports = async () => {
         console.log("x is " + a + ", y is "+ b)
 
         const res18DP = makeBN.makeDecimal18(res)
-        const actual = Decimal.mul(x, y).toPrecision(18)
+        const actual = Decimal.mul(x, y).toFixed(18)
 
         console.log("decMul18(" + x + ", " + y + ") is: " + res18DP)
         console.log("JS Decimal mul(" + x + ", " + y + ") is: " + actual)
@@ -94,13 +118,31 @@ module.exports = async () => {
         console.log("base is " + base + ", exponent is "+ x)
 
         const res18DP = makeBN.makeDecimal18(res)
-        const actual = Decimal.pow(b, x).toPrecision(18)
+        const actual = Decimal.pow(b, x).toFixed(18)
 
         console.log("expBySquare18(" + b + ", " + x + ") is: " + res18DP)
         console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
 
         console.log("Gas used: " +  tx.receipt.gasUsed)
         calcErrorPercent (res18DP, actual)
+      }
+
+      const printGas_expBySquare38 = async (b, x) => {
+        const base = makeBN.makeBN38(b)
+
+        const tx = await caller.callExpBySquare38(base, x)
+        const res = await decimath.expBySquare38(base, x)
+
+        console.log("base is " + base + ", exponent is "+ x)
+
+        const res38DP = makeBN.makeDecimal38(res)
+        const actual = Decimal.pow(b, x).toFixed(38)
+
+        console.log("expBySquare38(" + b + ", " + x + ") is: " + res38DP)
+        console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
+
+        console.log("Gas used: " +  tx.receipt.gasUsed)
+        calcErrorPercent (res38DP, actual)
       }
 
       const printGas_exp_taylor = async(x) => {
@@ -111,7 +153,7 @@ module.exports = async () => {
         console.log("argument is " + exponent)
 
         const res18DP = makeBN.makeDecimal18(res)
-        const actual = Decimal.exp(x).toPrecision(18)
+        const actual = Decimal.exp(x).toFixed(18)
 
         console.log("exp_taylor(" + x + ") is: " + res18DP)
         console.log("JS Decimal exp("+ x + ") is: " + actual)
@@ -127,7 +169,7 @@ module.exports = async () => {
       console.log("argument is " + arg + ", accuracy is " + acc)
 
       const res30DP = makeBN.makeDecimal30(res)
-      const actual = Decimal.log2(x).toPrecision(30)
+      const actual = Decimal.log2(x).toFixed(30)
 
       console.log("log2(" + x + ") is: " + res30DP)
       console.log("JS Decimal log2("+ x + ") is: " + actual)
@@ -136,23 +178,23 @@ module.exports = async () => {
       calcErrorPercent (res30DP, actual)
     }
 
-      const printGas_ln = async(x, acc) => {
-        const arg = makeBN.makeBN18(x)
+    const printGas_ln = async(x, acc) => {
+      const arg = makeBN.makeBN18(x)
 
-          const tx = await caller.callLn(arg, acc) // send tx via proxy, to force gas usage
-          const res = await decimath.ln(arg, acc) // grab the returned BN
+        const tx = await caller.callLn(arg, acc) // send tx via proxy, to force gas usage
+        const res = await decimath.ln(arg, acc) // grab the returned BN
 
-          console.log("argument is " + arg + ", accuracy is " + acc)
+        console.log("argument is " + arg + ", accuracy is " + acc)
 
-          const res18DP = makeBN.makeDecimal18(res)
-          const actual = Decimal.ln(x).toPrecision(20)
+        const res18DP = makeBN.makeDecimal18(res)
+        const actual = Decimal.ln(x).toFixed(18)
 
-          console.log("ln(" + x + ") is: " + res18DP)
-          console.log("JS Decimal ln("+ x + ") is: " + actual)
+        console.log("ln(" + x + ") is: " + res18DP)
+        console.log("JS Decimal ln("+ x + ") is: " + actual)
 
-          console.log("Gas used: " +  tx.receipt.gasUsed)
-          calcErrorPercent (res18DP, actual)
-        }
+        console.log("Gas used: " +  tx.receipt.gasUsed)
+        calcErrorPercent (res18DP, actual)
+      }
 
 
     const printGas_exp = async (x) => {
@@ -163,7 +205,7 @@ module.exports = async () => {
       console.log("exponent is: " + x)
 
       const res18DP = makeBN.makeDecimal18(res)
-      const actual = Decimal.exp(x).toPrecision(25)
+      const actual = Decimal.exp(x).toFixed(18)
 
       console.log("exp(" + x + ") is: " + res18DP)
       console.log("JS Decimal exp("+ x + ") is: " + actual)
@@ -180,7 +222,7 @@ module.exports = async () => {
       console.log("exponent is: " + x)
 
       const res38DP = makeBN.makeDecimal38(res)
-      const actual = Decimal(2).pow(x)
+      const actual = Decimal(2).pow(x).toFixed(38)
 
       console.log("two_x(" + x + ") is: " + res38DP)
       console.log("JS Decimal 2^x("+ x + ") is: " + actual)
@@ -199,7 +241,7 @@ module.exports = async () => {
       console.log("exponent is: " + exponent)
 
       const res18DP = makeBN.makeDecimal18(res) // exp(x) returns 38DP
-      const actual = Decimal.pow(b, x).toPrecision(30)
+      const actual = Decimal.pow(b, x).toFixed(18)
 
       console.log("pow(" + b +", " + x + ") is: " + res18DP)
       console.log("JS Decimal b^x("+ x + ") is: " + actual)
@@ -216,16 +258,24 @@ module.exports = async () => {
     // printGas_expUpTo(100)
     // printGas_exp('0.000000000000001')
 
-    // printGas_expBySquare18('23.5534545998', 17)
+    // printGas_expBySquare18('1.0001552242434989', 11)
+     // printGas_expBySquare18UpTo(2.234235454, 80, 3)
+
+      printGas_expBySquare38('3', 3)
+      // printGas_expBySquare38UpTo(1.234235454, 80, 1)
+
+
     // printGas_lnUpTo(9000000, 60, 100000)
+
+    // '2.00979700003993933000000098908000004453'
 
     // printGas_ln('98788978989789789789232978978978978998122', 70)
     // printGas_ln('98788978989789789789232978978978978998122', 99)
+    // printGas_pow('15.897897', '12.674456454')
 
-    printGas_pow('15', '30')
+    // printGas_powUpTo(7.5534, 35, 2.493812312)
 
-
-        // printGas_ln('1.43235', 99)
+    // printGas_ln('1.43235', 99)
 
     // printGas_two_x('1.9')
     // printGas_two_x('1.998787987879870896')
@@ -236,6 +286,7 @@ module.exports = async () => {
     // printGas_two_x_UpTo('1.9', 0.05)
 
     // printGas_expUpTo(100, 5)
+    // printGas_expTaylorUpTo(100, 5)
     // printGas_exp('1.4989890797422')
 
     // printGas_exp_taylor('20.518686786786878765')
@@ -247,11 +298,6 @@ module.exports = async () => {
     // printGas_log2('1.012352343248782332', 70)
     // printGas_log2('1.9', 1)
     // printGas_log2('1.998990890809801878', 1)
-
-
-
-
-
 
   } catch (err) {
     console.log(err)

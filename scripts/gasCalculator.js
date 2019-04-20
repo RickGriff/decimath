@@ -83,7 +83,7 @@ module.exports = async () => {
       }
 
       const printGas_powUpTo = async (base, n, increment) => {
-        for (let i = 1; i <= n; i+= increment) {
+        for (let i = 0; i <= n; i+= increment) {
           printGas_pow(base.toString(), i.toFixed(2))
         }
       }
@@ -261,7 +261,7 @@ module.exports = async () => {
     // printGas_expBySquare18('1.0001552242434989', 11)
      // printGas_expBySquare18UpTo(2.234235454, 80, 3)
 
-      printGas_expBySquare38('3', 3)
+      // printGas_expBySquare38('3', 3)
       // printGas_expBySquare38UpTo(1.234235454, 80, 1)
 
 
@@ -273,7 +273,8 @@ module.exports = async () => {
     // printGas_ln('98788978989789789789232978978978978998122', 99)
     // printGas_pow('15.897897', '12.674456454')
 
-    // printGas_powUpTo(7.5534, 35, 2.493812312)
+    printGas_powUpTo(0.004, 2, 0.02)
+
 
     // printGas_ln('1.43235', 99)
 
@@ -294,7 +295,9 @@ module.exports = async () => {
 
     // printGas_log2UpTo(2, 70, 0.1)
 
-    // printGas_log2('1.01', 70)
+
+
+    // printGas_log2('1', 70)
     // printGas_log2('1.012352343248782332', 70)
     // printGas_log2('1.9', 1)
     // printGas_log2('1.998990890809801878', 1)

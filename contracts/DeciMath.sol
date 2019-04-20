@@ -205,13 +205,13 @@ contract DeciMath {
 
   A) e^x = 2^(x / ln(2))
   and
-  B) 2^y = (2^r) * 2^(x - r); where r = floor(x) - 1
+  B) 2^y = (2^r) * 2^(x - r); where r = floor(x) - 1, and (x - r) is in range [1,2[
   Input 18 DP, output 18 DP.
   */
   function exp(uint x) public view returns (uint num) {
     uint intExponent;  // 20 DP
     uint decExponent;  // 20 DP
-    uint coefficient;  // 38P
+    uint coefficient;  // 38 DP
 
     x = mul(x, TEN12); // make x 30DP
     x = decMul30( ONE_OVER_LN2, x);
@@ -248,6 +248,7 @@ contract DeciMath {
   }
 
   // Base-2 logarithm function, for x in range [1,2[.  Input 18DP, output 30DP (for use in ln(x) ) .
+
   function log2(uint x, uint accuracy) public view returns (uint) {
     require(tablesAreSet, 'Lookup tables must be set');
     require(x >= TEN18 && x < 2 * TEN18, 'input x must be within range [1,2[');
@@ -286,7 +287,7 @@ contract DeciMath {
     return prod;
   }
 
-  /* natural log function ln(x).
+  /* Natural log function ln(x).
   Uses identities:
   A) ln(x) = log2(x) * ln(2)
   and
@@ -349,16 +350,33 @@ contract DeciMath {
         count += 1;
       }
     }
+
+    //naive repeated div by 2
+    /* while (x >= 2 * TEN18 ) {
+      x = decDiv18(x, 2 * TEN18);
+      count += 1;
+    } */
+
     uint q =  count * TEN30;
     uint output = decMul30(LN2, add(q, log2(x, accuracy)));
 
     return convert30To18DP(output);
   }
 
-  /* pow(b, x) for 18 DP base and exponent. Uses identity:  b^x = exp (x * ln(b))
-  Output 18 DP. */
+  /* pow(b, x) for 18 DP base and exponent.
+
+  Uses identity:  b^x = exp (x * ln(b)).  Output 18 DP. */
   function pow(uint base, uint x) public view returns (uint power) {
-  return exp(decMul18(x, ln(base, 70)));
+   if (base >= TEN18) {
+       return exp(decMul18(x, ln(base, 70)));
+     }
+   /* for b < 1, rewrite b^x :
+    b^x = exp(x * -ln(1/b)) = 1/exp(x * ln(1/b).
+   Thus, we avoid passing argument y < 1 to ln(y), and z < 0 to exp(z). */
+    if (base < TEN18) {
+      uint exponent = decMul18(x, ln(decDiv18(TEN18, base), 70));
+      return decDiv18(TEN18, exp(exponent));
+    }
   }
 
   /// Lookup Tables (LUTs). 38 DP fixed-point numbers.

@@ -11,9 +11,7 @@ contract TestDeciMath {
   WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
 
   function setLookupTables() internal {
-    decimath.setLUT1();
-    decimath.setLUT2();
-    decimath.setLUT3();
+    decimath.setAllLUTs();
   }
 
 /* ***** LOG2(x) - BASE-2 LOGARITHM ALGO  ***** */
@@ -29,6 +27,7 @@ function test_log2_lowerEdge() public {
 }
 
  function test_log2() public {
+    setLookupTables();
     Assert.equal(decimath.log2(1100000000000000000, 99), 137503523749934908, "failed");
     Assert.equal(decimath.log2(1234512345123451234, 99), 303941263503238937, "failed");
     Assert.equal(decimath.log2(1987654321987654321, 99), 991066875955820194, "failed");
@@ -37,6 +36,7 @@ function test_log2_lowerEdge() public {
 
  // Log2 out-of-bounds tests
   function test_log2_lessThan1() public {
+  setLookupTables();
    TestRawCaller TestRawCaller = new TestRawCaller(address(wrappedDeciMath));
    WrappedDeciMath(address(TestRawCaller)).callLog2(0.9 ether, 99);
    bool r = TestRawCaller.execute.gas(200000)();
@@ -44,6 +44,7 @@ function test_log2_lowerEdge() public {
  }
 
  function test_log2_2orGreater() public {
+   setLookupTables();
    TestRawCaller TestRawCaller = new TestRawCaller(address(wrappedDeciMath));
    WrappedDeciMath(address(TestRawCaller)).callLog2(2 ether, 99);
    bool r = TestRawCaller.execute.gas(200000)();

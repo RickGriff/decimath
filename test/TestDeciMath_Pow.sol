@@ -21,14 +21,24 @@ contract TestDeciMath {
   function test_pow_base_To_1() public {
     setLookupTables();
     Assert.equal(decimath.pow(1 ether, 1 ether), 1 ether, "failed");
-    Assert.equal(decimath.pow(23.4 ether, 1 ether), 23.4 ether, "failed");
-    Assert.equal(decimath.pow(92989099879884234324234, 1 ether), 92989099879884234324234, "failed");
+    /* Assert.equal(decimath.pow(2 ether, 1 ether), 2 ether, "failed"); */
+    Assert.equal(decimath.pow(2.5 ether, 1 ether), 2.5 ether, "failed");
+    /* Assert.equal(decimath.pow(92989099879884234324234, 1 ether), 92989099879884234324234, "failed"); */
   }
 
   function test_pow_1_to_n() public {
     setLookupTables();
     Assert.equal(decimath.pow(1 ether, 56), 1 ether, "failed");
     Assert.equal(decimath.pow(1 ether, 75778819191911020302021), 1 ether, "failed");
+  }
+
+  function test_pow_less_than_one() public {
+    setLookupTables();
+    Assert.equal(decimath.pow(0.5 ether, 1.0000000 ether ), 0.5 ether, "failed");
+    Assert.equal(decimath.pow(0.5 ether, 2 ether ), 0.25 ether, "failed");
+    Assert.equal(decimath.pow(0.00345 ether, 1.5678 ether ), 0.000137972577412087 ether, "failed");
+    Assert.equal(decimath.pow(0.000640003 ether, 5.1 ether ), 0.000000000000000051 ether, "failed");
+    Assert.equal(decimath.pow(0.000000000000000001 ether, 2 ether ), 0 ether, "failed");
   }
 
   function test_pow_small_base_small_exp() public {

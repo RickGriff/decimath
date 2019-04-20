@@ -18,7 +18,7 @@ contract TestDeciMath {
 
 function test_log2_upperEdge() public {
   setLookupTables();
-    Assert.equal(decimath.log2(1999999999999999999, 99), 999999999999999999, "failed");
+    Assert.equal(decimath.log2(1999999999999999999, 99), 999999999999999999278652479556, "failed");
 }
 
 function test_log2_lowerEdge() public {
@@ -28,10 +28,10 @@ function test_log2_lowerEdge() public {
 
  function test_log2() public {
     setLookupTables();
-    Assert.equal(decimath.log2(1100000000000000000, 99), 137503523749934908, "failed");
-    Assert.equal(decimath.log2(1234512345123451234, 99), 303941263503238937, "failed");
-    Assert.equal(decimath.log2(1987654321987654321, 99), 991066875955820194, "failed");
-    Assert.equal(decimath.log2(1995000000000000000, 99), 996388746447621087, "failed");
+    Assert.equal(decimath.log2(1100000000000000000, 99), 137503523749934908329043617236, "failed");
+    Assert.equal(decimath.log2(1234512345123451234, 99), 303941263503238936812440378165, "failed");
+    Assert.equal(decimath.log2(1987654321987654321, 99), 991066875955820193573663024629, "failed");
+    Assert.equal(decimath.log2(1395000000123400000, 99), 480265122182081921161366921555, "failed");
  }
 
  // Log2 out-of-bounds tests

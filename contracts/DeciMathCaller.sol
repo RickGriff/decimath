@@ -1,13 +1,17 @@
 pragma solidity ^0.5.0;
 import './DeciMath.sol';
 
-// Proxy contract, used in tests to call DeciMath funcs.
-// Allows us to calculate actual gas used in DeciMath 'view' functions.
-// Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via this proxy contract.
+/* Proxy contract. ONLY NEEDED FOR TESTS. Used to call DeciMath functions.
 
-// Example usage:
-// An EOA sends tx to DeciMathCaller.callExp(n), which in turn calls exp(n) on deployed DeciMath instance.
-// As the latter func is called within a tx, it uses gas.
+The Proxy allows us to calculate actual gas used in DeciMath 'view' functions.
+Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via this proxy contract.
+
+Example usage:
+An EOA sends a tx to DeciMathCaller.callExp(n), which in turn calls exp(n) on the deployed DeciMath instance.
+As the latter function is called from within a tx, it uses gas.  We can grab the gas used from the tx receipt.
+
+See scripts/gasCalculator.js for gas and error tests.
+*/
 
 contract DeciMathCaller {
   DeciMath decimath;

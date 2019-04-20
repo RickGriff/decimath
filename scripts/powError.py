@@ -13,7 +13,7 @@
 import math
 import numpy as np
 import decimal as dec
-dec.getcontext().prec = 39
+dec.getcontext().prec = 38
 
 QUINT = 10**18  # One quintillion
 TEN20 = 10**20
@@ -30,7 +30,8 @@ def decMul18(a, b):
     decProduct =  (prod_ab + (QUINT / 2) ) / QUINT
     return decProduct
 
-### Exp Funcs
+
+##### EXP FUNCS #####
 
 #Exponentiation-by-squaring algorithm. Base 'b' and output are integer representations of 2DP decimals.
 # '100' represents '1.00'. Exponent n is integer.
@@ -81,31 +82,7 @@ def exp18(n):
     print("number of iterations to compute e^" +"(" + str(n) + "): " + str(i))
     return sum
 
-# 2^x func and lookup-table term outputter
-
-#n'th term in the 2^x lookup table
-def term_2_x(n):
-    n = dec.Decimal(n)
-    term  = 2 ** (1 / (10 ** (n + 1)))
-    return term
-
-# Valid for x = 1.m i.e. x in range [1,2[
-
-def two_x(x):
-    prod = 2
-    fractPart = x[2:] # grab the digits after the point
-    digits = [int(i) for i in fractPart]
-
-    # // loop and multiply each digit of mantissa by Lookup-table value
-    for i in range (len(fractPart)):
-        term = term_2_x(i) ** digits[i]
-        prod = prod * term
-
-    return prod
-
-
-
-### Log func and Lookup-table term outputter
+##### LOG FUNCS #####
 
 # helper function - calculate terms in log2(x)
 # // Replace this computation by lookup table
@@ -121,7 +98,6 @@ def term_log2(x, i):
 
 # logarithm base 2, first attempt.
 # Valid for x [1,2[
-
 def log2(x, precision):
   # For binary, we can also compute each digit a1, a2, etc
     digits = []
@@ -148,13 +124,6 @@ def powerOfTwo(i):
   num = dec.Decimal(2)**(-i)
   return num
 
-def print_twox_terms(n):
-    for i in range(n):
-        term = term_2_x(i)
-
-        print("term_2_x[" + str(i) + "] = 1." + str(term)[2:40] + ";")
-
-
 
 def print_powersOfTwo(n):
     print("printing 1/(2^((1/2)^i)) up to i = " + str(n))
@@ -168,6 +137,30 @@ def print_powersOfTwo_fractPart(n):
     for i in range(1,n):
         pow = '%.72f' % powerOfTwo(i)
         print ("powersOfTwo[" + str(i) + "] = (0.)" + str(pow)[2:40] + ";")
+
+
+##### LOG2 LOOKUP TABLE #####
+
+# The n'th term in the log2 lookup table
+# n'th term is  1/(2^(1/2^n))
+
+def term_log2(n):
+    n = dec.Decimal(n)
+    term = 1 / (2**(1/2**n))
+    return term
+
+def make_log2_LUT(n):
+        for i in range(n):
+            with dec.localcontext() as ctx:
+                ctx.prec = 60
+                term = term_log2(i) # perform calculation in high precision
+            term = +term # round back down to 38 DP
+            print("table_log2[" + str(i) + "] = " + str(term)[2:] + ";")
+
+
+
+
+
 
 
 # Holds only for range [0, 1[
@@ -191,14 +184,84 @@ def check_terms(n):
         print("i = " + str(i) + "." + " term = 1/(2^((1/2)^"+ str(i) +")): " + str(term_log2(1,i)) )
 
 
-### func calls ####
+
+##### TWO_X FUNCS #####
+
+# n'th term in the 2^x lookup table
+# n'th term is 2^(1 / 10^(n + 1))
+def term_2_x(n):
+    n = dec.Decimal(n)
+    term  = 2 ** (1 / (10 ** (n + 1)))
+    return term
+
+# Valid for x = 1.m i.e. x in range [1,2[
+def two_x(x):
+    prod = 2
+    fractPart = x[2:] # grab the digits after the point
+    digits = [int(i) for i in fractPart]
+
+    # // loop and multiply each digit of mantissa by Lookup-table value
+    for i in range (len(fractPart)):
+        term = term_2_x(i) ** digits[i]
+        prod = prod * term
+
+    return prod
+
+# Generate a Lookup table of terms, from the term_2_x() function.
+# Prints table as text for use in the Solidity contract.
+def make_two_x_LUT(n):
+    for i in range(n):
+        with dec.localcontext() as ctx:
+            ctx.prec = 60
+            term = term_2_x(i) # perform calculation in high precision
+        term = +term # round back down to 38 DP
+        print("term_2_x[" + str(i) + "] = 1." + str(term)[2:] + ";")
+
+
+
+# A more extensive lookup table for two_x().
+# We make a 2-D array LUT[i][d] = (2^(1 / 10^(i + 1))) ** d.  d ranges 0-9.
+# The LUT contains 38 arrays, each length 10.
+# This LUT allows us to skip the exponentiation at each step in the two_x() algorithm, and thus reduces
+# a source of round-off error.
+
+# Function prints table as text, for use in the Solidity contract.
+
+def make_two_x_LUT_2d(n):
+    for i in range(n):
+        for d in range(10):
+
+            with dec.localcontext() as ctx:
+                ctx.prec = 60
+                term = pow(term_2_x(i), d) # perform calculation in high precision
+            term = +term
+
+            if d == 0:
+                print("term_2_x[" + str(i) + "]["+ str(d) + "] = 1" + str('0'*38) + ";")
+            else:
+                print("term_2_x[" + str(i) + "]["+ str(d) + "] = 1" + str(term)[2:] + ";")
+
+
+
+
+
+
+
+
+
+
+##### FUNCTION CALLS ######
 
 # print_powersOfTwo(100)
 
 # print(two_x('1.000000000000000001'))
 # print(two_x('1.500000000000000000'))
 # print(two_x('1.999999999999999999'))
-print_twox_terms(40)
+# make_two_x_LUT(40)
+# make_two_x_LUT_2d(40)
+
+
+make_log2_LUT(100)
 
 # check_terms_fractPart(100)
 

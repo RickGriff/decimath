@@ -1,5 +1,17 @@
 // Script calculates actual gas used (not just gas estimates) in calls to DeciMath functions.
-// Uses a proxy 'caller' contract to call math functions as part of a transaction, and thus use gas.
+
+/* TESTING ACTUAL GAS USAGE
+
+DeciMath functions are pure - they don't cost gas, unless called as part of a transaction.
+A direct function call from an EOA is performed locally - the func doesn't write data / require network verification, so is computed with zero gas cost.
+
+To test actual gas usage - not just estimate - we use a proxy "DeciMathCaller" contract.
+It's functions receive txs, and in turn call the respective DeciMath function.
+
+Therefore, the math function call will be inside a transaction, and we can measure actual gas usage.
+
+*/
+
 
 const BN = require('bn.js');
 const makeBN = require('./makeBN.js');
@@ -27,7 +39,12 @@ module.exports = async () => {
     caller.setDeciMath(decimathAddr)
 
     // set all Lookup tables
-    await decimath.setAllLUTs();
+    await decimath.setLUT1();
+    await decimath.setLUT2();
+    await decimath.setLUT3_1();
+    await decimath.setLUT3_2();
+    await decimath.setLUT3_3();
+    await decimath.setLUT3_4();
 
     // ***** HELPER FUNCS ***** //
 
@@ -255,7 +272,7 @@ module.exports = async () => {
     // printGas_decMul18('10', '30')
 
     // calcError(70, 60)
-    // printGas_expUpTo(100)
+    printGas_expUpTo(100, 2.444500006443)
     // printGas_exp('0.000000000000001')
 
     // printGas_expBySquare18('1.0001552242434989', 11)
@@ -265,7 +282,7 @@ module.exports = async () => {
       // printGas_expBySquare38UpTo(1.234235454, 80, 1)
 
 
-    // printGas_lnUpTo(9000000, 60, 100000)
+    // printGas_lnUpTo(900, 70, 10)
 
     // '2.00979700003993933000000098908000004453'
 
@@ -273,7 +290,7 @@ module.exports = async () => {
     // printGas_ln('98788978989789789789232978978978978998122', 99)
     // printGas_pow('15.897897', '12.674456454')
 
-    printGas_powUpTo(0.004, 2, 0.02)
+    // printGas_powUpTo(7.1, 90, 4.567)
 
 
     // printGas_ln('1.43235', 99)
@@ -293,7 +310,7 @@ module.exports = async () => {
     // printGas_exp_taylor('20.518686786786878765')
     // printGas_exp('20.518686786786878765')
 
-    // printGas_log2UpTo(2, 70, 0.1)
+    // printGas_log2UpTo(2, 99, 0.1)
 
 
 
@@ -306,14 +323,3 @@ module.exports = async () => {
     console.log(err)
   }
 }
-
-// TESTING ACTUAL GAS USAGE
-// Decimath funtions are pure, thus don't cost gas unless called as part of a transaction.
-// A direct func call from an EOA is performed locally -
-// the func doesn't write data / require network verification, so is computed with zero gas cost.
-
-// To test actual gas usage - not just estimate - Use proxy "DeciMathCaller" contract.
-// It's funcs receive txs and in turn calls respective Decimath func.
-
-// Thus, the math function call will be inside a transaction, and we can measure actual gas usage
-// -- subtract 21k for transaction cost.

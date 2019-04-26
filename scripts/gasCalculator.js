@@ -1,16 +1,14 @@
 // Script calculates actual gas used (not just gas estimates) in calls to DeciMath functions.
 
-/* TESTING ACTUAL GAS USAGE
-
+/*  TESTING ACTUAL GAS USAGE
 DeciMath functions are pure - they don't cost gas, unless called as part of a transaction.
-A direct function call from an EOA is performed locally - the func doesn't write data / require network verification, so is computed with zero gas cost.
+On Ethereum, a direct function call from an EOA is performed locally - the function doesn't write data
+or require network verification, so is computed with zero gas cost.
 
-To test actual gas usage - not just estimate - we use a proxy "DeciMathCaller" contract.
-It's functions receive txs, and in turn call the respective DeciMath function.
+To test actual gas usage - not just estimate it - we use a proxy "DeciMathCaller" contract.
+Its functions receive txs, and in turn call the respective DeciMath function.
 
-Therefore, the math function call will be inside a transaction, and we can measure actual gas usage.
-
-*/
+Therefore: the math function call will be inside a transaction, and we can measure actual gas usage.  */
 
 
 const BN = require('bn.js');
@@ -33,14 +31,14 @@ module.exports = async () => {
     const decimath = await DeciMath.deployed()
     const decimathAddr = decimath.address
 
-    // Instantiate a Decimath caller, in order to send transactions to deployed DeciMath contract,
-    // and cause functions to use gas.
+    // Instantiate a Decimath caller & connect it to DeciMath instance
     const caller = await DeciMathCaller.deployed()
     caller.setDeciMath(decimathAddr)
 
-    // set all Lookup tables
+    // set LUT1 & LUT2
     await decimath.setLUT1();
     await decimath.setLUT2();
+    //set LUT 3
     await decimath.setLUT3_1();
     await decimath.setLUT3_2();
     await decimath.setLUT3_3();
@@ -51,7 +49,21 @@ module.exports = async () => {
       const calcErrorPercent = (tested, actual) => {
         let diff = tested.minus(actual)
         errorPercent = (diff.mul(100).div(actual))
-        console.log("error is " + errorPercent.toString() + "%")
+        return errorPercent
+      }
+
+      const avgDecimal = (decArray) => { // calculate average from an array of Decimal objects
+        let sum = Decimal(0)
+        for (let dec of decArray) sum = sum.add(dec)
+        return sum.div(decArray.length)
+      }
+
+      const gasAndError = (tx, res, actual) => {
+        const gas = tx.receipt.gasUsed
+        const errorPercent = calcErrorPercent (res, actual)
+        console.log("Gas used: " + gas )
+        console.log("Error: " + errorPercent )
+        return [gas, errorPercent]
       }
 
     // ***** ITERATIVE ERROR & GAS CALCULATORS ***** //
@@ -81,15 +93,15 @@ module.exports = async () => {
         }
       }
 
-      const printGas_two_x_UpTo = async (n, increment) => {
+      const printGas_pow2_UpTo = async (n, increment) => {
         for (let i = 1; i <= n; i+= increment) {
-          printGas_two_x(i.toFixed(2))
+          printGas_pow2(i.toFixed(2))
         }
       }
 
-      const printGas_log2UpTo = async (n, acc, increment) => {
+      const printGas_log_2_UpTo = async (n, acc, increment) => {
         for (let i = 1; i <= n; i+= increment) {
-          printGas_log2(i.toFixed(2), acc)
+          printGas_log_2(i.toFixed(2), acc)
         }
       }
 
@@ -122,8 +134,7 @@ module.exports = async () => {
         console.log("decMul18(" + x + ", " + y + ") is: " + res18DP)
         console.log("JS Decimal mul(" + x + ", " + y + ") is: " + actual)
 
-        console.log("Gas used: " +  (tx.receipt.gasUsed))
-        calcErrorPercent (res18DP, actual)
+        return gasAndError(tx, res18DP, actual)
       }
 
       const printGas_expBySquare18 = async (b, x) => {
@@ -140,8 +151,7 @@ module.exports = async () => {
         console.log("expBySquare18(" + b + ", " + x + ") is: " + res18DP)
         console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
 
-        console.log("Gas used: " +  tx.receipt.gasUsed)
-        calcErrorPercent (res18DP, actual)
+        return gasAndError(tx, res18DP, actual)
       }
 
       const printGas_expBySquare38 = async (b, x) => {
@@ -158,8 +168,7 @@ module.exports = async () => {
         console.log("expBySquare38(" + b + ", " + x + ") is: " + res38DP)
         console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
 
-        console.log("Gas used: " +  tx.receipt.gasUsed)
-        calcErrorPercent (res38DP, actual)
+        return gasAndError(tx, res38DP, actual)
       }
 
       const printGas_exp_taylor = async(x) => {
@@ -175,24 +184,26 @@ module.exports = async () => {
         console.log("exp_taylor(" + x + ") is: " + res18DP)
         console.log("JS Decimal exp("+ x + ") is: " + actual)
 
-        console.log("Gas used: " +  tx.receipt.gasUsed)
-        calcErrorPercent (res18DP, actual)
+      return gasAndError(tx, res18DP, actual)
       }
 
-    const printGas_log2 = async(x, acc) => {
+    const printGas_log_2 = async (x, acc) => {
       const arg = makeBN.makeBN18(x)
       const tx = await caller.callLog2(arg, acc) // send tx via proxy, to force gas usage
-      const res = await decimath.log2(arg, acc) // grab the returned BN
+      const res = await decimath.log_2(arg, acc) // grab the returned BN
+
       console.log("argument is " + arg + ", accuracy is " + acc)
 
       const res30DP = makeBN.makeDecimal30(res)
       const actual = Decimal.log2(x).toFixed(30)
 
-      console.log("log2(" + x + ") is: " + res30DP)
-      console.log("JS Decimal log2("+ x + ") is: " + actual)
+      console.log("log_2(" + x + ") is: " + res30DP)
+      console.log("JS Decimal log_2("+ x + ") is: " + actual)
 
-      console.log("Gas used: " +  tx.receipt.gasUsed)
-      calcErrorPercent (res30DP, actual)
+      const gas = tx.receipt.gasUsed
+      console.log("Gas used: " + gas )
+
+     return gasAndError(tx, res30DP, actual)
     }
 
     const printGas_ln = async(x, acc) => {
@@ -209,8 +220,7 @@ module.exports = async () => {
         console.log("ln(" + x + ") is: " + res18DP)
         console.log("JS Decimal ln("+ x + ") is: " + actual)
 
-        console.log("Gas used: " +  tx.receipt.gasUsed)
-        calcErrorPercent (res18DP, actual)
+        return gasAndError(tx, res18DP, actual)
       }
 
 
@@ -227,25 +237,23 @@ module.exports = async () => {
       console.log("exp(" + x + ") is: " + res18DP)
       console.log("JS Decimal exp("+ x + ") is: " + actual)
 
-      console.log("Gas used in exp(" + x + "): " +  tx.receipt.gasUsed)
-      calcErrorPercent(res18DP, actual)
+      return gasAndError(tx, res18DP, actual)
     }
 
-    const printGas_two_x = async(x) => {
+    const printGas_pow2 = async(x) => {
       const exponent = makeBN.makeBN20(x)
 
-      const tx = await caller.callTwoX(exponent)
-      const res = await decimath.two_x(exponent)
+      const tx = await caller.callPow2(exponent)
+      const res = await decimath.pow2(exponent)
       console.log("exponent is: " + x)
 
       const res38DP = makeBN.makeDecimal38(res)
       const actual = Decimal(2).pow(x).toFixed(38)
 
-      console.log("two_x(" + x + ") is: " + res38DP)
+      console.log("pow2(" + x + ") is: " + res38DP)
       console.log("JS Decimal 2^x("+ x + ") is: " + actual)
 
-      console.log("Gas used: " +  tx.receipt.gasUsed)
-      calcErrorPercent(res38DP, actual)
+    return gasAndError(tx, res38DP, actual)
     }
 
     const printGas_pow = async(b, x) => {
@@ -263,26 +271,55 @@ module.exports = async () => {
       console.log("pow(" + b +", " + x + ") is: " + res18DP)
       console.log("JS Decimal b^x("+ x + ") is: " + actual)
 
-      console.log("Gas used: " +  tx.receipt.gasUsed)
-      calcErrorPercent(res18DP, actual)
+      return gasAndError(tx, res18DP, actual)
+    }
+
+    // Call the contract function repeatedly, and computes the average gas and error per call.
+    const avgGasAndError = async (contractCallback, min, max, timesToCall) => {
+      let gasCosts = [];
+      let errors = [];
+      let avgGas;
+
+      for (i = 0; i < timesToCall; i++) {
+        num =  Math.random() * (max - min) + min
+
+        const [gas, errorPercent] = await contractCallback(num.toString())
+
+        gasCosts.push(gas)
+        errors.push(errorPercent)
+      }
+      // calculate averages
+      avgGas = gasCosts.reduce( (sum, current ) => sum + current, 0 ) / gasCosts.length
+      avgErrorPercent = avgDecimal(errors)
+
+      return [avgGas, avgErrorPercent]
     }
 
   // ***** FUNCTION CALLS ***** //
 
+    // console.log("log_2 Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_log_2(n, 70)}, 1, 2, 100)))
+    // console.log("ln Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_ln(n, 70)}, 1, 9**15, 100)))
+    //  console.log("pow(x) Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_pow('2.25', n)}, 1, 35, 20)))
+    // console.log("pow(x) Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_pow('2.25', n)}, 0.1, 10, 20)))
+
+
     // printGas_decMul18('10', '30')
 
     // calcError(70, 60)
-    printGas_expUpTo(100, 2.444500006443)
+    // printGas_expUpTo(100, 2.444500006443)
     // printGas_exp('0.000000000000001')
+
 
     // printGas_expBySquare18('1.0001552242434989', 11)
      // printGas_expBySquare18UpTo(2.234235454, 80, 3)
+
+    // ((num) => {log2(num, acc)},  val1, val2)
 
       // printGas_expBySquare38('3', 3)
       // printGas_expBySquare38UpTo(1.234235454, 80, 1)
 
 
-    // printGas_lnUpTo(900, 70, 10)
+    // printGas_lnUpTo(317, 70, 10.45600021324)
 
     // '2.00979700003993933000000098908000004453'
 
@@ -295,13 +332,13 @@ module.exports = async () => {
 
     // printGas_ln('1.43235', 99)
 
-    // printGas_two_x('1.9')
-    // printGas_two_x('1.998787987879870896')
+    // printGas_pow2('1.9')
+    // printGas_pow2('1.998787987879870896')
 
-    // printGas_two_x('1.111111111111111111')
-    // printGas_two_x('1.118789864342423212')
+    // printGas_pow2('1.111111111111111111')
+    // printGas_pow2('1.118789864342423212')
 
-    // printGas_two_x_UpTo('1.9', 0.05)
+    // printGas_pow2_UpTo('1.9', 0.05)
 
     // printGas_expUpTo(100, 5)
     // printGas_expTaylorUpTo(100, 5)
@@ -310,14 +347,12 @@ module.exports = async () => {
     // printGas_exp_taylor('20.518686786786878765')
     // printGas_exp('20.518686786786878765')
 
-    // printGas_log2UpTo(2, 99, 0.1)
+    // printGas_log_2_UpTo(2, 80, 0.1)
 
-
-
-    // printGas_log2('1', 70)
-    // printGas_log2('1.012352343248782332', 70)
-    // printGas_log2('1.9', 1)
-    // printGas_log2('1.998990890809801878', 1)
+    // printGas_log_2('1.5', 70)
+    // printGas_log_2('1.012352343248782332', 75)
+    // printGas_log_2('1.9', 1)
+    // printGas_log_2('1.998990890809801878', 1)
 
   } catch (err) {
     console.log(err)

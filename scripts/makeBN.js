@@ -1,10 +1,11 @@
 const BN = require('bn.js');
 const Decimal = require('decimal.js');
 
-/* Helper functions for converting string-ified decimal numbers to integer representations, in BN form.
+/* Helper functions for converting string-ified decimal numbers to integer representations.
 
-Why? Decimath contract functions require 'uint' representations of fixed-point decimals.
-Since inputs can exceed the maximum safe integer in JS (~ 9e+15), we use BigNums (BNs).
+Why? DeciMath contract functions require 'uint' representations of fixed-point decimals.
+Since inputs can exceed the maximum safe integer in JS (~ 9e+15), we make a BigNum (BNs) from a string, and then
+pass it to a DeciMath function.
 
 Example usage:
 Input: makeBN18('999.123456789987654321') ---->  Output: new BN('999123456789987654321', 10)
@@ -12,7 +13,7 @@ Input: makeBN18('1.000000000000000001')  ---->  Output: new BN('1000000000000000
 
 // Convert a string-ified decimal to a BN of arbitrary decimal places
 const makeBN = (strNum, sigFigures) => {
-  if (typeof strNum !== "string" ) { throw "input must be type String" }
+  if (typeof strNum !== "string" ) { throw "MakeBN error: input must be type String" }
 
   const intPart = strNum.split(".")[0]
   const fractionPart = strNum.includes(".") ? strNum.split(".")[1] : ""

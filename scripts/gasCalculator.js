@@ -36,13 +36,22 @@ module.exports = async () => {
     caller.setDeciMath(decimathAddr)
 
     // set LUT1 & LUT2
-    await decimath.setLUT1();
-    await decimath.setLUT2();
+    const tx_setlut1 = await decimath.setLUT1();
+    const tx_setlut2 = await decimath.setLUT2();
     //set LUT 3
-    await decimath.setLUT3_1();
-    await decimath.setLUT3_2();
-    await decimath.setLUT3_3();
-    await decimath.setLUT3_4();
+   const tx_setlut3_1 = await decimath.setLUT3_1();
+   const tx_setlut3_2 = await decimath.setLUT3_2();
+   const tx_setlut3_3 = await decimath.setLUT3_3();
+   const tx_setlut3_4 = await decimath.setLUT3_4();
+
+
+    console.log("tx_setlut1 gas used is: " + tx_setlut1.receipt.gasUsed )
+    console.log("tx_setlut2 gas used is: " + tx_setlut2.receipt.gasUsed )
+    console.log("tx_setlut3_1 gas used is: " + tx_setlut3_1.receipt.gasUsed )
+    console.log("tx_setlut3_2 gas used is: " + tx_setlut3_2.receipt.gasUsed )
+    console.log("tx_setlut3_3 gas used is: " + tx_setlut3_3.receipt.gasUsed )
+    console.log("tx_setlut3_4 gas used is: " + tx_setlut3_4.receipt.gasUsed )
+
 
     // ***** HELPER FUNCS ***** //
 
@@ -52,7 +61,7 @@ module.exports = async () => {
         return errorPercent
       }
 
-      const avgDecimal = (decArray) => { // calculate average from an array of Decimal objects
+      const avgDecimal = (decArray) => { // calculate the mean from an array of Decimal objects
         let sum = Decimal(0)
         for (let dec of decArray) sum = sum.add(dec)
         return sum.div(decArray.length)
@@ -81,15 +90,15 @@ module.exports = async () => {
         }
       }
 
-      const printGas_expBySquare18UpTo = async (base, n, increment) => {
+      const printGas_powBySquare18UpTo = async (base, n, increment) => {
         for (let i = 1; i <= n; i+= increment) {
-          printGas_expBySquare18(base.toString(), i)
+          printGas_powBySquare18(base.toString(), i)
         }
       }
 
-      const printGas_expBySquare38UpTo = async (base, n, increment) => {
+      const printGas_powBySquare38UpTo = async (base, n, increment) => {
         for (let i = 1; i <= n; i+= increment) {
-          printGas_expBySquare38(base.toString(), i)
+          printGas_powBySquare38(base.toString(), i)
         }
       }
 
@@ -137,35 +146,35 @@ module.exports = async () => {
         return gasAndError(tx, res18DP, actual)
       }
 
-      const printGas_expBySquare18 = async (b, x) => {
+      const printGas_powBySquare18 = async (b, x) => {
         const base = makeBN.makeBN18(b)
 
-        const tx = await caller.callExpBySquare18(base, x)
-        const res = await decimath.expBySquare18(base, x)
+        const tx = await caller.callPowBySquare18(base, x)
+        const res = await decimath.powBySquare18(base, x)
 
         console.log("base is " + base + ", exponent is "+ x)
 
         const res18DP = makeBN.makeDecimal18(res)
         const actual = Decimal.pow(b, x).toFixed(18)
 
-        console.log("expBySquare18(" + b + ", " + x + ") is: " + res18DP)
+        console.log("powBySquare18(" + b + ", " + x + ") is: " + res18DP)
         console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
 
         return gasAndError(tx, res18DP, actual)
       }
 
-      const printGas_expBySquare38 = async (b, x) => {
+      const printGas_powBySquare38 = async (b, x) => {
         const base = makeBN.makeBN38(b)
 
-        const tx = await caller.callExpBySquare38(base, x)
-        const res = await decimath.expBySquare38(base, x)
+        const tx = await caller.callPowBySquare38(base, x)
+        const res = await decimath.powBySquare38(base, x)
 
         console.log("base is " + base + ", exponent is "+ x)
 
         const res38DP = makeBN.makeDecimal38(res)
         const actual = Decimal.pow(b, x).toFixed(38)
 
-        console.log("expBySquare38(" + b + ", " + x + ") is: " + res38DP)
+        console.log("powBySquare38(" + b + ", " + x + ") is: " + res38DP)
         console.log("JS Decimal pow(" + b + ", " + x + ") is: " + actual)
 
         return gasAndError(tx, res38DP, actual)
@@ -269,9 +278,14 @@ module.exports = async () => {
       const actual = Decimal.pow(b, x).toFixed(18)
 
       console.log("pow(" + b +", " + x + ") is: " + res18DP)
-      console.log("JS Decimal b^x("+ x + ") is: " + actual)
+      console.log("JS Decimal pow(" + b +", " + x + ") is: " + actual)
 
       return gasAndError(tx, res18DP, actual)
+    }
+
+    const randomNum = (min, max) => {
+      num =  Math.random() * (max - min) + min
+      return num
     }
 
     // Call the contract function repeatedly, and computes the average gas and error per call.
@@ -280,55 +294,90 @@ module.exports = async () => {
       let errors = [];
       let avgGas;
 
-      for (i = 0; i < timesToCall; i++) {
-        num =  Math.random() * (max - min) + min
+      let minErrorPercent = (100); // start at 100%
+      let maxErrorPercent = new Decimal(0);
 
-        const [gas, errorPercent] = await contractCallback(num.toString())
+      let minGas = 10*7; // start at 10 million gas
+      let maxGas = 0;
+
+      for (i = 0; i < timesToCall; i++) {
+        num = randomNum(min, max)
+        let [gas, errorPercent] = await contractCallback(num.toString())
+        errorPercent = errorPercent.abs() // get the error magnitude
 
         gasCosts.push(gas)
         errors.push(errorPercent)
+
+        // update min and max gas and error
+        minErrorPercent =  errorPercent.lessThan(minErrorPercent) ? errorPercent : minErrorPercent
+        maxErrorPercent =  errorPercent.greaterThan(maxErrorPercent) ? errorPercent : maxErrorPercent
+        console.log("step: " + i)
+        console.log("minErrorPercent is:" + minErrorPercent)
+        console.log("maxErrorPercent is:" + maxErrorPercent)
+        minGas =  gas < maxGas ? gas : minGas
+        maxGas =  gas > maxGas ? gas : maxGas
       }
       // calculate averages
       avgGas = gasCosts.reduce( (sum, current ) => sum + current, 0 ) / gasCosts.length
       avgErrorPercent = avgDecimal(errors)
 
-      return [avgGas, avgErrorPercent]
+      console.log("FINAL RESULTS:")
+      console.log("function tested: " + contractCallback.name)
+      console.log("min gas: " + minGas)
+      console.log("max gas: " + maxGas)
+      console.log("Average gas:" + avgGas)
+      console.log("min error: " + minErrorPercent)
+      console.log("max error: " + maxErrorPercent)
+      console.log("Average error:" + avgErrorPercent)
+      return [avgGas, avgErrorPercent, minGas, maxGas, minErrorPercent, maxErrorPercent]
     }
 
-  // ***** FUNCTION CALLS ***** //
+  // ***** FUNCTION CALLS GO HERE ***** //
 
-    // console.log("log_2 Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_log_2(n, 70)}, 1, 2, 100)))
-    // console.log("ln Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_ln(n, 70)}, 1, 9**15, 100)))
-    //  console.log("pow(x) Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_pow('2.25', n)}, 1, 35, 20)))
-    // console.log("pow(x) Avg gas cost and and avg error percent are: " + (await avgGasAndError((n) => {return printGas_pow('2.25', n)}, 0.1, 10, 20)))
+    // await avgGasAndError((n) => {return printGas_exp(n)}, 1, 89, 1000)
+    // await avgGasAndError((n) => {return printGas_exp_taylor(n)}, 1, 89, 1000)
+    // await avgGasAndError((n) => {return printGas_ln(n, 70)}, 1, 9**15, 1000)
+    // await avgGasAndError((n) => {return printGas_pow(randomNum(1,10).toString(), n)}, 1, 25, 500)
+    // await avgGasAndError((n) => {return printGas_pow(randomNum(10,100).toString(), n)}, 1, 10, 500)
 
+    //GAS AND ERROR RANGES and AVG
+    //func                   gas range       gas avg         error range         error avg
+    //ln(1 to 9e15, 70)      81k-84k         80789          0 to 3.62e-18          6.72e-19
+    // pow(1-10, 1-25)       109k-112k       108214         0 to 1.1e-15           3.32e-16
+    // pow(10-100, 1-10)     106-113k        108346         4.87e-19 to 7.13e-16   1.67e-16
+    // exp_taylor(1 to 89)   82-218k         133557         0 to 9.45e-17          9.83e-19
+    // exp(1 to 89)          52-55k          53089          0 to 2.26e-17         1.85e-19
+
+    //LIMITS
+
+    // func          limit
+    // exp(x)         ~exp(89)
+    // ln(x)          ~ln(1.1e+41 to 1.2e+41)
 
     // printGas_decMul18('10', '30')
 
-    // calcError(70, 60)
-    // printGas_expUpTo(100, 2.444500006443)
+    // printGas_expUpTo(100, 1)
     // printGas_exp('0.000000000000001')
 
+    // printGas_powBySquare18('1.0001552242434989', 11)
 
-    // printGas_expBySquare18('1.0001552242434989', 11)
-     // printGas_expBySquare18UpTo(2.234235454, 80, 3)
+    // printGas_powBySquare18UpTo(2.234235454, 10, 3)
 
     // ((num) => {log2(num, acc)},  val1, val2)
 
-      // printGas_expBySquare38('3', 3)
-      // printGas_expBySquare38UpTo(1.234235454, 80, 1)
-
+      // printGas_powBySquare38('1.34234', 3)
+      // printGas_powBySquare38UpTo('1.234235454', 80, 1)
 
     // printGas_lnUpTo(317, 70, 10.45600021324)
 
     // '2.00979700003993933000000098908000004453'
+    // Limit finders
+    // printGas_ln('110000000000000000000000000000000000000000', 70)
+    // printGas_ln('1200000000000000000000000000000000000000000', 70)
 
-    // printGas_ln('98788978989789789789232978978978978998122', 70)
-    // printGas_ln('98788978989789789789232978978978978998122', 99)
-    // printGas_pow('15.897897', '12.674456454')
+    // printGas_pow('20.897897', '22.674456454')
 
     // printGas_powUpTo(7.1, 90, 4.567)
-
 
     // printGas_ln('1.43235', 99)
 
@@ -344,7 +393,9 @@ module.exports = async () => {
     // printGas_expTaylorUpTo(100, 5)
     // printGas_exp('1.4989890797422')
 
-    // printGas_exp_taylor('20.518686786786878765')
+    // printGas_exp_taylor('0')
+    // printGas_exp_taylor('1')
+      // printGas_exp('1')
     // printGas_exp('20.518686786786878765')
 
     // printGas_log_2_UpTo(2, 80, 0.1)

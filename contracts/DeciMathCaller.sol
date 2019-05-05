@@ -28,32 +28,28 @@ contract DeciMathCaller {
     decimath.exp(n);
   }
 
-  function callExpBySquare18(uint b, uint x) public returns (uint) {
-    decimath.expBySquare18(b, x);
+  function callPowBySquare18(uint b, uint x) public returns (uint) {
+    decimath.powBySquare18(b, x);
   }
 
-  function callExpBySquare38(uint b, uint x) public returns (uint) {
-    decimath.expBySquare38(b, x);
+  function callPowBySquare38(uint b, uint x) public returns (uint) {
+    decimath.powBySquare38(b, x);
   }
 
   function callExpTaylor(uint n) public returns (uint) {
     decimath.exp_taylor(n);
   }
 
-  function callExp18(uint x, uint n) public returns (uint) {
-    decimath.expBySquare18(x, n);
-  }
-
   function callLog2(uint x, uint accuracy) public returns (uint) {
-    decimath.log2(x, accuracy);
+    decimath.log_2(x, accuracy);
   }
 
   function callLn(uint x, uint accuracy) public returns (uint) {
     decimath.ln(x, accuracy);
   }
 
-  function callTwoX(uint x) public returns (uint) {
-    decimath.two_x(x);
+  function callPow2(uint x) public returns (uint) {
+    decimath.pow2(x);
   }
 
   function callPow(uint base, uint x) public returns (uint) {

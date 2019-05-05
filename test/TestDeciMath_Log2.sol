@@ -10,41 +10,47 @@ contract TestDeciMath {
   DeciMath decimath = DeciMath(DeployedAddresses.DeciMath());
   WrappedDeciMath wrappedDeciMath = new WrappedDeciMath();
 
-  function setLookupTables() internal {
-    decimath.setAllLUTs();
+  function beforeAll_setLookupTables_chunk1() public {
+    decimath.setLUT1();
+    decimath.setLUT2();
   }
 
-/* ***** LOG2(x) - BASE-2 LOGARITHM ALGO  ***** */
+  function beforeAll_setLookupTables_chunk2() public {
+   decimath.setLUT3_1();
+   decimath.setLUT3_2();
+  }
 
-function test_log2_upperEdge() public {
-  setLookupTables();
-    Assert.equal(decimath.log2(1999999999999999999, 99), 999999999999999999278652479556, "failed");
+  function beforeAll_setLookupTables_chunk3() public {
+    decimath.setLUT3_3();
+    decimath.setLUT3_4();
+  }
+
+/* ***** log_2(x) - BASE-2 LOGARITHM ALGO  ***** */
+
+function test_log_2_upperEdge() public {
+    Assert.equal(decimath.log_2(1999999999999999999, 99), 999999999999999999278652479556, "failed");
 }
 
-function test_log2_lowerEdge() public {
-  setLookupTables();
-    Assert.equal(decimath.log2(1 ether, 99), 0, "failed");
+function test_log_2_lowerEdge() public {
+    Assert.equal(decimath.log_2(1 ether, 99), 0, "failed");
 }
 
- function test_log2() public {
-    setLookupTables();
-    Assert.equal(decimath.log2(1100000000000000000, 99), 137503523749934908329043617236, "failed");
-    Assert.equal(decimath.log2(1234512345123451234, 99), 303941263503238936812440378165, "failed");
-    Assert.equal(decimath.log2(1987654321987654321, 99), 991066875955820193573663024629, "failed");
-    Assert.equal(decimath.log2(1395000000123400000, 99), 480265122182081921161366921555, "failed");
+ function test_log_2() public {
+    Assert.equal(decimath.log_2(1100000000000000000, 99), 137503523749934908329043617236, "failed");
+    Assert.equal(decimath.log_2(1234512345123451234, 99), 303941263503238936812440378165, "failed");
+    Assert.equal(decimath.log_2(1987654321987654321, 99), 991066875955820193573663024629, "failed");
+    Assert.equal(decimath.log_2(1395000000123400000, 99), 480265122182081921161366921555, "failed");
  }
 
- // Log2 out-of-bounds tests
-  function test_log2_lessThan1() public {
-  setLookupTables();
+ // log_2 out-of-bounds tests
+  function test_log_2_lessThan1() public {
    TestRawCaller TestRawCaller = new TestRawCaller(address(wrappedDeciMath));
    WrappedDeciMath(address(TestRawCaller)).callLog2(0.9 ether, 99);
    bool r = TestRawCaller.execute.gas(200000)();
    Assert.isFalse(r, "Should be false - func should revert");
  }
 
- function test_log2_2orGreater() public {
-   setLookupTables();
+ function test_log_2_2orGreater() public {
    TestRawCaller TestRawCaller = new TestRawCaller(address(wrappedDeciMath));
    WrappedDeciMath(address(TestRawCaller)).callLog2(2 ether, 99);
    bool r = TestRawCaller.execute.gas(200000)();
@@ -102,15 +108,16 @@ Reason: https://github.com/trufflesuite/truffle/issues/1001 */
   function callExp (uint n) public {
       exp(n);
   }
-  function callexpBySquare18 (uint x, uint n) public {
-    expBySquare18(x, n);
+  
+  function callPowBySquare18 (uint x, uint n) public {
+    powBySquare18(x, n);
   }
 
   function callLog2 (uint x, uint precision) public {
-    log2(x, precision);
+    log_2(x, precision);
   }
 
-  function callTwoX (uint x) public {
-    two_x(x);
+  function callPow2 (uint x) public {
+    pow2(x);
   }
 }

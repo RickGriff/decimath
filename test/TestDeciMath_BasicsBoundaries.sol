@@ -108,15 +108,15 @@ Reason: https://github.com/trufflesuite/truffle/issues/1001 */
   function callExp (uint n) public {
       exp(n);
   }
-  function callexpBySquare18 (uint x, uint n) public {
-    expBySquare18(x, n);
+  function callPowBySquare18 (uint x, uint n) public {
+    powBySquare18(x, n);
   }
 
   function callLog2 (uint x, uint precision) public {
-    log2(x, precision);
+    log_2(x, precision);
   }
 
-  function callTwoX (uint x) public {
-    two_x(x);
+  function callPow2 (uint x) public {
+    pow2(x);
   }
 }

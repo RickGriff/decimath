@@ -12,10 +12,20 @@ contract TestDeciMath {
   uint TEN20 = 10**20;
   uint TEN30 = 10**30;
 
-  function setLookupTables() internal {
+  // break up LUT setters into two groups - avoids the *test setup* hitting gas limit
+  function beforeAll_setLookupTables_chunk1() public {
     decimath.setLUT1();
     decimath.setLUT2();
-    decimath.setLUT3();
+  }
+
+  function beforeAll_setLookupTables_chunk2() public {
+   decimath.setLUT3_1();
+   decimath.setLUT3_2();
+  }
+
+  function beforeAll_setLookupTables_chunk3() public {
+    decimath.setLUT3_3();
+    decimath.setLUT3_4();
   }
 
  /* ***** DECIMATH HELPER FUNCTIONS  ***** */
@@ -77,24 +87,23 @@ contract TestDeciMath {
    /* ***** LOOKUP TABLE SETTERS  ***** */
 
    function test_LookupTable1() public {
-      setLookupTables();
-      Assert.equal(decimath.ith_term(0), 0, "failed");
-      Assert.equal(decimath.ith_term(1), 70710678118654752440084436210484903927, "failed");
-      Assert.equal(decimath.ith_term(99), 99999999999999999999999999999890640660, "failed");
+      Assert.equal(decimath.table_log_2(0), 0, "failed");
+      Assert.equal(decimath.table_log_2(1), 70710678118654752440084436210484903928, "failed");
+      Assert.equal(decimath.table_log_2(99), 99999999999999999999999999999890640658, "failed");
     }
 
     function test_LookupTable2() public {
-      setLookupTables();
-      Assert.equal(decimath.powersOfTwo(0), 200000000000000000000000000000000000000, "failed");
-      Assert.equal(decimath.powersOfTwo(1), 50000000000000000000000000000000000000, "failed");
-      Assert.equal(decimath.powersOfTwo(99), 157772181, "failed");
+      Assert.equal(decimath.table2_log_2(0), 200000000000000000000000000000000000000, "failed");
+      Assert.equal(decimath.table2_log_2(1), 50000000000000000000000000000000000000, "failed");
+      Assert.equal(decimath.table2_log_2(99), 157772181, "failed");
     }
 
-     function test_LookupTable3() public {
+    /* Deprecated - LUT3 is now a 2D array. Can't call inner elements in Solidity
+      function test_LookupTable3() public {
       setLookupTables();
-      Assert.equal(decimath.term_2_x(0), 107177346253629316421300632502334202291, "failed");
-      Assert.equal(decimath.term_2_x(1), 100695555005671880883269821411323978545, "failed");
-      Assert.equal(decimath.term_2_x(20), 100000000000000000000069314718055994531, "failed");
-      Assert.equal(decimath.term_2_x(37),100000000000000000000000000000000000001, "failed");
-    }
+      Assert.equal(decimath.table_pow2(0), 107177346253629316421300632502334202291, "failed");
+      Assert.equal(decimath.table_pow2(1), 100695555005671880883269821411323978545, "failed");
+      Assert.equal(decimath.table_pow2(20), 100000000000000000000069314718055994531, "failed");
+      Assert.equal(decimath.table_pow2(37),100000000000000000000000000000000000001, "failed");
+    } */
 }

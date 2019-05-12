@@ -60,18 +60,13 @@ To avoid large deployment costs, set the LUTs with individual transactions after
 
 ### Basic mathematical functions, equivalent to SafeMath (not fixed-point)
 
-add(x,y)
+'add(x,y)'
 
-div(x,y)
+'div(x,y)'
 
-sub(x,y)
+'sub(x,y)'
 
-mul(x,y)
-
-
-### Exponentiation
-
-powBySquare(b, x). General exponentiation. Integer base, integer exponent. 
+'mul(x,y)'
 
 ### Fixed-point mathematical functions
 
@@ -123,9 +118,7 @@ When a function reverts due to overflow, the overflow error bubbles up from the 
 
 All functions have a level of imprecision - their usefulness depends, to a degree, on the level of accuracy you need.
 
-Error tables are found at the end of this document. You can use gasCalculator.js to calculate percentage errors and gas costs for specific input ranges.
-
-For every function, percentage error varies with input magnitude. 
+Error tables at the end of this document show how percentage errors vary with inputs. You can use gasCalculator.js to calculate errors and gas costs for specific input ranges.
 
 `ln(x)` is **very precise** - max percentage error is nearly constant, and outputs are always < 100 - thus ln(x) is always accurate to at least 17 decimal places.
 
@@ -135,7 +128,7 @@ For every function, percentage error varies with input magnitude.
 
 `pow(b,x)` **is most accurate in the middle ranges** - e.g base 0.1 - 10, with exponent 0 - 15, here it precise to at least several decimal places. 
 
-It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - i.e. domains with both large output and percentage error.
+It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - domains with both large output and percentage error.
 
 **For pow() with an integer exponent, use `powBySquare18()` over `pow()`** - it costs less gas, and offers better precision, particularly at higher base.
 
@@ -189,11 +182,11 @@ DeciMath-format BNs can be passed as function parameters via web3 contract calls
 
 ### Installation
 
-Copy makeBN.js in to your project (e.g. /scripts or /utils), and import makeBN.js to your front-end application:
+ - Copy makeBN.js in to your project (e.g. /scripts or /utils), and import makeBN.js to your front-end application:
 
 `const makeBN = require('./makeBN.js');`
 
-Then call the conversion functions as needed:
+ - Call the conversion functions as needed:
 
 **Convert string to DeciMath-format BN for a contract call:**
 
@@ -221,7 +214,7 @@ Use it to explore the gas costs and error percentages of the different math func
 
 The file runs as an external JS script in your Truffle development environment. All functions are async/await since they call the contract on the blockchain.
 
-### Execution 
+### Gas Calculator Setup
 
 - Copy gasCalculator.js and makeBN.js to your Truffle project - e.g. to /scripts
 - Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
@@ -245,13 +238,13 @@ exec gasCalculator.js
 
 Results will print to the console. Functions take string arguments, to avoid Javascript’s maximum integer limit.
 
-### The Gas Calculator
+### Gas and Error functions
 
-Individual DeciMath function calls - printGas_<mathFunction>(args)
+**One-off function calls - `printGas_...(args)`**
 
 These functions call their corresponding math function in DeciMath once. They log gas cost and percentage error to the console, and return them in an array. 
 
-Math function call loopers -printGasUpTo_<mathFunction>(args, n, increment)
+**Iterative function calls -`printGasUpTo_...(args, n, increment)`**
 
 These functions repeatedly call their corresponding DeciMath functions, with their main argument increasing from it’s minimum, to arbitrary n, in specified increments.
 

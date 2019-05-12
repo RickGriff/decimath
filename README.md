@@ -6,11 +6,11 @@ Solidity does not support native fixed-point mathematics, so I made DeciMath.
 
 ## Representing Decimals in Solidity
 
-In DeciMath, fixed-point decimals are represented by uints. Functions take uint parameters, and perform fixed-point operations, to a specified number of digits of precision.
+In DeciMath, fixed-point decimals are represented by uints. Functions take uint parameters, and perform fixed-point operations, to a specified number of digits of precision (DP).
 
 ### Input Examples
 
-| Number | uint representation at 18 digits of precision (18DP) |
+| Number | uint representation at 18 digits of precision |
 | ---------- | ------------------------------------------------------------------ |
 | 1 | 1000000000000000000 |
 | 1.25 | 1250000000000000000 |
@@ -22,11 +22,11 @@ In DeciMath, fixed-point decimals are represented by uints. Functions take uint 
 
 **Normal multiplication**:  
 
-2.5 * 0.005   *// returns 0.0125*
+`2.5 * 0.005     // returns 0.0125`
 
 **DeciMath multiplication**:
 
-decMul18(2500000000000000000, 50000000000000000)   *// returns 1250000000000000*
+`decMul18(2500000000000000000, 50000000000000000)     // returns 1250000000000000`
 
 ## Getting Started
 
@@ -61,9 +61,13 @@ To avoid large deployment costs, set the LUTs with individual transactions after
 ### Basic mathematical functions, equivalent to SafeMath (not fixed-point)
 
 add(x,y)
+
 div(x,y)
+
 sub(x,y)
+
 mul(x,y)
+
 
 ### Exponentiation
 
@@ -97,13 +101,13 @@ pow(b, x): b> 0, x > 0
 expBySquare(b, x): b>0, x>0
 expBySquare(b, x): b>0, x>0
 
-## Transcendental Function Gas Costs
+## Function Gas Costs
 
 The algorithms have gas costs in the following ranges (calculated from large sample of calls with randomized input params):
 
 | function            | gas range |
 |---------------------|-----------|
-| ln(x, accuracy =70) | 81k-84k   |
+| ln(x, accuracy=70)  | 81k-84k   |
 | exp(x)              | 52-55k    |
 | pow(b,x)            | 106k-115k |
 | powBySquare18(b,x)  | 24-31k    |
@@ -113,9 +117,9 @@ The algorithms have gas costs in the following ranges (calculated from large sam
 
 The DeciMath functions have near constant gas usage. Thanks to the lookup-table based algorithms, performance is stable for both very small and very large bases, exponents and arguments.
 
-The accuracy of ln(x) increases with the number of iterations in the algorithm (second argument). Above 70 iterations, accuracy plateaus - but gas continues to increase. You can use a lower number of iterations if you’re willing to trade accuracy for lower gas cost.
+The accuracy of ln(x) increases with the number of iterations in the algorithm. Above 70 iterations, accuracy plateaus - but gas continues to increase. You can use a lower number of iterations if you’re willing to trade accuracy for lower gas cost.
 
-The taylor expansion exp_taylor(x) gas increases in roughly linear proportion to the exponent. It is included mainly for comparison with the LUT-based algorithms.
+exp_taylor(x) gas increases in roughly linear proportion to the exponent. It is included for comparison with the LUT-based algorithms.
 
 ## Maximum Inputs - overflow limits
 
@@ -134,63 +138,60 @@ When a function reverts due to overflow, the overflow error bubbles up from the 
 ### Input Limits - Two-Parameter functions
 The maximum base is 1.1e41.  The max exponent depends on the base:
 
-pow(b,x)
+**pow(b,x)**
 
 For x < 1:
 
 | base                  | 1e-10' | 1e-6' | 1e-5' | 1e-4' | 0.001' | 0.01' | 0.1' | 0.5' |
 |-----------------------|--------|-------|-------|-------|--------|-------|------|------|
-| overflows for x > ... | 3.9    | 6.5   | 7.8   | 9.5   | 13     | 19    | 39   | 129  | 
+| overflow at x >  | 3.9    | 6.5   | 7.8   | 9.5   | 13     | 19    | 39   | 129  | 
  
 For x > 1:
 
 | base                  | 1.1' | 1.5' | 2'  | 10' | 50' | 100' | 1000' | 10000' | 1e5' | 1e6' | 1e10' | 1e20' | 1e30' | 1e40' |
 |-----------------------|------|------|-----|-----|-----|------|-------|--------|------|------|-------|-------|-------|-------|
-| overflows for x > ... | 940  | 220  | 129 | 39  | 22  | 19   | 13    | 9.5    | 7.8  | 6.5  | 3.9   | 1.85  | 1.3   | 0.95  |
+| overflow at x >  | 940  | 220  | 129 | 39  | 22  | 19   | 13    | 9.5    | 7.8  | 6.5  | 3.9   | 1.85  | 1.3   | 0.95  |
 
-powBySquare18(b,x)
+**powBySquare18(b,x)**
 
 | base                  | <1        | 1.1 | 1.5 | 2   | 10 | 50 | 100 | 1000 | 1e4' | 1e5' | 1e6' | 1e10' | 1e20' |
 |-----------------------|-----------|-----|-----|-----|----|----|-----|------|------|------|------|-------|-------|
-| overflows for x > ... | unlimited | 990 | 230 | 136 | 41 | 24 | 19  | 13   | 10   | 8    | 6    | 4     | 2     |
+| overflow at x > | unlimited | 990 | 230 | 136 | 41 | 24 | 19  | 13   | 10   | 8    | 6    | 4     | 2     |
 
 These are a sample of values. The two-parameter functions have a boundary overflow limit in the plane of (base, exponent) - higher bases have lower maximum exponents.
 
 
-
 ## Where are DeciMath Functions Useful?
 
-All functions produce some level of error - their usefulness depends, to a degree, on the level of precision you need.
+All functions have a level of imprecision - their usefulness depends, to a degree, on the level of accuracy you need.
 
-Error tables are provided below, and you can use gasCalculator.js to calculate errors and gas costs for specific ranges.
+Error tables are found at the end of this document. You can use gasCalculator.js to calculate percentage errors and gas costs for specific input ranges.
 
-For every function, relative error varies with input magnitude. 
+For every function, percentage error varies with input magnitude. 
 
-ln(x) is very precise - max percentage error is nearly constant, and outputs are always < 100, thus ln(x) is always accurate to at least 17 decimal places.
+`ln(x)` is very precise - max percentage error is nearly constant, and outputs are always < 100 - thus ln(x) is always accurate to at least 17 decimal places.
 
-Exp(x) and exp_taylor(x) have nearly constant percentage error, but output grows (of course) exponentially. 
+`exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. Thus, `exp()` functions are most precise at lower exponent.
 
-exp() functions are most precise at lower exponent.
+`exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
 
-exp(10) is accurate to at least 10 decimal places, while exp(60) is accurate to the nearest 1e6. 
+`pow(b,x)` is most accurate in the middle ranges - e.g base 0.1 - 10, with exponent 0 - 15, here it precise to at least several decimal places. 
 
-Pow(b,x) is most accurate in the middle ranges - e.g base 0.1 - 10, with exponent 0 - 15, it is precise to at least several decimal places. 
+It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - i.e. domains with both large output and percentage error.
 
-It is least accurate at the extremes: at high base, or base ~=1 with very high exponent. Domains with both large output and percentage error.
+If you need pow() with an integer exponent, use `powBySquare18()` over `pow()` - it costs less gas, and offers better precision, particularly at higher base.
 
-powBySquare18(b,x) - When computing pow() with integer exponent, use powBySquare18() over pow() - it costs less gas, and offers better precision, particularly at higher base.
+For base < 1, `powBySquare18(b,x)` has mostly zero error for exponent < 100. 
 
-For base < 1, powBySquare18() has mostly zero error for exponent < 100. 
-
-## Converting Numbers to and from DeciMath format in a JS Front-End
+## Convert Numbers to and from DeciMath format with makeBN.js 
 
 DeciMath inputs and outputs are always integer-representations of decimals. 
 
-DeciMath comes with the node module makeBN.js. It contains simple functions for converting numbers to and from DeciMath format.
+DeciMath comes with the node module makeBN.js for converting numbers to and from DeciMath format.
 
 ### Usage
 
-On the front-end, web3 accepts BN objects (integer BigNumbers) as contract call parameters. Use makeBN.js to convert numbers to uint representations of decimals that DeciMath expects, in BN form.
+On a dApp front-end, web3 accepts BN objects (integer BigNumbers) as contract call parameters. Use makeBN.js to convert numbers to uint representations of decimals that DeciMath expects, in BN form.
 
 DeciMath-format BNs can be passed as function parameters via web3 contract calls.
 
@@ -202,25 +203,25 @@ Copy makeBN.js in to your project (e.g. /scripts or /utils), and import makeBN.j
 
 Then call the conversion functions as needed:
 
-Convert string to DeciMath-format BN for a contract call
+**Convert string to DeciMath-format BN for a contract call:**
 `makeBN.makeBN18`  // convert a string to a uint representation of a decimal in BN form - for input to DeciMath functions via web3.
 
-E.g
-`makeBN18(‘0.0123’)`    / / return new BN(12300000000000000) 
+Example:
+`makeBN18(‘0.0123’)`    // return new BN(12300000000000000) 
 
-Convert a returned DeciMath-format BN to a Decimal
+**Convert a returned DeciMath-format BN to a Decimal:**
 `makeBN.makeDecimal18`  //convert a uint representation of a decimal in BN form - I.e. the return value of a web3 DeciMath contract call - to a JS Decimal object.
 
-E.g.
+Example:
 `makeDecimal18(BN(123456789987654321000000000))`    // return new Decimal(‘123456789.987654321’)
 
 makeBN requires the basic JS math libraries Decimal.js and BN.js.
 
 ## Calculating Gas and Error with gasCalculator.js
 
-DeciMath comes with a gas and error calculator - gasCalculator.js. It contains several functions for computing the gas & error of each DeciMath mathematical function.
+DeciMath comes with a gas and error calculator - gasCalculator.js. It contains several functions for computing the gas & error of each DeciMath math function.
 
-It allows you to thoroughly explore the gas costs and error percentages of the different math functions at different input ranges.
+Use it to explore the gas costs and error percentages of the different math functions at different input ranges.
 
 The file runs as an external JS script in your Truffle development environment. All functions are async/await since they call the contract on the blockchain.
 
@@ -230,17 +231,21 @@ The file runs as an external JS script in your Truffle development environment. 
 -Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
 
 -Launch your development blockchain (e.g. Ganache)
-- Compile and migrate your contracts:
+-Compile and migrate your contracts:
 
-`truffle compile`
-`truffle migrate --reset`
+```
+truffle compile
+truffle migrate --reset
+```
 
 To test particular gas and error of DeciMath functions, place the appropriate calculator function(s) at the end of the script, inside the ‘try’ block.
 
 In the gasCalculator directory, run:
 
-`truffle console`
-`exec gasCalculator.js`
+```
+truffle console
+exec gasCalculator.js
+```
 
 Results will print to the console. Functions take string arguments, to avoid Javascript’s maximum integer limit.
 
@@ -276,7 +281,7 @@ These tables show the maximum and average error for inputs in different ranges. 
 
 ### Single parameter functions
 
-ln(x)
+**ln(x)**
 
 | x            | Avg. gas | Min % error | Max % error  | Avg. % error |
 |--------------|----------|-----------|------------|------------|
@@ -287,7 +292,7 @@ ln(x)
 | 1e20 to 1e30 | 81529    | 0         | '1.5e-18', | '2.3e-19', |
 | 1e30 to 1e41 | 82564    | 0         | '1.1e-18', | '1.9e-19', |
 
-exp(x)
+**exp(x)**
 
 | x            | Avg. gas | Min % error | Max % error  | Avg. % error |
 |--------------|----------|-----------|------------|------------|
@@ -298,7 +303,7 @@ exp(x)
 | 1e20 to 1e30 | 81529    | 0         | '1.5e-18', | '2.3e-19', |
 | 1e30 to 1e41 | 82564    | 0         | '1.1e-18', | '1.9e-19', |
 
-exp_taylor(x)
+**exp_taylor(x)**
 
 | x        | Avg. gas | Min % error | Max % error | Avg. % error |
 |----------|----------|-----------|-----------|------------|
@@ -312,11 +317,11 @@ exp_taylor(x)
 
 Different bases have different max exponents before overflow. Here are max and average percentage error for different base ranges, up to the max exponent for the upper end of the range.
 
-pow(b,x)
+**pow(b,x)**
 
 | Base          | max exponent before overflow | Avg. gas | Min % error | Max % error | Avg. % error |
 |---------------|------------------------------|----------|-----------|-----------|------------|
-| b < 1         |                              |          |           |           |            |
+| **b < 1**         |                              |          |           |           |            |
 | 1e-6 to 1e-10 | 3.5                          | 108785   | 0         | 4.7e-16,  | 2.3e-18,   |
 | 1e-5 to 1e-6  | 6.5                          | 109532   | 0         | 1.8e-16,  | 1e-18,     |
 | 1e-4 to 1e-5  | 7.8                          | 109322   | 0         | 4.8e-16,  | 3.4e-18,   |
@@ -325,7 +330,7 @@ pow(b,x)
 | 0.1 to 0.01   | 19                           | 108835   | 0         | 3.6e-15,  | 1.2e-17,   |
 | 0.5 to 0.1    | 39                           | 108979   | 0         | 1.71e-15, | 8.3e-18,   |
 | 1 to 0.5      | 129                          | 108052   | 0         | 7.5e-14,  | 8.5e-16,   |
-| b > 1         |                              |          |           |           |            |
+|**b > 1**         |                              |          |           |           |            |
 | 1 to 1.1      | 940                          | 107073   | 3.6e-17   | 4.5e-14,  | 1.1e-14,   |
 | 1.1 to 1.5    | 220                          | 107609   | 0         | 1e-14,    | 2.6e-15,   |
 | 1.5 to 2      | 129                          | 108065   | 0         | 6.3e-15,  | 1.5e-15,   |
@@ -341,7 +346,7 @@ pow(b,x)
 | 1e20 to 1e30  | 1.3                          | 110492   | 0         | 1.1e-16,  | 3.2e-17,   |
 | 1e30 to 1e40  | 1.95                         | 111443   | 0         | 9.8e-17,  | 2.8e-17,   |
 
-powBySquare18(b,x)
+**powBySquare18(b,x)**
 
 | Base         | max exponent before overflow | Avg. gas | Min % error | Max % error   | Avg. % error |
 |--------------|------------------------------|----------|-----------|-------------|------------|

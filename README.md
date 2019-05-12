@@ -75,31 +75,15 @@ powBySquare(b, x). General exponentiation. Integer base, integer exponent.
 
 ### Fixed-point mathematical functions
 
-decMul18 - multiplies two fixed-point 18DP numbers
-devDiv18 - divides two fixed-point 18DP numbers
-exp(x) - The exponential function. Fixed-point 18DP exponent. Algorithm based on lookup tables.
-exp_taylor(x)- the exponential function. Algorithm based on taylor series expansion.
-ln(x) - The natural logarithm. Fixed-point 18DP argument
-powBySquare18(b, x) - General exponentiation. Fixed-point 18DP base, integer exponent
-pow(b, x). General exponentiation. Fixed-point 18DP base and exponent
-
-## Testing DeciMath Functions
-
-Tests for all functions are provided as .sol files in /tests, written for the Truffle framework.
-
-Copy tests to your /tests folder, and run:
-
-`truffle test`
-
-## Input ranges for which functions are valid
-
-ln(x): x > 1
-exp(x): x > 0    
-powBySquare(x): b >0, x > 0
-powBySquare18(x):  b > 0, x > 0
-pow(b, x): b> 0, x > 0
-expBySquare(b, x): b>0, x>0
-expBySquare(b, x): b>0, x>0
+| Function           | Input                            | Description                                                       | Valid for |
+|--------------------|----------------------------------|-------------------------------------------------------------------|-----------|
+| decMul18(x,y)      | Fixed-point 18DP                 | Multiplies two fixed-point numbers                                | x, y >= 0 |
+| devDiv18(x,y)      | Fixed-point 18DP                 | Divides one fixed-point by another                                | x, y > 0  |
+| exp(x)             | Fixed-point 18DP                 | Exponential function. Algorithm based on lookup tables.           | x >= 0    |
+| exp_taylor(x)      | Fixed-point 18DP                 | Exponential function. Algorithm based on taylor series expansion. | x >= 0    |
+| ln(x)              | Fixed-point 18DP                 | Natural logarithm.                                                | x >= 1    |
+| powBySquare18(b,x) | b: fixed-point 18 DP, x: integer | General exponentiation. Fixed-point base, integer exponent        | b, x >= 0 |
+| pow(b,x)           | Fixed-point 18DP                 | General exponentiation. Fixed-point base and exponent             | b, x >= 0 |
 
 ## Function Gas Costs
 
@@ -135,6 +119,28 @@ When a function reverts due to overflow, the overflow error bubbles up from the 
 | exp_taylor(x) | 92                    |
 | ln(x)         | 1.1e41'               |
 
+## Where are DeciMath Functions Useful?
+
+All functions have a level of imprecision - their usefulness depends, to a degree, on the level of accuracy you need.
+
+Error tables are found at the end of this document. You can use gasCalculator.js to calculate percentage errors and gas costs for specific input ranges.
+
+For every function, percentage error varies with input magnitude. 
+
+`ln(x)` is **very precise** - max percentage error is nearly constant, and outputs are always < 100 - thus ln(x) is always accurate to at least 17 decimal places.
+
+`exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. **Thus, `exp()` functions are most precise at lower exponent.**
+
+`exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
+
+`pow(b,x)` **is most accurate in the middle ranges** - e.g base 0.1 - 10, with exponent 0 - 15, here it precise to at least several decimal places. 
+
+It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - i.e. domains with both large output and percentage error.
+
+**For pow() with an integer exponent, use `powBySquare18()` over `pow()`** - it costs less gas, and offers better precision, particularly at higher base.
+
+For base < 1, `powBySquare18()` has mostly zero error for exponent < 100. 
+
 ### Input Limits - Two-Parameter functions
 The maximum base is 1.1e41.  The max exponent depends on the base:
 
@@ -161,27 +167,13 @@ For x > 1:
 These are a sample of values. The two-parameter functions have a boundary overflow limit in the plane of (base, exponent) - higher bases have lower maximum exponents.
 
 
-## Where are DeciMath Functions Useful?
+## Testing DeciMath Functions
 
-All functions have a level of imprecision - their usefulness depends, to a degree, on the level of accuracy you need.
+Tests for all functions are provided as .sol files in /tests, written for the Truffle framework.
 
-Error tables are found at the end of this document. You can use gasCalculator.js to calculate percentage errors and gas costs for specific input ranges.
+Copy tests to your /tests folder, and run:
 
-For every function, percentage error varies with input magnitude. 
-
-`ln(x)` is very precise - max percentage error is nearly constant, and outputs are always < 100 - thus ln(x) is always accurate to at least 17 decimal places.
-
-`exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. Thus, `exp()` functions are most precise at lower exponent.
-
-`exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
-
-`pow(b,x)` is most accurate in the middle ranges - e.g base 0.1 - 10, with exponent 0 - 15, here it precise to at least several decimal places. 
-
-It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - i.e. domains with both large output and percentage error.
-
-If you need pow() with an integer exponent, use `powBySquare18()` over `pow()` - it costs less gas, and offers better precision, particularly at higher base.
-
-For base < 1, `powBySquare18(b,x)` has mostly zero error for exponent < 100. 
+`truffle test`
 
 ## Convert Numbers to and from DeciMath format with makeBN.js 
 
@@ -204,16 +196,20 @@ Copy makeBN.js in to your project (e.g. /scripts or /utils), and import makeBN.j
 Then call the conversion functions as needed:
 
 **Convert string to DeciMath-format BN for a contract call:**
-`makeBN.makeBN18`  // convert a string to a uint representation of a decimal in BN form - for input to DeciMath functions via web3.
+
+`makeBN.makeBN1`  // convert a string to a uint representation of a decimal in BN form - for input to DeciMath functions via web3.
 
 Example:
+
 `makeBN18(‘0.0123’)`    // return new BN(12300000000000000) 
 
 **Convert a returned DeciMath-format BN to a Decimal:**
+
 `makeBN.makeDecimal18`  //convert a uint representation of a decimal in BN form - I.e. the return value of a web3 DeciMath contract call - to a JS Decimal object.
 
 Example:
-`makeDecimal18(BN(123456789987654321000000000))`    // return new Decimal(‘123456789.987654321’)
+
+`makeDecimal18(BN(123456789987654321000000000))`  // return new Decimal(‘123456789.987654321’)
 
 makeBN requires the basic JS math libraries Decimal.js and BN.js.
 
@@ -227,11 +223,11 @@ The file runs as an external JS script in your Truffle development environment. 
 
 ### Execution 
 
--Copy gasCalculator.js and makeBN.js to your Truffle project - e.g. to /scripts
--Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
+- Copy gasCalculator.js and makeBN.js to your Truffle project - e.g. to /scripts
+- Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
 
--Launch your development blockchain (e.g. Ganache)
--Compile and migrate your contracts:
+- Launch your development blockchain (e.g. Ganache)
+- Compile and migrate your contracts:
 
 ```
 truffle compile
@@ -240,7 +236,7 @@ truffle migrate --reset
 
 To test particular gas and error of DeciMath functions, place the appropriate calculator function(s) at the end of the script, inside the ‘try’ block.
 
-In the gasCalculator directory, run:
+- In the gasCalculator directory, run:
 
 ```
 truffle console

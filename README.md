@@ -5,7 +5,7 @@
   * [DeciMath Functions](#decimath-functions)
   * [Function Gas Costs](#function-gas-costs)
   * [Maximum Inputs - overflow limits](#maximum-inputs---overflow-limits)
-  * [Where are DeciMath Functions Useful?](#where-are-decimath-functions-useful?-)
+  * [Where are DeciMath Functions Useful?](#where-are-decimath-functions-useful?)
   * [Testing DeciMath Functions](#testing-decimath-functions)
   * [Convert Numbers to and from DeciMath format with makeBN.js](#convert-numbers-to-and-from-decimath-format-with-makebnjs)
   * [Calculating Gas and Error with gasCalculator.js](#calculating-gas-and-error-with-gascalculatorjs)
@@ -100,15 +100,16 @@ The algorithms have gas costs in the following ranges (calculated from large sam
 
 | function            | gas range |
 |---------------------|-----------|
-| ln(x, accuracy=70)  | 81k-84k   |
-| exp(x)              | 52-55k    |
-| pow(b,x)            | 106k-115k |
-| powBySquare18(b,x)  | 24-31k    |
-| powBySquare(b,x)    | 24-30k    |     
-| exp_taylor(x)       | 82-218k   |
+| ln(x, accuracy=70)  | 60-63k   |
+| exp(x)              | 31-34k    |
+| pow(b,x)            | 85k-94k |
+| powBySquare18(b,x)  | 3-10k    |
+| powBySquare(b,x)    | 3-10k    |     
+| exp_taylor(x)       | 14-197k   |
    
+The 21k transaction fee is excluded.
 
-The DeciMath functions have near constant gas usage. Thanks to the lookup-table based algorithms, performance is stable for both very small and very large bases, exponents and arguments.
+Thanks to the lookup-table algorithms, **DeciMath functions have near constant gas usage.**  Prformance is stable for both very small and very large bases, exponents and arguments.
 
 The accuracy of `ln(x)` increases with the number of iterations in the algorithm. Above 70 iterations, accuracy plateaus - but gas continues to increase. You can use a lower number of iterations if you’re willing to trade accuracy for lower gas cost.
 
@@ -285,33 +286,33 @@ These tables show the maximum and average error for inputs in different ranges. 
 
 | x            | Avg. gas | Min % error | Max % error  | Avg. % error |
 |--------------|----------|-----------|------------|------------|
-| 1 to 10      | 79616    | 0         | 1.4e-16 | 9.4e-18 |
-| 10 to 1000   | 79638    | 0         | 4.6e-17 | 2.3e-18 |
-| 1000 to1e10  | 80243    | 0         | 4.9e-18 | 8.4e-19 |
-| 1e10 to 1e20 | 81089    | 0         | 2.3e-18 | 3.6e-19 |
-| 1e20 to 1e30 | 81529    | 0         | 1.5e-18 | 2.3e-19 |
-| 1e30 to 1e41 | 82564    | 0         | 1.1e-18 | 1.9e-19 |
+| 1 to 10      | 58616    | 0         | 1.4e-16 | 9.4e-18 |
+| 10 to 1000   | 58638    | 0         | 4.6e-17 | 2.3e-18 |
+| 1000 to1e10  | 59243    | 0         | 4.9e-18 | 8.4e-19 |
+| 1e10 to 1e20 | 60089    | 0         | 2.3e-18 | 3.6e-19 |
+| 1e20 to 1e30 | 60529    | 0         | 1.5e-18 | 2.3e-19 |
+| 1e30 to 1e41 | 61564    | 0         | 1.1e-18 | 1.9e-19 |
 
 **exp(x)**
 
 | x            | Avg. gas | Min % error | Max % error  | Avg. % error |
 |--------------|----------|-----------|------------|------------|
-| 1 to 10      | 79616    | 0         | 1.4e-16 | 9.4e-18 |
-| 10 to 1000   | 79638    | 0         | 4.6e-17 | 2.3e-18 |
-| 1000 to1e10  | 80243    | 0         | 4.9e-18 | 8.4e-19 |
-| 1e10 to 1e20 | 81089    | 0         | 2.3e-18 | 3.6e-19 |
-| 1e20 to 1e30 | 81529    | 0         | 1.5e-18 | 2.3e-19 |
-| 1e30 to 1e41 | 82564    | 0         | 1.1e-18 | 1.9e-19 |
+| 1 to 10      | 58616    | 0         | 1.4e-16 | 9.4e-18 |
+| 10 to 1000   | 58638    | 0         | 4.6e-17 | 2.3e-18 |
+| 1000 to1e10  | 59243    | 0         | 4.9e-18 | 8.4e-19 |
+| 1e10 to 1e20 | 60089    | 0         | 2.3e-18 | 3.6e-19 |
+| 1e20 to 1e30 | 60529    | 0         | 1.5e-18 | 2.3e-19 |
+| 1e30 to 1e41 | 61564    | 0         | 1.1e-18 | 1.9e-19 |
 
 **exp_taylor(x)**
 
 | x        | Avg. gas | Min % error | Max % error | Avg. % error |
 |----------|----------|-----------|-----------|------------|
-| 0 to 1   | 35240    | 0         | 2.8e-16 | 6e-17     |
-| 1 to 10  | 51966    | 0         | 1.4e-16  | 8e-18     |
-| 10 to 30 | 83302    | 5.4e-22', | 1.2e-18  | 2e-19     |
-| 30 to 60 | 133004   | 5.6e-22'  | 1.3e-19  | 3e-20     |
-| 60 to 92 | 189357   | 8.8e-23   | 3.8e-20  | 1e-20     |
+| 0 to 1   | 14240    | 0         | 2.8e-16 | 6e-17     |
+| 1 to 10  | 30966    | 0         | 1.4e-16  | 8e-18     |
+| 10 to 30 | 62302    | 5.4e-22', | 1.2e-18  | 2e-19     |
+| 30 to 60 | 112004   | 5.6e-22'  | 1.3e-19  | 3e-20     |
+| 60 to 92 | 168357   | 8.8e-23   | 3.8e-20  | 1e-20     |
 
 ### Errors Estimates - Two-Parameter Functions
 
@@ -322,45 +323,45 @@ Different bases have different max exponents before overflow. Here are max and a
 | Base          | max exponent before overflow | Avg. gas | Min % error | Max % error | Avg. % error |
 |---------------|------------------------------|----------|-----------|-----------|------------|
 | **b < 1**         |                              |          |           |           |            |
-| 1e-6 to 1e-10 | 3.5                          | 108785   | 0         | 4.7e-16  | 2.3e-18   |
-| 1e-5 to 1e-6  | 6.5                          | 109532   | 0         | 1.8e-16  | 1e-18     |
-| 1e-4 to 1e-5  | 7.8                          | 109322   | 0         | 4.8e-16  | 3.4e-18   |
-| 1e-3 to 1e-4  | 9.5                          | 109151   | 0         | 1.7e-16  | 5.7e-19   |
-| 0.01 to 1e-3  | 13                           | 108835   | 0         | 1.5e-16  | 5e-19     |
-| 0.1 to 0.01   | 19                           | 108835   | 0         | 3.6e-15  | 1.2e-17   |
-| 0.5 to 0.1    | 39                           | 108979   | 0         | 1.71e-15 | 8.3e-18   |
-| 1 to 0.5      | 129                          | 108052   | 0         | 7.5e-14  | 8.5e-16   |
+| 1e-6 to 1e-10 | 3.5                          | 87785   | 0         | 4.7e-16  | 2.3e-18   |
+| 1e-5 to 1e-6  | 6.5                          | 88532   | 0         | 1.8e-16  | 1e-18     |
+| 1e-4 to 1e-5  | 7.8                          | 88322   | 0         | 4.8e-16  | 3.4e-18   |
+| 1e-3 to 1e-4  | 9.5                          | 88151   | 0         | 1.7e-16  | 5.7e-19   |
+| 0.01 to 1e-3  | 13                           | 87835   | 0         | 1.5e-16  | 5e-19     |
+| 0.1 to 0.01   | 19                           | 87835   | 0         | 3.6e-15  | 1.2e-17   |
+| 0.5 to 0.1    | 39                           | 87979   | 0         | 1.71e-15 | 8.3e-18   |
+| 1 to 0.5      | 129                          | 87052   | 0         | 7.5e-14  | 8.5e-16   |
 |**b > 1**         |                              |          |           |           |            |
-| 1 to 1.1      | 940                          | 107073   | 3.6e-17   | 4.5e-14  | 1.1e-14   |
-| 1.1 to 1.5    | 220                          | 107609   | 0         | 1e-14    | 2.6e-15   |
-| 1.5 to 2      | 129                          | 108065   | 0         | 6.3e-15  | 1.5e-15   |
-| 2 to 10       | 39                           | 108550   | 0         | 2.7e-15  | 6e-16     |
-| 10 to 50      | 22                           | 108418   | 0         | 1.6e-15  | 3.2e-16   |
-| 50 to 100     | 19                           | 108467   | 0         | 1.1e-15  | 2.7e-16   |
-| 100 to 1000   | 13                           | 108344   | 0         | 1.e-15   | 1.8e-16   |
-| 1000 to 10^4  | 9.5                          | 109159   | 0         | 9.3e-16  | 1.7e-16   |
-| 1e4 to 1e5    | 7.8                          | 108943   | 0         | 5.4e-16  | 1e-16     |
-| 1e5 to 1e6    | 6.5                          | 109165   | 0         | 5.5e-16  | 9e-17     |
-| 1e6 to1e10    | 3.9                          | 108992   | 0         | 3.0e-16  | 5.6e-17   |
-| 1e10 to 1e20  | 1.85                         | 109872   | 0         | 1.6e-16  | 3.9e-17   |
-| 1e20 to 1e30  | 1.3                          | 110492   | 0         | 1.1e-16  | 3.2e-17   |
-| 1e30 to 1e40  | 1.95                         | 111443   | 0         | 9.8e-17  | 2.8e-17   |
+| 1 to 1.1      | 940                          | 86073   | 3.6e-17   | 4.5e-14  | 1.1e-14   |
+| 1.1 to 1.5    | 220                          | 86609   | 0         | 1e-14    | 2.6e-15   |
+| 1.5 to 2      | 129                          | 87065   | 0         | 6.3e-15  | 1.5e-15   |
+| 2 to 10       | 39                           | 87550   | 0         | 2.7e-15  | 6e-16     |
+| 10 to 50      | 22                           | 87418   | 0         | 1.6e-15  | 3.2e-16   |
+| 50 to 100     | 19                           | 87467   | 0         | 1.1e-15  | 2.7e-16   |
+| 100 to 1000   | 13                           | 87344   | 0         | 1.e-15   | 1.8e-16   |
+| 1000 to 10^4  | 9.5                          | 88159   | 0         | 9.3e-16  | 1.7e-16   |
+| 1e4 to 1e5    | 7.8                          | 87943   | 0         | 5.4e-16  | 1e-16     |
+| 1e5 to 1e6    | 6.5                          | 88165   | 0         | 5.5e-16  | 9e-17     |
+| 1e6 to1e10    | 3.9                          | 87992   | 0         | 3.0e-16  | 5.6e-17   |
+| 1e10 to 1e20  | 1.85                         | 88872   | 0         | 1.6e-16  | 3.9e-17   |
+| 1e20 to 1e30  | 1.3                          | 89492   | 0         | 1.1e-16  | 3.2e-17   |
+| 1e30 to 1e40  | 1.95                         | 90443   | 0         | 9.8e-17  | 2.8e-17   |
 
 **powBySquare18(b,x)**
 
 | Base         | max exponent before overflow | Avg. gas | Min % error | Max % error   | Avg. % error |
 |--------------|------------------------------|----------|-----------|-------------|------------|
-| 1 to 1.1     | 990                          | 29914    | 0         | 3.04e-14 | 6.5e-15 |
-| 1.1 to 1.5   | 230                          | 29701    | 0         | 4.5e-15  | 8.6e-16 |
-| 1.5 to 2     | 136                          | 28052    | 0         | 1.4e-15  | 2.8e-16 |
-| 2 to 10      | 41                           | 27098    | 0         | 1.2e-16  | 1.1e-17 |
-| 10 to 50     | 24                           | 26624    | 0         | 2.7e-18  | 2.4e-19 |
-| 50 to 100    | 19                           | 26491    | 0         | 1.3e-19  | 2.1e-20 |
-| 100 to 1000  | 13                           | 26193    | 0         | 1.9e-20  | 7.6e-22 |
-| 1000 to 1e4  | 10                           | 26062    | 0         | 8.1e-23  | 4.7e-24 |
-| 1e4 to 1e5   | 8                            | 25915    | 0         | 8.7e-25  | 3.3e-26 |
-| 1e5 to 1e6   | 6                            | 25638    | 0         | 6.4e-27  | 1.8e-28 |
-| 1e6 to 1e10  | 4                            | 25536    | 0         | 4.5e-34  | 2.9e-36 |
-| 1e10 to 1e20 | 2                            | 25592    | 0         | 4.1e-48  | 2.4e-49 |
+| 1 to 1.1     | 990                          | 8914    | 0         | 3.04e-14 | 6.5e-15 |
+| 1.1 to 1.5   | 230                          | 8701    | 0         | 4.5e-15  | 8.6e-16 |
+| 1.5 to 2     | 136                          | 7052    | 0         | 1.4e-15  | 2.8e-16 |
+| 2 to 10      | 41                           | 6098    | 0         | 1.2e-16  | 1.1e-17 |
+| 10 to 50     | 24                           | 5624    | 0         | 2.7e-18  | 2.4e-19 |
+| 50 to 100    | 19                           | 5491    | 0         | 1.3e-19  | 2.1e-20 |
+| 100 to 1000  | 13                           | 5193    | 0         | 1.9e-20  | 7.6e-22 |
+| 1000 to 1e4  | 10                           | 5062    | 0         | 8.1e-23  | 4.7e-24 |
+| 1e4 to 1e5   | 8                            | 4915    | 0         | 8.7e-25  | 3.3e-26 |
+| 1e5 to 1e6   | 6                            | 4638    | 0         | 6.4e-27  | 1.8e-28 |
+| 1e6 to 1e10  | 4                            | 4536    | 0         | 4.5e-34  | 2.9e-36 |
+| 1e10 to 1e20 | 2                            | 4592    | 0         | 4.1e-48  | 2.4e-49 |
 
 ## License

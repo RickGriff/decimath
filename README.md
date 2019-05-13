@@ -109,7 +109,7 @@ The algorithms have gas costs in the following ranges (calculated from large sam
    
 The 21k transaction fee is excluded.
 
-Thanks to the lookup-table algorithms, **DeciMath functions have near constant gas usage.**  Prformance is stable for both very small and very large bases, exponents and arguments.
+Thanks to the lookup-table algorithms, **DeciMath functions have near constant gas usage.**  Performance is stable for both very small and very large bases, exponents and arguments.
 
 The accuracy of `ln(x)` increases with the number of iterations in the algorithm. Above 70 iterations, accuracy plateaus - but gas continues to increase. You can use a lower number of iterations if you’re willing to trade accuracy for lower gas cost.
 

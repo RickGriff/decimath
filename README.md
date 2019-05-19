@@ -14,7 +14,7 @@
 
 # DeciMath 
 
-DeciMath is an efficient-gas parent contract for fixed-point mathematics in Solidity. It offers basic decimal operations, and as well as transcendental functions - exp(x), ln(x) and pow(b, x) - for numbers of 18-decimal-place precision.
+DeciMath is an efficient-gas parent contract for fixed-point mathematics in Solidity. It offers basic decimal operations, and as well as transcendental functions - `exp(x)`, `ln(x)` and `pow(b, x)` - for numbers of 18-decimal-place precision.
 
 Solidity does not support native fixed-point mathematics, so I made DeciMath.
 
@@ -54,7 +54,7 @@ DeciMath uses three lookup tables (LUTs) in its algorithms for efficient computa
 
 Before you can call math functions on a deployed DeciMath instance, you need to set the lookup tables - I.e. write the table data to your contract’s storage.
 
-With your DeciMath instance deployed, you must manually call the table setter functions via separate transactions before you can use the the exp(), ln() or pow() functions.
+With your DeciMath instance deployed, you must manually call the table setter functions via separate transactions before you can use the the `exp()`, `ln()` or `pow()` functions.
 
 Set lookup tables by calling the LUT setter functions **once each**:
 

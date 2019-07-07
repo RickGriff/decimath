@@ -59,16 +59,9 @@ function test_pow2_2orGreater() public {
  }
 }
 
-
 /* ***** TEST HELPER CONTRACTS  ***** */
 
-/* TestRawCaller is a proxy contract, used to test for reversion.
-Raw calls in Solidity return a boolean -- true if successful execution, false if the call reverts.
-
-Usage in tests:
--A TestRawCaller instance R points to a target contract A.
--Calling A's function 'someFunc' on R triggers R's fallback function, which stores the someFunc call data in R's storage.
--R.execute() executes the raw call A.someFunc, which returns a boolean. */
+/*TestRawCaller is a proxy contract, used to test for reversion. */
 contract TestRawCaller {
    address public target;
   bytes data;
@@ -91,11 +84,7 @@ contract TestRawCaller {
   }
 }
 
-/* A wrapper contract is also needed for the reversion tests.
-The Wrapper contract inherits from the target contract.
-The TestRawCaller must point to an instance of the Wrapper contract, with funcs that call the target's funcs.
-
-Reason: https://github.com/trufflesuite/truffle/issues/1001 */
+/* Wrapper contract, needed for the reversion tests. */
 contract WrappedDeciMath is DeciMath {
 
     function calldecMul18 (uint x, uint y) public {

@@ -97,13 +97,4 @@ contract TestDeciMath {
       Assert.equal(decimath.table2_log_2(1), 50000000000000000000000000000000000000, "failed");
       Assert.equal(decimath.table2_log_2(99), 157772181, "failed");
     }
-
-    /* Deprecated - LUT3 is now a 2D array. Can't call inner elements in Solidity
-      function test_LookupTable3() public {
-      setLookupTables();
-      Assert.equal(decimath.table_pow2(0), 107177346253629316421300632502334202291, "failed");
-      Assert.equal(decimath.table_pow2(1), 100695555005671880883269821411323978545, "failed");
-      Assert.equal(decimath.table_pow2(20), 100000000000000000000069314718055994531, "failed");
-      Assert.equal(decimath.table_pow2(37),100000000000000000000000000000000000001, "failed");
-    } */
 }

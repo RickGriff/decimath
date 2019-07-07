@@ -102,7 +102,6 @@ describe('makeDecimal38', function() {
 
     a = makeBN.makeBN38('5.098093869086')
     dec = makeBN.makeDecimal38(a)
-
     assert.equal(dec.valueOf(), 5.098093869086)
 
     a = makeBN.makeBN38('9.876543219876543219876543219876543219')

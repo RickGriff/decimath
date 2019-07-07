@@ -1,10 +1,11 @@
 const BN = require('bn.js');
 const Decimal = require('decimal.js');
+// const BigNumber = require('decimal.js');
 
 /* Helper functions for converting string-ified decimal numbers to integer representations.
 
-Why? DeciMath contract functions require 'uint' representations of fixed-point decimals.
-Since inputs can exceed the maximum safe integer in JS (~ 9e+15), we make a BigNum (BNs) from a string, and then
+Why? DeciMath contract functions require 'uint' representations of fixed-point decimals as arguments.
+Since inputs can exceed the maximum safe integer in JS (~ 9e+15), we make a BigNum (BN) from a string, and then
 pass it to a DeciMath function.
 
 Example usage:
@@ -12,17 +13,27 @@ Input: makeBN18('999.123456789987654321') ---->  Output: new BN('999123456789987
 Input: makeBN18('1.000000000000000001')  ---->  Output: new BN('1000000000000000001', 10) */
 
 // Convert a string-ified decimal to a BN of arbitrary decimal places
-const makeBN = (strNum, sigFigures) => {
-  if (typeof strNum !== "string" ) { throw "MakeBN error: input must be type String" }
+const makeBN = (num, precision) => {
+  let strNum = num.toString()
+
+  checkOnlyNumericChars(strNum);
 
   const intPart = strNum.split(".")[0]
   const fractionPart = strNum.includes(".") ? strNum.split(".")[1] : ""
 
-  if (fractionPart.length > sigFigures) throw "argument must have <= " + sigFigures + " decimal places"
+  if (fractionPart.length > precision) throw "argument must have <= " + precision + " decimal places"
 
-  const trailingZeros = "0".repeat(sigFigures - fractionPart.length)
+  const trailingZeros = "0".repeat(precision - fractionPart.length)
   const bigNumArg = intPart + fractionPart + trailingZeros
   return new BN(bigNumArg, 10)
+}
+
+const checkOnlyNumericChars = (input) => {
+  try { 
+    let num = new Decimal(strNum)
+  } catch (err) {
+    return "MakeBN error: input must be number or stringified number, no non-numeric characters"
+  }
 }
 
 const makeBN18 = (strNum) => {

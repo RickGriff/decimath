@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 import './DeciMath.sol';
 
-/* Proxy contract. ONLY NEEDED FOR TESTS. Used to call DeciMath functions.
+/* Proxy contract. ONLY NEEDED FOR GAS CALCULATOR SCRIPTS. Used to call DeciMath functions.
 
 The Proxy allows us to calculate actual gas used in DeciMath 'view' functions.
 Local calls to view functions use 0 gas, so to check gas we call them as part of a transaction, via this proxy contract.

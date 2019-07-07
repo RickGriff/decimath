@@ -18,21 +18,21 @@ contract DeciMath {
   uint constant LN2 = 693147180559945309417232121458; // to 30 DP
   //17656808;
 
-  //  1/ln(2) - used in exp(x)
+  // 1/ln(2) - used in exp(x)
   uint constant ONE_OVER_LN2 = 1442695040888963407359924681002; // to 30 DP
 
 
  /***** LOOKUP TABLES *****/
 
 
-  //Lookup table arrays (LUTs)  for log_2(x)
+  // Lookup table arrays (LUTs)  for log_2(x)
   uint[100] public table_log_2;
   uint[100] public table2_log_2;
 
-  //Lookup table for pow2()
+  // Lookup table for pow2()
   /* uint[38] public table_pow2; */
 
-  // Lookup table for pow2(). 2D array: 39 arrays, each contain 10 uints.
+  // Lookup table for pow2(). Table contains 39 arrays, each array contains 10 uint slots.
   uint[10][39] public table_pow2;
 
   // To set LUTs, call the relevant setLUT() function.
@@ -53,35 +53,29 @@ contract DeciMath {
         return 0;
     }
     uint256 c = a * b;
-    require(c / a == b);
+    require(c / a == b, "uint overflow from multiplication");
     return c;
   }
 
   function div(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b > 0);
+    require(b > 0, "division by zero");
     uint256 c = a / b;
     return c;
   }
 
   function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b <= a);
+    require(b <= a, "uint underflow from subtraction");
     uint256 c = a - b;
     return c;
   }
 
   function add(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a + b;
-    require(c >= a);
+    require(c >= a, "uint overflow from multiplication");
     return c;
   }
 
-  function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-    require(b != 0);
-    return a % b;
-  }
-
-  //Basic decimal math operators. Inputs and output are uint representations of fixed-point decimals.
-
+  // Basic decimal math operators. Inputs and output are uint representations of fixed-point decimals.
 
   // 18 Decimal places
   function decMul18(uint x, uint y) public pure returns (uint decProd) {
@@ -157,10 +151,10 @@ contract DeciMath {
     return digits;
   }
 
-    /* b^x functions for integer exponent. Use  highly performant 'exponetiation-by-squaring' algorithm
-     - O(log(n)) operations. */
+  /* b^x functions for integer exponent. Use highly performant 'exponentiation-by-squaring' algorithm
+  - O(log(n)) operations. */
 
-    // Integer base, integer exponent
+  // Integer base, integer exponent
   function powBySquare(uint x, uint n) public pure returns (uint) {
     if (n == 0)
       return 1;
@@ -179,7 +173,7 @@ contract DeciMath {
     return mul(x, y);
   }
 
-      //Fixed-point 18DP base, integer exponent n
+  //Fixed-point 18DP base, integer exponent n
   function powBySquare18(uint base, uint n) public pure returns (uint) {
     if (n == 0)
     return TEN18;
@@ -199,7 +193,7 @@ contract DeciMath {
     return decMul18(base, y);
   }
 
-        //Fixed-point 38DP base, integer exponent n
+  //Fixed-point 38DP base, integer exponent n
   function powBySquare38(uint base, uint n) public pure returns (uint) {
     if (n == 0)
     return TEN38;
@@ -219,11 +213,11 @@ contract DeciMath {
     return decMul38(base, y);
   }
 
-  /* EXP(x). Use identities:
+  /* EXP(x). Uses identities:
 
   A) e^x = 2^(x / ln(2))
   and
-  B) 2^y = (2^r) * 2^(x - r); where r = floor(x) - 1, and (x - r) is in range [1,2[
+  B) 2^y = (2^r) * 2^(y - r); where r = floor(y) - 1, and (y - r) is in range [1,2[
   Input 18 DP, output 18 DP.
   */
   function exp(uint x) public view returns (uint num) {
@@ -283,28 +277,6 @@ contract DeciMath {
     return convert38To30DP(output);
   }
 
-  /* Deprecated pow2(x) function, v1. Retired in favor of a pow2 function with
-  a more extensive LUT, for better gas efficiency.
-
-   function pow2(uint x) _LUT1andLUT2AreSet public view returns (uint) {
-    require (tablesAreSet, 'Lookup tables must be set');
-    require(x >= TEN20 && x < 2 * TEN20, 'input x must be within range [1,2[');
-    uint x_38dp = x * TEN18;
-    uint prod = 2 * TEN38;
-    uint fractPart = x_38dp % TEN38;
-    uint digitsLength = countDigits(fractPart);
-
-    // loop backwards through mantissa digits. Multiply each by the Lookup-table value
-    for (uint i = 0; i < digitsLength; i++) {
-      uint digit  = ( fractPart % (10 ** (i + 1))) / (10 ** i); // grab the i'th digit from right
-
-      // computer i'th term, and new product
-      uint term = powBySquare38(table_pow2[37 - i], digit);
-      prod = decMul38(prod, term);
-    }
-    return prod;
-  } */
-
   /* pow2(x) function, v2. Uses 2D-array LUT. Valid for x in range [1,2[.
   Input 20DP, output 38DP ( for use in exp(x) ) */
   function pow2(uint x) _onlyLUT3isSet public view returns (uint) {
@@ -348,7 +320,7 @@ contract DeciMath {
     /* Calculate q.
 
     Use branches to divide by powers-of-two, until output is in [1,2[.
-    Branch approach is performant than simple successive division by 2.
+    Branch approach is more performant than simple successive division by 2.
     As max input of ln(x) is ~10^40 ~= 2^132, starting division at 2^30 yields sufficiently few operations for large x. */
     while (x >= 2 * TEN18 ) { // Conditionals need primary expressions - can't use "mul". No risk of overflow.
       if (x >= 1073741824 * TEN18) {
@@ -392,12 +364,6 @@ contract DeciMath {
         count += 1;
       }
     }
-
-    //naive ln(x) repeated div by 2
-    /* while (x >= 2 * TEN18 ) {
-      x = decDiv18(x, 2 * TEN18);
-      count += 1;
-    } */
 
     uint q =  count * TEN30;
     uint output = decMul30(LN2, add(q, log_2(x, accuracy)));
@@ -635,7 +601,8 @@ contract DeciMath {
     LUT2_isSet = true;
   }
 
-  /* LUT for pow2() function. 2-D Array. table_pow2[i][d] = (2^(1 / 10^(i + 1))) ** d.  d ranges 0-9. */
+  /* LUT for pow2() function. 2-D Array. table_pow2[i][d] = (2^(1 / 10^(i + 1))) ** d.  
+  d ranges 0-9. */
   function setLUT3_1() public {
   table_pow2[0][0] = 100000000000000000000000000000000000000;
   table_pow2[0][1] = 107177346253629316421300632502334202291;

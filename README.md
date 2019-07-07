@@ -121,7 +121,7 @@ All functions have a level of imprecision - their usefulness depends, to a degre
 
 Error tables at the end of this document show how percentage errors vary with inputs. You can use gasCalculator.js to calculate errors and gas costs for specific input ranges.
 
-`ln(x)` is **very precise** - max percentage error is nearly constant, and outputs are always < 100 - thus ln(x) is always accurate to at least 17 decimal places.
+`ln(x)` is **very precise** - max percentage error is nearly constant, and outputs are always < 100 - thus `ln(x)` is always accurate to at least 17 decimal places.
 
 `exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. **Thus, `exp()` functions are most precise at lower exponent.** `exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
 
@@ -202,11 +202,11 @@ DeciMath-format BNs can be passed as function parameters via web3 contract calls
 
 **Convert string to DeciMath-format BN for a contract call:**
 
-`makeBN.makeBN1`  // convert a string to a uint representation of a decimal in BN form - for input to DeciMath functions via web3.
+`makeBN.makeBN18`  // convert a string to a uint representation of a decimal in BN form - for input to DeciMath functions via web3.
 
 Example:
 
-`makeBN18(‘0.0123’)`    // return new BN(12300000000000000) 
+`makeBN18(‘0.0123’)`    // returns new BN(12300000000000000) 
 
 **Convert a returned DeciMath-format BN to a Decimal:**
 
@@ -228,7 +228,7 @@ The file runs as an external JS script in your Truffle development environment. 
 
 ### Gas Calculator Setup
 
-- Copy gasCalculator.js and makeBN.js to your Truffle project - e.g. to /scripts
+- Copy the /scripts folder to your Truffle project.  This contains gasCalculator.js and its dependencies.
 - Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
 
 - Launch your development blockchain (e.g. Ganache)
@@ -239,9 +239,9 @@ truffle compile
 truffle migrate --reset
 ```
 
-To test particular gas and error of DeciMath functions, place the appropriate calculator function(s) at the end of the script, inside the ‘try’ block.
+To test particular gas and error of DeciMath functions, place the appropriate calculator function(s) at the end of the script. 
 
-- In the gasCalculator directory, run:
+- In the gasCalculator directory, run the script via:
 
 ```
 truffle console
@@ -252,29 +252,25 @@ Results will print to the console. Functions take string arguments, to avoid Jav
 
 ### Gas and Error functions
 
-**One-off function calls - `printGas_...(args)`**
+**One-off function calls**
+
+Example: `gasPrinter.exp(n)`
 
 These functions call their corresponding math function in DeciMath once. They log gas cost and percentage error to the console, and return them in an array. 
 
-**Iterative function calls -`printGasUpTo_...(args, n, increment)`**
+**Iterative function calls**
+
+Example: `gasPrinter.exp_upTo(n, increment)`
 
 These functions repeatedly call their corresponding DeciMath functions, with their main argument increasing from it’s minimum, to arbitrary n, in specified increments.
 
 Use them to see how a functions gas cost and percentage error vary with input.
 
-### Average gas and error calculator
+**Mean gas and error calculators**
 
-Errors and gas vary depending on math function parameters. We can calculate average gas & error for a particular math function with:
- 
-`avgGasAndError(contractCallback, min, max, timesToCall)`
+Example: `gasPrinter.exp_mean(min, max, timesToCall)`
 
-This calls DeciMath function multiple times with random values between a given range, and returns the average gas cost and percentage error. 
-
-Pass the callback as an anonymous function, e.g:
-
-`await avgGasAndError((n) => {return printGas_pow('2.25', n)}, 1, 35, 100))`
-
-Will log all calls to `pow(2.25, x)` for random n between 1 and 35. It returns the average gas and error of all function calls.
+Errors and gas vary depending on function argument. These functions call their respective DeciMath function multiple times with random arguments between a given range, and returns the average gas cost and percentage error. 
 
 ## Error Estimates
 

@@ -66,7 +66,7 @@ setLUT3_2()
 setLUT3_3()
 setLUT3_4()
 ```
-**Reason:** Lookup tables make the math function calls gas-efficient, but it costs around 1.2million gas upfront to write all table data to the blockchain.
+**Reason:** Lookup tables make the math function calls gas-efficient, but it costs around 12 million gas upfront to write all table data to the blockchain.
 
 To avoid large deployment costs, set the LUTs with individual transactions after the contract is deployed. 
 

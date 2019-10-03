@@ -32,7 +32,7 @@ In DeciMath, fixed-point decimals are represented by uints. Functions take uint 
 | 0.000003 | 3000000000000 |
 | 0.000000000000000005 | 5 |
 
-**Function example:** the function decMul18 outputs the product of two 18DP fixed-point decimals.
+**Function example:** the function `decMul18()` outputs the product of two 18DP fixed-point decimals.
 
 **Normal multiplication**:  
 
@@ -46,7 +46,7 @@ In DeciMath, fixed-point decimals are represented by uints. Functions take uint 
 
 DeciMath is an inheritable parent contract.
 
-To use DeciMath functions in your contracts, simply copy the DeciMath.sol contract into your project and inherit from it.
+To use DeciMath functions in your contracts, simply copy the *DeciMath.sol* contract into your project and inherit from it.
 
 ## Initial Setup - Setting the DeciMath Lookup Tables
 
@@ -117,23 +117,21 @@ The gas of `exp_taylor(x)` roughly linearly with the exponent. It is included fo
 
 ## Where are DeciMath Functions Useful?
 
-All functions have a level of imprecision - their usefulness depends, to a degree, on the level of accuracy you need.
+All functions have a level of error - their usefulness depends, to a degree, on the level of accuracy you need.
 
 Error tables at the end of this document show how percentage errors vary with inputs. You can use gasCalculator.js to calculate errors and gas costs for specific input ranges.
 
-`ln(x)` is **very precise** - max percentage error is nearly constant, and outputs are always < 100 - thus `ln(x)` is always accurate to at least 17 decimal places.
+### Function Accuracy 
 
-`exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. **Thus, `exp()` functions are most precise at lower exponent.** `exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
+`ln(x)` is **very accurate** - max percentage error is nearly constant, and outputs are always < 100 - thus `ln(x)` is always accurate to at least 17 decimal places.
 
-`pow(b,x)` **is most accurate in the middle ranges** - e.g base 0.1 - 10, with exponent 0 - 15, here it precise to at least several decimal places. 
+`exp(x)` and `exp_taylor(x)` have nearly constant percentage error, but output grows exponentially. **Thus, `exp()` functions are most accurate at lower exponent.** `exp(10)` is accurate to at least 10 decimal places, while `exp(60)` is accurate to the nearest 1e6. 
 
-It is least accurate at the extremes: at high base, or base ~=1 with very high exponent - domains with both large output and percentage error.
+`pow(b,x)` **is most accurate in the middle ranges** - e.g base 0.1 - 10, with exponent 0 - 15, here it accurate to at least several decimal places. It is least accurate at the extremes: at high base, or base  ≈1 with very high exponent - domains with both large output and percentage error.
 
-**For pow() with an integer exponent, use `powBySquare18()` over `pow()`** - it costs less gas, and offers better precision, particularly at higher base.
+**For pow() with an integer exponent, use `powBySquare18()` over `pow()`** - it costs less gas, and offers better precision, particularly at higher base. `powBySquare18()` has mostly zero error for exponent < 100 and base < 1.
 
-For base < 1, `powBySquare18()` has mostly zero error for exponent < 100. 
-
-## Maximum Inputs - overflow limits
+## Maximum Inputs - Overflow Limits
 
 Functions will revert if an internal multiplication produces a uint256 overflow. The limits of each function depend on the operations performed, and vary between the specific algorithms. 
 
@@ -145,7 +143,7 @@ When a function reverts due to overflow, the overflow error bubbles up from the 
 |---------------|-----------------------|
 | exp(x)        | 89                    |
 | exp_taylor(x) | 92                    |
-| ln(x)         | 1.1e41'               |
+| ln(x)         | 1.1e41                |
 ### Input Limits - Two-Parameter functions
 The maximum base is 1.1e41.  The max exponent depends on the base:
 
@@ -153,19 +151,19 @@ The maximum base is 1.1e41.  The max exponent depends on the base:
 
 For x < 1:
 
-| base                  | 1e-10' | 1e-6' | 1e-5' | 1e-4' | 0.001' | 0.01' | 0.1' | 0.5' |
+| base                  | 1e-10 | 1e-6 | 1e-5 | 1e-4 | 0.001 | 0.01 | 0.1 | 0.5 |
 |-----------------------|--------|-------|-------|-------|--------|-------|------|------|
 | overflow at x >  | 3.9    | 6.5   | 7.8   | 9.5   | 13     | 19    | 39   | 129  | 
  
 For x > 1:
 
-| base                  | 1.1' | 1.5' | 2'  | 10' | 50' | 100' | 1000' | 10000' | 1e5' | 1e6' | 1e10' | 1e20' | 1e30' | 1e40' |
+| base                  | 1.1 | 1.5 | 2 | 10 | 50 | 100 | 1000 | 10000 | 1e5 | 1e6 | 1e10 | 1e20 | 1e30 | 1e40 |
 |-----------------------|------|------|-----|-----|-----|------|-------|--------|------|------|-------|-------|-------|-------|
 | overflow at x >  | 940  | 220  | 129 | 39  | 22  | 19   | 13    | 9.5    | 7.8  | 6.5  | 3.9   | 1.85  | 1.3   | 0.95  |
 
 **powBySquare18(b,x)**
 
-| base                  | <1        | 1.1 | 1.5 | 2   | 10 | 50 | 100 | 1000 | 1e4' | 1e5' | 1e6' | 1e10' | 1e20' |
+| base                  | <1        | 1.1 | 1.5 | 2   | 10 | 50 | 100 | 1000 | 1e4 | 1e5 | 1e6 | 1e10 | 1e20 |
 |-----------------------|-----------|-----|-----|-----|----|----|-----|------|------|------|------|-------|-------|
 | overflow at x > | unlimited | 990 | 230 | 136 | 41 | 24 | 19  | 13   | 10   | 8    | 6    | 4     | 2     |
 
@@ -174,7 +172,7 @@ These are a sample of values. The two-parameter functions have a boundary overfl
 
 ## Testing DeciMath Functions
 
-Tests for all functions are provided as .sol files in /tests, written for the Truffle framework.
+Tests for all functions are provided as *.sol* files in /tests, written for the Truffle framework.
 
 Copy tests to your /tests folder, and run:
 
@@ -188,7 +186,7 @@ DeciMath comes with the node module makeBN.js for converting numbers to and from
 
 ### Usage
 
-On a dApp front-end, web3 accepts BN objects (integer BigNumbers) as contract call parameters. Use makeBN.js to convert numbers to uint representations of decimals that DeciMath expects, in BN form.
+On a dApp front-end, web3 accepts BN objects as contract call parameters. Use makeBN.js to convert numbers to uint representations of decimals that DeciMath expects, in BN form.
 
 DeciMath-format BNs can be passed as function parameters via web3 contract calls.
 
@@ -214,22 +212,20 @@ Example:
 
 Example:
 
-`makeDecimal18(BN(123456789987654321000000000))`  // return new Decimal(‘123456789.987654321’)
+`makeDecimal18(BN(123456789987654321000000000))`  // returns a new Decimal(‘123456789.987654321’)
 
 makeBN requires the basic JS math libraries Decimal.js and BN.js.
 
 ## Calculating Gas and Error with gasCalculator.js
 
-DeciMath comes with a gas and error calculator - gasCalculator.js. It contains several functions for computing the gas & error of each DeciMath math function.
-
-Use it to explore the gas costs and error percentages of the different math functions at different input ranges.
+DeciMath comes with a gas and error calculator - gasCalculator.js. It contains several functions for computing the gas & error of each DeciMath math function. Use it to explore the gas costs and error percentages of the different math functions at different input ranges.
 
 The file runs as an external JS script in your Truffle development environment. All functions are async/await since they call the contract on the blockchain.
 
 ### Gas Calculator Setup
 
 - Copy the /scripts folder to your Truffle project.  This contains gasCalculator.js and its dependencies.
-- Copy DeciMathCaller.sol to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
+- Copy *DeciMathCaller.sol* to your /contracts folder ( needed to make raw calls to DeciMath functions, to test actual gas usage)
 
 - Launch your development blockchain (e.g. Ganache)
 - Compile and migrate your contracts:

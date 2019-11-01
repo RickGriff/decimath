@@ -1,6 +1,5 @@
 const BN = require('bn.js');
 const Decimal = require('decimal.js');
-// const BigNumber = require('decimal.js');
 
 /* Helper functions for converting string-ified decimal numbers to integer representations.
 
@@ -61,7 +60,7 @@ const makeDecimal = (num, digits) => {
     resNum = new Decimal ("0." + fractPart)
 
   } else if (strBN.length > digits) {
-    fractPart = strBN.slice(-digits) // grab last digits, after decimal point
+    fractPart = strBN.slice(-digits) // grab digits after decimal point
     intPart = strBN.slice(0, strBN.length - digits) // grab digits preceding decimal point
     resNum = new Decimal (intPart + "." + fractPart)
   }
